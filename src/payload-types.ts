@@ -191,7 +191,89 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FileListBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | FileListBlock
+    | GalleryBlock
+    | {
+        /**
+         * Choose whether text appears on the left or right side
+         */
+        layout?: ('textLeft' | 'imageLeft') | null;
+        content: {
+          /**
+           * Main heading for this section
+           */
+          heading?: string | null;
+          /**
+           * Optional subheading
+           */
+          subheading?: string | null;
+          /**
+           * The main text content
+           */
+          text: {
+            root: {
+              type: string;
+              children: {
+                type: string;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          };
+          buttons?:
+            | {
+                label: string;
+                link?: {
+                  type?: ('reference' | 'custom') | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: string | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'posts';
+                        value: string | Post;
+                      } | null);
+                  url?: string | null;
+                  newTab?: boolean | null;
+                };
+                style?: ('primary' | 'secondary' | 'outline') | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        /**
+         * The image to display alongside the text
+         */
+        image: string | Media;
+        /**
+         * Control the aspect ratio of the image
+         */
+        imageAspect?: ('auto' | 'square' | 'landscape' | 'wide' | 'portrait') | null;
+        /**
+         * How to align content vertically
+         */
+        verticalAlignment?: ('start' | 'center' | 'end') | null;
+        /**
+         * Background color for this section
+         */
+        backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'textImage';
+      }
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -767,6 +849,46 @@ export interface FileListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock".
+ */
+export interface GalleryBlock {
+  /**
+   * Titlul principal pentru galerie (opțional)
+   */
+  title?: string | null;
+  /**
+   * Descriere pentru galerie (opțional)
+   */
+  description?: string | null;
+  images?:
+    | {
+        /**
+         * Selectează imaginea pentru galerie
+         */
+        image: string | Media;
+        /**
+         * Titlu/descriere pentru imagine (opțional)
+         */
+        caption?: string | null;
+        /**
+         * Text alternativ pentru accesibilitate (opțional)
+         */
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  layout?: ('masonry' | 'grid' | 'featured') | null;
+  columns?: ('auto' | '2' | '3' | '4' | '5') | null;
+  /**
+   * Permite vizualizarea imaginilor în modul lightbox la click
+   */
+  enableLightbox?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1057,6 +1179,40 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         fileList?: T | FileListBlockSelect<T>;
+        gallery?: T | GalleryBlockSelect<T>;
+        textImage?:
+          | T
+          | {
+              layout?: T;
+              content?:
+                | T
+                | {
+                    heading?: T;
+                    subheading?: T;
+                    text?: T;
+                    buttons?:
+                      | T
+                      | {
+                          label?: T;
+                          link?:
+                            | T
+                            | {
+                                type?: T;
+                                reference?: T;
+                                url?: T;
+                                newTab?: T;
+                              };
+                          style?: T;
+                          id?: T;
+                        };
+                  };
+              image?: T;
+              imageAspect?: T;
+              verticalAlignment?: T;
+              backgroundColor?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   meta?:
     | T
@@ -1171,6 +1327,27 @@ export interface FileListBlockSelect<T extends boolean = true> {
         id?: T;
       };
   style?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "GalleryBlock_select".
+ */
+export interface GalleryBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        alt?: T;
+        id?: T;
+      };
+  layout?: T;
+  columns?: T;
+  enableLightbox?: T;
   id?: T;
   blockName?: T;
 }

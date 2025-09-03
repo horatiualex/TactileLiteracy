@@ -7,7 +7,9 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FileListBlockComponent } from '@/blocks/FileList/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import { GalleryBlockComponent } from '@/blocks/Gallery/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { TextImageBlockComponent } from '@/blocks/TextImage/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -15,7 +17,9 @@ const blockComponents = {
   cta: CallToActionBlock,
   fileList: FileListBlockComponent,
   formBlock: FormBlock,
+  gallery: GalleryBlockComponent,
   mediaBlock: MediaBlock,
+  textImage: TextImageBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{
