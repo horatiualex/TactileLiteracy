@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
+import { ro } from '@payloadcms/translations/languages/ro'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -21,7 +22,29 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  i18n: {
+    supportedLanguages: { ro },
+    fallbackLanguage: 'en',
+  },
+  localization: {
+    locales: [
+      {
+        label: 'Română',
+        code: 'ro',
+      },
+      {
+        label: 'English',
+        code: 'en',
+      },
+    ],
+    defaultLocale: 'ro',
+    fallback: true,
+  },
   admin: {
+    meta: {
+      titleSuffix: '- Romanian Accessible Schools',
+    },
+    dateFormat: 'dd/MM/yyyy',
     components: {
       // The `BeforeLogin` component renders a message that you see while logging into your admin panel.
       // Feel free to delete this at any time. Simply remove the line below.

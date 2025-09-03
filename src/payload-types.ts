@@ -108,7 +108,7 @@ export interface Config {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
-  locale: null;
+  locale: 'ro' | 'en';
   user: User & {
     collection: 'users';
   };
@@ -191,7 +191,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | FileListBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -736,6 +736,37 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FileListBlock".
+ */
+export interface FileListBlock {
+  /**
+   * Titlul principal pentru lista de fișiere (opțional)
+   */
+  title?: string | null;
+  files?:
+    | {
+        /**
+         * Numele care va fi afișat pentru acest fișier
+         */
+        title: string;
+        /**
+         * Selectează fișierul (PDF, DOC, XLS, etc.)
+         */
+        file: string | Media;
+        /**
+         * Descriere opțională pentru fișier
+         */
+        description?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  style?: ('list' | 'cards' | 'compact') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'fileList';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1025,6 +1056,7 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        fileList?: T | FileListBlockSelect<T>;
       };
   meta?:
     | T
@@ -1121,6 +1153,24 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FileListBlock_select".
+ */
+export interface FileListBlockSelect<T extends boolean = true> {
+  title?: T;
+  files?:
+    | T
+    | {
+        title?: T;
+        file?: T;
+        description?: T;
+        id?: T;
+      };
+  style?: T;
   id?: T;
   blockName?: T;
 }
@@ -1552,9 +1602,14 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  /**
+   * Adaugă elementele principale ale meniului (ex: Concursuri, Serbări, Orare). Poți avea fie un link simplu, fie un dropdown cu pagini dedesubt.
+   */
   navItems?:
     | {
-        link: {
+        label: string;
+        type: 'link' | 'dropdown';
+        singleLink?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?:
@@ -1567,8 +1622,30 @@ export interface Header {
                 value: string | Post;
               } | null);
           url?: string | null;
-          label: string;
         };
+        dropdownStyle?: ('standard' | 'with-descriptions') | null;
+        submenu?:
+          | {
+              label: string;
+              pageLink?: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?:
+                  | ({
+                      relationTo: 'pages';
+                      value: string | Page;
+                    } | null)
+                  | ({
+                      relationTo: 'posts';
+                      value: string | Post;
+                    } | null);
+                url?: string | null;
+              };
+              description?: string | null;
+              showNewBadge?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -1612,14 +1689,32 @@ export interface HeaderSelect<T extends boolean = true> {
   navItems?:
     | T
     | {
-        link?:
+        label?: T;
+        type?: T;
+        singleLink?:
           | T
           | {
               type?: T;
               newTab?: T;
               reference?: T;
               url?: T;
+            };
+        dropdownStyle?: T;
+        submenu?:
+          | T
+          | {
               label?: T;
+              pageLink?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                  };
+              description?: T;
+              showNewBadge?: T;
+              id?: T;
             };
         id?: T;
       };
