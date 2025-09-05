@@ -19,6 +19,7 @@ import { FileList } from '../../blocks/FileList/config'
 import { Gallery } from '../../blocks/Gallery/config'
 import HeroBanner from '../../blocks/HeroBanner/config'
 import ImageCardGrid from '../../blocks/ImageCardGrid/config'
+import { List } from '../../blocks/List/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import StatsSection from '../../blocks/StatsSection/config'
 import { TextImage } from '../../blocks/TextImage/config'
@@ -100,7 +101,7 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, List, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),

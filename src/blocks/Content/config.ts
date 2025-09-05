@@ -34,6 +34,33 @@ const columnFields: Field[] = [
     ],
   },
   {
+    name: 'textAlign',
+    type: 'select',
+    label: 'Aliniere text',
+    defaultValue: 'left',
+    admin: {
+      description: 'Alege cum să fie aliniat textul în această coloană',
+    },
+    options: [
+      {
+        label: 'Stânga',
+        value: 'left',
+      },
+      {
+        label: 'Centru',
+        value: 'center',
+      },
+      {
+        label: 'Dreapta',
+        value: 'right',
+      },
+      {
+        label: 'Justificat',
+        value: 'justify',
+      },
+    ],
+  },
+  {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({

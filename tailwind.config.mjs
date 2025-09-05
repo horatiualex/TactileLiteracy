@@ -55,6 +55,9 @@ const config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      boxShadow: {
+        '4xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+      },
       colors: {
         accent: {
           DEFAULT: 'hsl(var(--accent))',

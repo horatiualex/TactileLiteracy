@@ -214,22 +214,23 @@ export interface Page {
     | FormBlock
     | FileListBlock
     | GalleryBlock
+    | ListBlock
     | {
         /**
-         * Choose whether text appears on the left or right side
+         * Alege dacă textul apare în stânga sau dreapta
          */
         layout?: ('textLeft' | 'imageLeft') | null;
         content: {
           /**
-           * Main heading for this section
+           * Titlul principal pentru această secțiune
            */
           heading?: string | null;
           /**
-           * Optional subheading
+           * Subtitlu opțional
            */
           subheading?: string | null;
           /**
-           * The main text content
+           * Conținutul principal de text
            */
           text: {
             root: {
@@ -246,44 +247,38 @@ export interface Page {
             };
             [k: string]: unknown;
           };
+          /**
+           * Butoane opționale pentru acțiuni
+           */
           buttons?:
             | {
-                label: string;
                 link?: {
-                  type?: ('reference' | 'custom') | null;
-                  reference?:
-                    | ({
-                        relationTo: 'pages';
-                        value: string | Page;
-                      } | null)
-                    | ({
-                        relationTo: 'posts';
-                        value: string | Post;
-                      } | null);
+                  type?: ('internal' | 'external') | null;
+                  reference?: (string | null) | Page;
                   url?: string | null;
-                  newTab?: boolean | null;
                 };
+                label: string;
                 style?: ('primary' | 'secondary' | 'outline') | null;
                 id?: string | null;
               }[]
             | null;
         };
         /**
-         * The image to display alongside the text
+         * Imaginea care se va afișa alături de text
          */
         image: string | Media;
         /**
-         * Control the aspect ratio of the image
+         * Controlează proporțiile imaginii
          */
         imageAspect?: ('auto' | 'square' | 'landscape' | 'wide' | 'portrait') | null;
         /**
-         * How to align content vertically
+         * Cum să fie aliniat conținutul pe verticală
          */
         verticalAlignment?: ('start' | 'center' | 'end') | null;
         /**
-         * Background color for this section
+         * Fundalul subtil se adaptează automat la tema (gri foarte deschis/întunecat)
          */
-        backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
+        backgroundColor?: ('none' | 'subtle') | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'textImage';
@@ -550,6 +545,10 @@ export interface ContentBlock {
   columns?:
     | {
         size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+        /**
+         * Alege cum să fie aliniat textul în această coloană
+         */
+        textAlign?: ('left' | 'center' | 'right' | 'justify') | null;
         richText?: {
           root: {
             type: string;
@@ -863,6 +862,10 @@ export interface FileListBlock {
       }[]
     | null;
   style?: ('list' | 'cards' | 'compact') | null;
+  /**
+   * Alege câte coloane să fie afișate pentru lista de fișiere
+   */
+  columns?: ('1' | '2') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'fileList';
@@ -906,6 +909,83 @@ export interface GalleryBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'gallery';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListBlock".
+ */
+export interface ListBlock {
+  /**
+   * Titlul principal pentru această listă
+   */
+  title?: string | null;
+  /**
+   * Un subtitlu opțional pentru mai mult context
+   */
+  subtitle?: string | null;
+  /**
+   * Alege în câte coloane să fie afișate elementele listei
+   */
+  columns?: ('1' | '2' | '3') | null;
+  /**
+   * Alege cum să fie stilizate elementele listei
+   */
+  listStyle?: ('card' | 'simple' | 'bordered') | null;
+  /**
+   * Adaugă elementele pentru această listă
+   */
+  items?:
+    | {
+        title: string;
+        description?: {
+          root: {
+            type: string;
+            children: {
+              type: string;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        enableLink?: boolean | null;
+        link?: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        /**
+         * Adaugă o iconiță pentru acest element de listă
+         */
+        icon?: (string | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Alege culoarea de fundal pentru întreaga secțiune
+   */
+  backgroundColor?: ('transparent' | 'gray-light' | 'blue-light' | 'green-light') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'list';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1115,20 +1195,27 @@ export interface StatsSectionBlock {
     statsCount?: ('2' | '4' | '6') | null;
   };
   background?: {
-    type?: ('color' | 'image' | 'none') | null;
-    color?: ('primary' | 'secondary' | 'dark' | 'light' | 'custom') | null;
     /**
-     * Enter a hex color code (e.g., #059669)
+     * Fundalul solid se adaptează automat la tema (gri deschis/întunecat)
      */
-    customColor?: string | null;
+    type?: ('solid' | 'image') | null;
     /**
-     * Background image for the section
+     * Imaginea de fundal pentru secțiune
      */
     image?: (string | null) | Media;
+    /**
+     * Overlay pentru îmbunătățirea lizibilității textului peste imagine
+     */
     overlay?: ('dark' | 'light' | 'none') | null;
   };
   content?: {
+    /**
+     * Titlul principal pentru secțiunea de statistici
+     */
     title?: string | null;
+    /**
+     * Descrierea opțională pentru secțiunea de statistici
+     */
     description?: {
       root: {
         type: string;
@@ -1144,27 +1231,22 @@ export interface StatsSectionBlock {
       };
       [k: string]: unknown;
     } | null;
-    textColor?: ('white' | 'dark' | 'custom') | null;
-    /**
-     * Enter a hex color code (e.g., #ffffff)
-     */
-    customTextColor?: string | null;
   };
   /**
-   * Add 2, 4, or 6 statistics with numbers and labels
+   * Adaugă 2, 4, sau 6 statistici cu numere și etichete
    */
   stats: {
     /**
-     * e.g., "150+", "50K+", "99%"
+     * ex: "150+", "50K+", "99%"
      */
     number: string;
     /**
-     * e.g., "Partner Organizations", "Users Served"
+     * ex: "Organizații Partenere", "Utilizatori Deserviți"
      */
     label: string;
     icon?: (string | null) | Media;
     /**
-     * Use emoji or text instead of uploaded icon
+     * Folosește emoji sau text în loc de iconiță încărcată
      */
     iconText?: string | null;
     id?: string | null;
@@ -1485,6 +1567,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         fileList?: T | FileListBlockSelect<T>;
         gallery?: T | GalleryBlockSelect<T>;
+        list?: T | ListBlockSelect<T>;
         textImage?:
           | T
           | {
@@ -1498,15 +1581,14 @@ export interface PagesSelect<T extends boolean = true> {
                     buttons?:
                       | T
                       | {
-                          label?: T;
                           link?:
                             | T
                             | {
                                 type?: T;
                                 reference?: T;
                                 url?: T;
-                                newTab?: T;
                               };
+                          label?: T;
                           style?: T;
                           id?: T;
                         };
@@ -1571,6 +1653,7 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | T
     | {
         size?: T;
+        textAlign?: T;
         richText?: T;
         enableLink?: T;
         link?:
@@ -1637,6 +1720,7 @@ export interface FileListBlockSelect<T extends boolean = true> {
         id?: T;
       };
   style?: T;
+  columns?: T;
   id?: T;
   blockName?: T;
 }
@@ -1658,6 +1742,38 @@ export interface GalleryBlockSelect<T extends boolean = true> {
   layout?: T;
   columns?: T;
   enableLightbox?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ListBlock_select".
+ */
+export interface ListBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  columns?: T;
+  listStyle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
+        icon?: T;
+        id?: T;
+      };
+  backgroundColor?: T;
   id?: T;
   blockName?: T;
 }
@@ -1801,8 +1917,6 @@ export interface StatsSectionBlockSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        color?: T;
-        customColor?: T;
         image?: T;
         overlay?: T;
       };
@@ -1811,8 +1925,6 @@ export interface StatsSectionBlockSelect<T extends boolean = true> {
     | {
         title?: T;
         description?: T;
-        textColor?: T;
-        customTextColor?: T;
       };
   stats?:
     | T
@@ -2258,7 +2370,7 @@ export interface Header {
    * Personalizează aspectul header-ului
    */
   styling?: {
-    backgroundType?: ('transparent' | 'solid') | null;
+    backgroundType?: ('transparent' | 'semi-transparent' | 'solid') | null;
     backgroundColor?: ('theme' | 'custom') | null;
     customBackgroundColor?: string | null;
     buttonStyle?: {
@@ -2338,26 +2450,123 @@ export interface Header {
  */
 export interface Footer {
   id: string;
-  navItems?:
+  /**
+   * Adaugă între 3-5 coloane pentru footer. Fiecare coloană poate conține text, logo, linkuri sau social media.
+   */
+  columns?:
     | {
-        link: {
-          type?: ('reference' | 'custom') | null;
-          newTab?: boolean | null;
-          reference?:
-            | ({
-                relationTo: 'pages';
-                value: string | Page;
-              } | null)
-            | ({
-                relationTo: 'posts';
-                value: string | Post;
-              } | null);
-          url?: string | null;
-          label: string;
+        type: 'logoAndText' | 'linkList' | 'socialMedia' | 'contactInfo' | 'customText';
+        logoText?: {
+          showLogo?: boolean | null;
+          title?: string | null;
+          description?: string | null;
+        };
+        linkList?: {
+          title: string;
+          links?:
+            | {
+                link: {
+                  type?: ('reference' | 'custom') | null;
+                  newTab?: boolean | null;
+                  reference?:
+                    | ({
+                        relationTo: 'pages';
+                        value: string | Page;
+                      } | null)
+                    | ({
+                        relationTo: 'posts';
+                        value: string | Post;
+                      } | null);
+                  url?: string | null;
+                  label: string;
+                };
+                id?: string | null;
+              }[]
+            | null;
+        };
+        socialMedia?: {
+          title?: string | null;
+          platforms?:
+            | {
+                platform:
+                  | 'facebook'
+                  | 'instagram'
+                  | 'youtube'
+                  | 'twitter'
+                  | 'linkedin'
+                  | 'tiktok'
+                  | 'whatsapp'
+                  | 'email';
+                url: string;
+                /**
+                 * Dacă nu este completat, se va folosi numele platformei
+                 */
+                label?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        contactInfo?: {
+          title?: string | null;
+          address?: string | null;
+          phone?: string | null;
+          email?: string | null;
+          schedule?:
+            | {
+                label: string;
+                time: string;
+                id?: string | null;
+              }[]
+            | null;
+        };
+        customText?: {
+          title?: string | null;
+          /**
+           * Poți adăuga text formatat, linkuri, etc.
+           */
+          content?: {
+            root: {
+              type: string;
+              children: {
+                type: string;
+                version: number;
+                [k: string]: unknown;
+              }[];
+              direction: ('ltr' | 'rtl') | null;
+              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+              indent: number;
+              version: number;
+            };
+            [k: string]: unknown;
+          } | null;
         };
         id?: string | null;
       }[]
     | null;
+  bottomSection?: {
+    copyrightText?: string | null;
+    bottomLinks?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?:
+              | ({
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null)
+              | ({
+                  relationTo: 'posts';
+                  value: string | Post;
+                } | null);
+            url?: string | null;
+            label: string;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    showThemeSelector?: boolean | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2424,19 +2633,91 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
-  navItems?:
+  columns?:
     | T
     | {
-        link?:
+        type?: T;
+        logoText?:
           | T
           | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
+              showLogo?: T;
+              title?: T;
+              description?: T;
+            };
+        linkList?:
+          | T
+          | {
+              title?: T;
+              links?:
+                | T
+                | {
+                    link?:
+                      | T
+                      | {
+                          type?: T;
+                          newTab?: T;
+                          reference?: T;
+                          url?: T;
+                          label?: T;
+                        };
+                    id?: T;
+                  };
+            };
+        socialMedia?:
+          | T
+          | {
+              title?: T;
+              platforms?:
+                | T
+                | {
+                    platform?: T;
+                    url?: T;
+                    label?: T;
+                    id?: T;
+                  };
+            };
+        contactInfo?:
+          | T
+          | {
+              title?: T;
+              address?: T;
+              phone?: T;
+              email?: T;
+              schedule?:
+                | T
+                | {
+                    label?: T;
+                    time?: T;
+                    id?: T;
+                  };
+            };
+        customText?:
+          | T
+          | {
+              title?: T;
+              content?: T;
             };
         id?: T;
+      };
+  bottomSection?:
+    | T
+    | {
+        copyrightText?: T;
+        bottomLinks?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
+        showThemeSelector?: T;
       };
   updatedAt?: T;
   createdAt?: T;

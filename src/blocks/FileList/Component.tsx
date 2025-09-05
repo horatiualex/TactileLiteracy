@@ -15,13 +15,15 @@ type Props = {
   title?: string
   files?: FileItem[]
   style?: 'list' | 'cards' | 'compact'
+  columns?: '1' | '2'
 }
 
 export const FileListBlockComponent: React.FC<Props> = ({ 
   className, 
   title, 
   files, 
-  style = 'list'
+  style = 'list',
+  columns = '1'
 }) => {
   if (!files || files.length === 0) {
     return null
@@ -64,7 +66,7 @@ export const FileListBlockComponent: React.FC<Props> = ({
       )}
 
       {style === 'list' && (
-        <ul className="space-y-3">
+        <div className={`grid gap-4 ${columns === '2' ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
           {files.map((fileItem: FileItem, index: number) => {
             if (!fileItem || typeof fileItem.file !== 'object' || !fileItem.file) return null
             
@@ -72,38 +74,43 @@ export const FileListBlockComponent: React.FC<Props> = ({
             const media = file
             
             return (
-              <li key={index} className="flex items-start gap-3">
-                <span className="text-lg mt-0.5 flex-shrink-0">
-                  {getFileIcon(media.mimeType)}
-                </span>
-                <div className="flex-1">
-                  <a
-                    href={media.url || ''}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:text-primary/80 font-medium transition-colors underline decoration-transparent hover:decoration-current"
-                  >
-                    {fileTitle}
-                  </a>
-                  {description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                      {description}
-                    </p>
-                  )}
-                  {media.filesize && (
-                    <span className="text-xs text-gray-500 dark:text-gray-500">
-                      {getFileSize(media.filesize)}
-                    </span>
-                  )}
+              <div 
+                key={index} 
+                className="border-l-4 border-gray-900 dark:border-gray-100 pl-6 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-r-lg"
+              >
+                <div className="flex items-start gap-3">
+                  <span className="text-xl mt-0.5 flex-shrink-0">
+                    {getFileIcon(media.mimeType)}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <a
+                      href={media.url || ''}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-gray-900 dark:text-gray-100 hover:text-primary dark:hover:text-primary font-medium transition-colors block mb-1"
+                    >
+                      {fileTitle}
+                    </a>
+                    {description && (
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-2">
+                        {description}
+                      </p>
+                    )}
+                    {media.filesize && (
+                      <span className="text-xs text-gray-500 dark:text-gray-500">
+                        {getFileSize(media.filesize)}
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </li>
+              </div>
             )
           })}
-        </ul>
+        </div>
       )}
 
       {style === 'cards' && (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className={`grid gap-4 ${columns === '2' ? 'md:grid-cols-2' : 'grid-cols-1'} lg:grid-cols-${columns === '2' ? '2' : '1'}`}>
           {files.map((fileItem: FileItem, index: number) => {
             if (!fileItem || typeof fileItem.file !== 'object' || !fileItem.file) return null
             
@@ -145,7 +152,7 @@ export const FileListBlockComponent: React.FC<Props> = ({
       )}
 
       {style === 'compact' && (
-        <div className="space-y-2">
+        <div className={`grid gap-2 ${columns === '2' ? 'md:grid-cols-2' : 'grid-cols-1'}`}>
           {files.map((fileItem: FileItem, index: number) => {
             if (!fileItem || typeof fileItem.file !== 'object' || !fileItem.file) return null
             

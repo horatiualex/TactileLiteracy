@@ -66,13 +66,13 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
   const getTextColorClass = () => {
     switch (style.textColor) {
       case 'white':
-        return 'text-white'
+        return 'text-white dark:text-gray-100'
       case 'dark':
-        return 'text-gray-900'
+        return 'text-gray-900 dark:text-white'
       case 'custom':
         return ''
       default:
-        return 'text-white'
+        return 'text-white dark:text-gray-100'
     }
   }
 
@@ -166,8 +166,8 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
                       rel={link.newTab ? 'noopener noreferrer' : undefined}
                       className={`inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
                         link.style === 'solid'
-                          ? 'bg-white text-gray-900 hover:bg-gray-100'
-                          : 'border-2 border-white text-white hover:bg-white hover:text-gray-900'
+                          ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
+                          : 'border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 hover:bg-white dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
                       }`}
                     >
                       {link.label}

@@ -4,8 +4,8 @@ const StatsSection: Block = {
   slug: 'statsSection',
   interfaceName: 'StatsSectionBlock',
   labels: {
-    singular: 'Stats Section Block',
-    plural: 'Stats Section Blocks',
+    singular: 'Secțiune Statistici',
+    plural: 'Secțiuni Statistici',
   },
   imageURL: '/api/media/file/stats-section-block.jpg',
   imageAltText: 'Stats Section Block',
@@ -13,24 +13,24 @@ const StatsSection: Block = {
     {
       name: 'layout',
       type: 'group',
-      label: 'Layout Settings',
+      label: 'Setări Layout',
       fields: [
         {
           name: 'textPosition',
           type: 'select',
-          label: 'Text Position',
+          label: 'Poziția Textului',
           defaultValue: 'left',
           options: [
             {
-              label: 'Left Side',
+              label: 'Stânga',
               value: 'left',
             },
             {
-              label: 'Right Side', 
+              label: 'Dreapta', 
               value: 'right',
             },
             {
-              label: 'Center (Full Width)',
+              label: 'Centru (Lățime Completă)',
               value: 'center',
             },
           ],
@@ -39,19 +39,19 @@ const StatsSection: Block = {
         {
           name: 'statsCount',
           type: 'select',
-          label: 'Number of Stats',
+          label: 'Numărul de Statistici',
           defaultValue: '4',
           options: [
             {
-              label: '2 Stats',
+              label: '2 Statistici',
               value: '2',
             },
             {
-              label: '4 Stats',
+              label: '4 Statistici',
               value: '4',
             },
             {
-              label: '6 Stats',
+              label: '6 Statistici',
               value: '6',
             },
           ],
@@ -62,104 +62,62 @@ const StatsSection: Block = {
     {
       name: 'background',
       type: 'group',
-      label: 'Background Settings',
+      label: 'Setări Fundal',
       fields: [
         {
           name: 'type',
           type: 'select',
-          label: 'Background Type',
-          defaultValue: 'color',
+          label: 'Tip Fundal',
+          defaultValue: 'solid',
           options: [
             {
-              label: 'Solid Color',
-              value: 'color',
+              label: 'Fundal Solid (Auto-Adaptat)',
+              value: 'solid',
             },
             {
-              label: 'Background Image',
+              label: 'Imagine Fundal',
               value: 'image',
             },
-            {
-              label: 'None',
-              value: 'none',
-            },
-          ],
-          required: false,
-        },
-        {
-          name: 'color',
-          type: 'select',
-          label: 'Background Color',
-          defaultValue: 'primary',
-          options: [
-            {
-              label: 'Primary',
-              value: 'primary',
-            },
-            {
-              label: 'Secondary',
-              value: 'secondary',
-            },
-            {
-              label: 'Dark',
-              value: 'dark',
-            },
-            {
-              label: 'Light',
-              value: 'light',
-            },
-            {
-              label: 'Custom',
-              value: 'custom',
-            },
           ],
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'color',
-          },
-        },
-        {
-          name: 'customColor',
-          type: 'text',
-          label: 'Custom Background Color',
-          required: false,
-          admin: {
-            condition: (_, siblingData) => siblingData?.type === 'color' && siblingData?.color === 'custom',
-            description: 'Enter a hex color code (e.g., #059669)',
+            description: 'Fundalul solid se adaptează automat la tema (gri deschis/întunecat)',
           },
         },
         {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
-          label: 'Background Image',
+          label: 'Imagine Fundal',
           required: false,
           admin: {
             condition: (_, siblingData) => siblingData?.type === 'image',
-            description: 'Background image for the section',
+            description: 'Imaginea de fundal pentru secțiune',
           },
         },
         {
           name: 'overlay',
           type: 'select',
-          label: 'Image Overlay',
+          label: 'Overlay Imagine',
           defaultValue: 'dark',
           options: [
             {
-              label: 'Dark Overlay',
+              label: 'Overlay Întunecat',
               value: 'dark',
             },
             {
-              label: 'Light Overlay',
+              label: 'Overlay Deschis',
               value: 'light',
             },
             {
-              label: 'No Overlay',
+              label: 'Fără Overlay',
               value: 'none',
             },
           ],
           required: false,
           admin: {
             condition: (_, siblingData) => siblingData?.type === 'image',
+            description: 'Overlay pentru îmbunătățirea lizibilității textului peste imagine',
           },
         },
       ],
@@ -167,49 +125,24 @@ const StatsSection: Block = {
     {
       name: 'content',
       type: 'group',
-      label: 'Content',
+      label: 'Conținut',
       fields: [
         {
           name: 'title',
           type: 'text',
-          label: 'Title',
+          label: 'Titlu',
           required: false,
+          admin: {
+            description: 'Titlul principal pentru secțiunea de statistici',
+          },
         },
         {
           name: 'description',
           type: 'richText',
-          label: 'Description',
-          required: false,
-        },
-        {
-          name: 'textColor',
-          type: 'select',
-          label: 'Text Color',
-          defaultValue: 'white',
-          options: [
-            {
-              label: 'White',
-              value: 'white',
-            },
-            {
-              label: 'Dark',
-              value: 'dark',
-            },
-            {
-              label: 'Custom',
-              value: 'custom',
-            },
-          ],
-          required: false,
-        },
-        {
-          name: 'customTextColor',
-          type: 'text',
-          label: 'Custom Text Color',
+          label: 'Descriere',
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.textColor === 'custom',
-            description: 'Enter a hex color code (e.g., #ffffff)',
+            description: 'Descrierea opțională pentru secțiunea de statistici',
           },
         },
       ],
@@ -217,44 +150,44 @@ const StatsSection: Block = {
     {
       name: 'stats',
       type: 'array',
-      label: 'Statistics',
+      label: 'Statistici',
       labels: {
-        singular: 'Statistic',
-        plural: 'Statistics',
+        singular: 'Statistică',
+        plural: 'Statistici',
       },
       fields: [
         {
           name: 'number',
           type: 'text',
-          label: 'Number/Value',
+          label: 'Număr/Valoare',
           required: true,
           admin: {
-            description: 'e.g., "150+", "50K+", "99%"',
+            description: 'ex: "150+", "50K+", "99%"',
           },
         },
         {
           name: 'label',
           type: 'text',
-          label: 'Label',
+          label: 'Eticheta',
           required: true,
           admin: {
-            description: 'e.g., "Partner Organizations", "Users Served"',
+            description: 'ex: "Organizații Partenere", "Utilizatori Deserviți"',
           },
         },
         {
           name: 'icon',
           type: 'upload',
           relationTo: 'media',
-          label: 'Icon (Optional)',
+          label: 'Iconiță (Opțional)',
           required: false,
         },
         {
           name: 'iconText',
           type: 'text',
-          label: 'Icon Text (Alternative)',
+          label: 'Text Iconiță (Alternativă)',
           required: false,
           admin: {
-            description: 'Use emoji or text instead of uploaded icon',
+            description: 'Folosește emoji sau text în loc de iconiță încărcată',
           },
         },
       ],
@@ -262,7 +195,7 @@ const StatsSection: Block = {
       maxRows: 6,
       required: true,
       admin: {
-        description: 'Add 2, 4, or 6 statistics with numbers and labels',
+        description: 'Adaugă 2, 4, sau 6 statistici cu numere și etichete',
       },
     },
   ],

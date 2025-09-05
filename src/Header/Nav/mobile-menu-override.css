@@ -1,0 +1,117 @@
+/* Mobile Menu Override Styles - High Specificity to Override Hero Components */
+
+/* Force mobile menu overlay to be above everything with solid background */
+.mobile-menu-overlay-force {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 999999 !important;
+  isolation: isolate !important;
+  background-color: white !important;
+  color: rgb(17, 24, 39) !important;
+}
+
+/* Light mode - explicit styling to override any dark mode leakage */
+:root .mobile-menu-overlay-force,
+html:not(.dark):not([data-theme="dark"]) .mobile-menu-overlay-force {
+  background-color: white !important;
+  color: rgb(17, 24, 39) !important;
+}
+
+/* Dark mode mobile menu background - only when dark mode is active */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .mobile-menu-overlay-force {
+    background-color: rgb(17, 24, 39) !important;
+    color: white !important;
+  }
+}
+
+/* Explicit dark mode class support - only when dark classes are present */
+html.dark .mobile-menu-overlay-force,
+html[data-theme="dark"] .mobile-menu-overlay-force {
+  background-color: rgb(17, 24, 39) !important;
+  color: white !important;
+}
+
+/* Light mode text overrides - ensure dark text on light background */
+:root .mobile-menu-overlay-force .text-gray-900,
+:root .mobile-menu-overlay-force .text-white,
+html:not(.dark):not([data-theme="dark"]) .mobile-menu-overlay-force .text-gray-900,
+html:not(.dark):not([data-theme="dark"]) .mobile-menu-overlay-force .text-white {
+  color: rgb(17, 24, 39) !important;
+}
+
+/* Dark mode text overrides - ensure light text on dark background */
+html.dark .mobile-menu-overlay-force .text-gray-900,
+html.dark .mobile-menu-overlay-force .text-white,
+html[data-theme="dark"] .mobile-menu-overlay-force .text-gray-900,
+html[data-theme="dark"] .mobile-menu-overlay-force .text-white {
+  color: white !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .text-gray-900,
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .text-white {
+    color: white !important;
+  }
+}
+
+/* Force active submenu item styling */
+.mobile-submenu-item-active {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-color: #1f2937 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  transform: translateZ(0) !important;
+  position: relative !important;
+  z-index: 1000001 !important;
+}
+
+/* Force active parent dropdown styling */
+.mobile-parent-dropdown-active {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  position: relative !important;
+  z-index: 1000001 !important;
+}
+
+/* Desktop navigation active states - high specificity overrides */
+.header-nav-container .desktop-dropdown-active,
+.header-nav-container button.desktop-dropdown-active {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-color: #1f2937 !important;
+}
+
+.header-nav-container .desktop-submenu-active,
+.header-nav-container a.desktop-submenu-active {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-color: #1f2937 !important;
+}
+
+/* Ensure all mobile menu items have proper z-index */
+.mobile-menu-container * {
+  position: relative !important;
+  z-index: 1000000 !important;
+}
+
+/* Mobile menu header theme support */
+.mobile-menu-header {
+  background-color: white !important;
+  color: rgb(17, 24, 39) !important;
+}
+html.dark .mobile-menu-header,
+html[data-theme="dark"] .mobile-menu-header {
+  background-color: rgb(17, 24, 39) !important;
+  color: white !important;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .mobile-menu-header {
+    background-color: rgb(17, 24, 39) !important;
+    color: white !important;
+  }
+}

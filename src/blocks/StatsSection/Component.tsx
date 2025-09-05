@@ -47,31 +47,14 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
   }
 
   const getBackgroundClass = () => {
-    if (background.type === 'none') return ''
     if (background.type === 'image') return ''
     
-    switch (background.color) {
-      case 'primary':
-        return 'bg-primary'
-      case 'secondary':
-        return 'bg-secondary'
-      case 'dark':
-        return 'bg-gray-900'
-      case 'light':
-        return 'bg-gray-50'
-      case 'custom':
-        return ''
-      default:
-        return 'bg-primary'
-    }
+    // Default solid background that adapts to theme
+    return 'bg-gray-100 dark:bg-gray-800'
   }
 
   const getCustomBackgroundStyle = () => {
     const style: React.CSSProperties = {}
-    
-    if (background.type === 'color' && background.color === 'custom' && background.customColor) {
-      style.backgroundColor = background.customColor
-    }
     
     if (background.type === 'image' && background.image && typeof background.image === 'object') {
       style.backgroundImage = `url(${background.image.url})`
@@ -97,23 +80,13 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
   }
 
   const getTextColorClass = () => {
-    switch (content.textColor) {
-      case 'white':
-        return 'text-white'
-      case 'dark':
-        return 'text-gray-900'
-      case 'custom':
-        return ''
-      default:
-        return 'text-white'
+    // For image backgrounds, use white text for better contrast
+    if (background.type === 'image') {
+      return 'text-white'
     }
-  }
-
-  const getCustomTextStyle = () => {
-    if (content.textColor === 'custom' && content.customTextColor) {
-      return { color: content.customTextColor }
-    }
-    return {}
+    
+    // For solid backgrounds, use theme-aware colors
+    return 'text-gray-900 dark:text-white'
   }
 
   const getLayoutClass = () => {
@@ -148,7 +121,6 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
             <div className={`${getContentWidthClass()}`}>
               <div 
                 className={`${getTextColorClass()}`}
-                style={getCustomTextStyle()}
               >
                 {content.title && (
                   <h2 className="text-3xl lg:text-4xl xl:text-5xl font-bold mb-6 leading-tight">
@@ -176,20 +148,32 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
               {stats.map((stat, index) => (
                 <div 
                   key={index} 
-                  className="bg-white/10 backdrop-blur-sm rounded-lg p-8 text-center border border-white/20"
+                  className={`backdrop-blur-sm rounded-lg p-8 text-center border transition-all duration-300 ${
+                    background.type === 'image' 
+                      ? 'bg-white/10 border-white/20 hover:bg-white/20' 
+                      : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600 shadow-md hover:shadow-lg'
+                  }`}
                 >
                   {/* Optional Icon */}
                   {(stat.icon || stat.iconText) && (
                     <div className="mb-3 flex justify-center">
                       {stat.iconText ? (
-                        <div className="text-2xl text-white">
+                        <div className={`text-2xl ${
+                          background.type === 'image' 
+                            ? 'text-white' 
+                            : 'text-gray-700 dark:text-gray-200'
+                        }`}>
                           {stat.iconText}
                         </div>
                       ) : stat.icon && typeof stat.icon === 'object' ? (
                         <div className="w-8 h-8">
                           <Media
                             resource={stat.icon}
-                            className="w-full h-full object-contain filter brightness-0 invert"
+                            className={`w-full h-full object-contain ${
+                              background.type === 'image' 
+                                ? 'filter brightness-0 invert' 
+                                : ''
+                            }`}
                           />
                         </div>
                       ) : null}
@@ -197,12 +181,20 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
                   )}
                   
                   {/* Number */}
-                  <div className="text-4xl lg:text-5xl font-bold mb-3 text-white">
+                  <div className={`text-4xl lg:text-5xl font-bold mb-3 ${
+                    background.type === 'image' 
+                      ? 'text-white' 
+                      : 'text-gray-900 dark:text-white'
+                  }`}>
                     {stat.number}
                   </div>
                   
                   {/* Label */}
-                  <div className="text-lg text-white/90 font-medium">
+                  <div className={`text-lg font-medium ${
+                    background.type === 'image' 
+                      ? 'text-white/90' 
+                      : 'text-gray-600 dark:text-gray-300'
+                  }`}>
                     {stat.label}
                   </div>
                 </div>

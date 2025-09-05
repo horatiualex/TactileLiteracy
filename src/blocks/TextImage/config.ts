@@ -3,8 +3,8 @@ import { Block } from 'payload'
 export const TextImage: Block = {
   slug: 'textImage',
   labels: {
-    singular: 'Text & Image',
-    plural: 'Text & Image Blocks',
+    singular: 'Text & Imagine',
+    plural: 'Blocuri Text & Imagine',
   },
   fields: [
     {
@@ -14,117 +14,114 @@ export const TextImage: Block = {
       defaultValue: 'textLeft',
       options: [
         {
-          label: 'Text Left, Image Right',
+          label: 'Text Stânga, Imagine Dreapta',
           value: 'textLeft',
         },
         {
-          label: 'Image Left, Text Right',
+          label: 'Imagine Stânga, Text Dreapta',
           value: 'imageLeft',
         },
       ],
       admin: {
-        description: 'Choose whether text appears on the left or right side',
+        description: 'Alege dacă textul apare în stânga sau dreapta',
       },
     },
     {
       name: 'content',
       type: 'group',
-      label: 'Content',
+      label: 'Conținut',
       fields: [
         {
           name: 'heading',
           type: 'text',
-          label: 'Heading',
+          label: 'Titlu Principal',
           admin: {
-            description: 'Main heading for this section',
+            description: 'Titlul principal pentru această secțiune',
           },
         },
         {
           name: 'subheading',
           type: 'text',
-          label: 'Subheading',
+          label: 'Subtitlu',
           admin: {
-            description: 'Optional subheading',
+            description: 'Subtitlu opțional',
           },
         },
         {
           name: 'text',
           type: 'richText',
-          label: 'Text Content',
+          label: 'Conținut Text',
           required: true,
           admin: {
-            description: 'The main text content',
+            description: 'Conținutul principal de text',
           },
         },
         {
           name: 'buttons',
           type: 'array',
-          label: 'Action Buttons',
-          maxRows: 2,
+          label: 'Butoane',
+          admin: {
+            description: 'Butoane opționale pentru acțiuni',
+          },
           fields: [
-            {
-              name: 'label',
-              type: 'text',
-              label: 'Button Label',
-              required: true,
-            },
             {
               name: 'link',
               type: 'group',
+              label: 'Link',
               fields: [
                 {
                   name: 'type',
                   type: 'radio',
-                  label: 'Link Type',
-                  defaultValue: 'reference',
+                  label: 'Tip Link',
                   options: [
                     {
-                      label: 'Internal Link',
-                      value: 'reference',
+                      label: 'Pagină Internă',
+                      value: 'internal',
                     },
                     {
-                      label: 'Custom URL',
-                      value: 'custom',
+                      label: 'URL Extern',
+                      value: 'external',
                     },
                   ],
+                  defaultValue: 'internal',
                 },
                 {
                   name: 'reference',
                   type: 'relationship',
-                  label: 'Link to Page',
-                  relationTo: ['pages', 'posts'],
+                  label: 'Pagină',
+                  relationTo: 'pages',
                   admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'reference',
+                    condition: (_, siblingData) => siblingData?.type === 'internal',
                   },
                 },
                 {
                   name: 'url',
                   type: 'text',
-                  label: 'Custom URL',
+                  label: 'URL',
                   admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'custom',
+                    condition: (_, siblingData) => siblingData?.type === 'external',
                   },
-                },
-                {
-                  name: 'newTab',
-                  type: 'checkbox',
-                  label: 'Open in new tab',
-                  defaultValue: false,
                 },
               ],
             },
             {
+              name: 'label',
+              type: 'text',
+              label: 'Text Buton',
+              required: true,
+            },
+            {
               name: 'style',
               type: 'select',
-              label: 'Button Style',
+              label: 'Stil Buton',
               defaultValue: 'primary',
               options: [
                 {
-                  label: 'Primary',
+                  label: 'Principal',
                   value: 'primary',
                 },
                 {
-                  label: 'Secondary',
+                  label: 'Secundar',
                   value: 'secondary',
                 },
                 {
@@ -140,17 +137,17 @@ export const TextImage: Block = {
     {
       name: 'image',
       type: 'upload',
-      label: 'Image',
+      label: 'Imagine',
       relationTo: 'media',
       required: true,
       admin: {
-        description: 'The image to display alongside the text',
+        description: 'Imaginea care se va afișa alături de text',
       },
     },
     {
       name: 'imageAspect',
       type: 'select',
-      label: 'Image Aspect Ratio',
+      label: 'Proporții Imagine',
       defaultValue: 'auto',
       options: [
         {
@@ -158,74 +155,66 @@ export const TextImage: Block = {
           value: 'auto',
         },
         {
-          label: 'Square (1:1)',
+          label: 'Pătrat (1:1)',
           value: 'square',
         },
         {
-          label: 'Landscape (4:3)',
+          label: 'Peisaj (4:3)',
           value: 'landscape',
         },
         {
-          label: 'Wide (16:9)',
+          label: 'Panoramic (16:9)',
           value: 'wide',
         },
         {
-          label: 'Portrait (3:4)',
+          label: 'Portret (3:4)',
           value: 'portrait',
         },
       ],
       admin: {
-        description: 'Control the aspect ratio of the image',
+        description: 'Controlează proporțiile imaginii',
       },
     },
     {
       name: 'verticalAlignment',
       type: 'select',
-      label: 'Vertical Alignment',
+      label: 'Aliniere Verticală',
       defaultValue: 'center',
       options: [
         {
-          label: 'Top',
+          label: 'Sus',
           value: 'start',
         },
         {
-          label: 'Center',
+          label: 'Centru',
           value: 'center',
         },
         {
-          label: 'Bottom',
+          label: 'Jos',
           value: 'end',
         },
       ],
       admin: {
-        description: 'How to align content vertically',
+        description: 'Cum să fie aliniat conținutul pe verticală',
       },
     },
     {
       name: 'backgroundColor',
       type: 'select',
-      label: 'Background Color',
+      label: 'Tip Fundal',
       defaultValue: 'none',
       options: [
         {
-          label: 'None',
+          label: 'Fără Fundal',
           value: 'none',
         },
         {
-          label: 'Light Gray',
-          value: 'light',
-        },
-        {
-          label: 'Dark',
-          value: 'dark',
-        },
-        {
-          label: 'Primary',
-          value: 'primary',
+          label: 'Fundal Subtil (Auto-Adaptat)',
+          value: 'subtle',
         },
       ],
       admin: {
-        description: 'Background color for this section',
+        description: 'Fundalul subtil se adaptează automat la tema (gri foarte deschis/întunecat)',
       },
     },
   ],

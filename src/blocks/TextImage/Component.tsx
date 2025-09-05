@@ -44,7 +44,7 @@ type Props = {
   image?: MediaObject
   imageAspect?: 'auto' | 'square' | 'landscape' | 'wide' | 'portrait'
   verticalAlignment?: 'start' | 'center' | 'end'
-  backgroundColor?: 'none' | 'light' | 'dark' | 'primary'
+  backgroundColor?: 'none' | 'subtle'
 }
 
 export const TextImageBlockComponent: React.FC<Props> = ({
@@ -62,12 +62,8 @@ export const TextImageBlockComponent: React.FC<Props> = ({
 
   const getBackgroundClass = () => {
     switch (backgroundColor) {
-      case 'light':
+      case 'subtle':
         return 'bg-gray-50 dark:bg-gray-900'
-      case 'dark':
-        return 'bg-gray-900 dark:bg-gray-800 text-white'
-      case 'primary':
-        return 'bg-primary text-primary-foreground'
       default:
         return ''
     }
@@ -158,7 +154,7 @@ export const TextImageBlockComponent: React.FC<Props> = ({
             )}
             
             {content?.heading && (
-              <h2 className="text-3xl font-bold tracking-tight lg:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight lg:text-4xl text-gray-900 dark:text-white">
                 {content.heading}
               </h2>
             )}

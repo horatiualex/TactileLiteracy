@@ -16,14 +16,12 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Payload Logo"
-      width={193}
-      height={34}
+      alt="Școala Nr.6 M.Eminescu Vaslui Logo"
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-[34px]', className)}
-      src="https://apass.ro/wp-content/uploads/2024/09/cropped-logo-apass1-185x44.png"
+      className={clsx('max-w-[70px] w-auto h-auto', className)}
+      src="/logo.png"
     />
   )
 }

@@ -28,6 +28,7 @@ export const Header: GlobalConfig = {
           admin: { layout: 'horizontal' },
           options: [
             { label: 'Transparent', value: 'transparent' },
+            { label: 'Semi-transparent', value: 'semi-transparent' },
             { label: 'Solid', value: 'solid' },
           ],
         },
@@ -38,7 +39,7 @@ export const Header: GlobalConfig = {
           defaultValue: 'theme',
           admin: { 
             layout: 'horizontal',
-            condition: (_, siblingData) => siblingData?.backgroundType === 'solid'
+            condition: (_, siblingData) => siblingData?.backgroundType === 'solid' || siblingData?.backgroundType === 'semi-transparent'
           },
           options: [
             { label: 'Temă curentă', value: 'theme' },
@@ -50,7 +51,7 @@ export const Header: GlobalConfig = {
           type: 'text',
           label: 'Culoare personalizată (hex)',
           admin: {
-            condition: (_, siblingData) => siblingData?.backgroundType === 'solid' && siblingData?.backgroundColor === 'custom',
+            condition: (_, siblingData) => (siblingData?.backgroundType === 'solid' || siblingData?.backgroundType === 'semi-transparent') && siblingData?.backgroundColor === 'custom',
             placeholder: '#000000'
           },
         },

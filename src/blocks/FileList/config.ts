@@ -75,5 +75,25 @@ export const FileList: Block = {
         },
       ],
     },
+    {
+      name: 'columns',
+      type: 'radio',
+      label: 'Numărul de coloane',
+      defaultValue: '1',
+      admin: {
+        layout: 'horizontal',
+        description: 'Alege câte coloane să fie afișate pentru lista de fișiere',
+      },
+      options: [
+        {
+          label: '1 coloană',
+          value: '1',
+        },
+        {
+          label: '2 coloane',
+          value: '2',
+        },
+      ],
+    },
   ],
 }

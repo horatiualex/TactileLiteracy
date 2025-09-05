@@ -12,6 +12,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { Gallery } from '../../blocks/Gallery/config'
 import HeroBanner from '../../blocks/HeroBanner/config'
 import ImageCardGrid from '../../blocks/ImageCardGrid/config'
+import { List } from '../../blocks/List/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import StatsSection from '../../blocks/StatsSection/config'
 import { TextImage } from '../../blocks/TextImage/config'
@@ -83,7 +84,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FileList, Gallery, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FileList, Gallery, List, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection],
               required: true,
               admin: {
                 initCollapsed: true,
