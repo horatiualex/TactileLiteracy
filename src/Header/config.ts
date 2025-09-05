@@ -13,6 +13,121 @@ export const Header: GlobalConfig = {
   access: { read: () => true },
   fields: [
     {
+      name: 'styling',
+      type: 'group',
+      label: 'Opțiuni stil header',
+      admin: {
+        description: 'Personalizează aspectul header-ului',
+      },
+      fields: [
+        {
+          name: 'backgroundType',
+          type: 'radio',
+          label: 'Tip fundal',
+          defaultValue: 'transparent',
+          admin: { layout: 'horizontal' },
+          options: [
+            { label: 'Transparent', value: 'transparent' },
+            { label: 'Solid', value: 'solid' },
+          ],
+        },
+        {
+          name: 'backgroundColor',
+          type: 'radio',
+          label: 'Culoare fundal',
+          defaultValue: 'theme',
+          admin: { 
+            layout: 'horizontal',
+            condition: (_, siblingData) => siblingData?.backgroundType === 'solid'
+          },
+          options: [
+            { label: 'Temă curentă', value: 'theme' },
+            { label: 'Personalizată', value: 'custom' },
+          ],
+        },
+        {
+          name: 'customBackgroundColor',
+          type: 'text',
+          label: 'Culoare personalizată (hex)',
+          admin: {
+            condition: (_, siblingData) => siblingData?.backgroundType === 'solid' && siblingData?.backgroundColor === 'custom',
+            placeholder: '#000000'
+          },
+        },
+        {
+          name: 'buttonStyle',
+          type: 'group',
+          label: 'Stil butoane navigare',
+          fields: [
+            {
+              name: 'style',
+              type: 'radio',
+              label: 'Stil butoane',
+              defaultValue: 'text',
+              admin: { layout: 'horizontal' },
+              options: [
+                { label: 'Text simplu', value: 'text' },
+                { label: 'Cu fundal', value: 'background' },
+                { label: 'Outlined', value: 'outlined' },
+              ],
+            },
+            {
+              name: 'roundness',
+              type: 'radio',
+              label: 'Rotunjire butoane',
+              defaultValue: 'medium',
+              admin: { layout: 'horizontal' },
+              options: [
+                { label: 'Fără', value: 'none' },
+                { label: 'Puțin', value: 'small' },
+                { label: 'Mediu', value: 'medium' },
+                { label: 'Mult', value: 'large' },
+                { label: 'Complet', value: 'full' },
+              ],
+            },
+            {
+              name: 'primaryColor',
+              type: 'text',
+              label: 'Culoare primară (hex sau rgba)',
+              admin: {
+                condition: (_, siblingData) => siblingData?.style !== 'text',
+                placeholder: 'rgba(79, 70, 229, 0.8)',
+                description: 'Exemple: #4F46E5, rgb(79, 70, 229), rgba(79, 70, 229, 0.8) pentru 80% transparență'
+              },
+            },
+            {
+              name: 'hoverColor',
+              type: 'text',
+              label: 'Culoare hover (hex sau rgba)',
+              admin: {
+                condition: (_, siblingData) => siblingData?.style !== 'text',
+                placeholder: 'rgba(55, 48, 163, 0.9)',
+                description: 'Exemple: #3730A3, rgba(55, 48, 163, 0.9) pentru 90% transparență'
+              },
+            },
+            {
+              name: 'textColor',
+              type: 'text',
+              label: 'Culoare text butoane (hex sau rgba)',
+              admin: {
+                placeholder: 'rgba(255, 255, 255, 0.9)',
+                description: 'Exemple: #FFFFFF, rgba(255, 255, 255, 0.9) pentru text semi-transparent. Dacă nu e specificată, se folosește automat alb/negru'
+              },
+            },
+            {
+              name: 'textHoverColor',
+              type: 'text',
+              label: 'Culoare text hover (hex sau rgba)',
+              admin: {
+                placeholder: '#FFFFFF',
+                description: 'Exemple: #FFFFFF, rgba(255, 255, 255, 1). Dacă nu e specificată, se folosește textColor sau automat'
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
       name: 'navItems',
       label: 'Elemente meniu',
       type: 'array',

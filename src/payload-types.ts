@@ -273,6 +273,11 @@ export interface Page {
         blockName?: string | null;
         blockType: 'textImage';
       }
+    | FAQBlock
+    | CardGridBlock
+    | HeroBannerBlock
+    | ImageCardGridBlock
+    | StatsSectionBlock
   )[];
   meta?: {
     title?: string | null;
@@ -889,6 +894,272 @@ export interface GalleryBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  title?: string | null;
+  description?: string | null;
+  width?: ('small' | 'medium' | 'large' | 'xlarge' | 'full') | null;
+  style?: {
+    backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
+    questionStyle?: ('normal' | 'medium' | 'semibold' | 'bold') | null;
+    showDividers?: boolean | null;
+  };
+  faqItems: {
+    question: string;
+    answer: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    defaultOpen?: boolean | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardGridBlock".
+ */
+export interface CardGridBlock {
+  title?: string | null;
+  description?: string | null;
+  width?: ('medium' | 'large' | 'xlarge' | 'full') | null;
+  style?: {
+    backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
+    cardStyle?: ('shadow' | 'border' | 'minimal') | null;
+    textAlignment?: ('left' | 'center') | null;
+  };
+  /**
+   * Add 3, 6, or 9 cards (multiples of 3 work best for the grid layout)
+   */
+  cards: {
+    /**
+     * Upload an icon/image for this card (recommended: SVG or small PNG)
+     */
+    icon?: (string | null) | Media;
+    /**
+     * Use text instead of an icon (e.g., emoji or single character)
+     */
+    iconText?: string | null;
+    title: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    link?: {
+      url?: string | null;
+      label?: string | null;
+      newTab?: boolean | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cardGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBannerBlock".
+ */
+export interface HeroBannerBlock {
+  /**
+   * Upload an icon for the banner (SVG recommended)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Use text instead of an icon (e.g., emoji or character)
+   */
+  iconText?: string | null;
+  title: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  style?: {
+    backgroundColor?: ('primary' | 'secondary' | 'dark' | 'light' | 'none' | 'custom') | null;
+    /**
+     * Enter a hex color code (e.g., #3b82f6) or CSS color name
+     */
+    customBackgroundColor?: string | null;
+    textColor?: ('white' | 'dark' | 'custom') | null;
+    /**
+     * Enter a hex color code (e.g., #ffffff) or CSS color name
+     */
+    customTextColor?: string | null;
+    alignment?: ('left' | 'center') | null;
+    size?: ('small' | 'medium' | 'large') | null;
+  };
+  link?: {
+    url?: string | null;
+    label?: string | null;
+    style?: ('solid' | 'outline') | null;
+    newTab?: boolean | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageCardGridBlock".
+ */
+export interface ImageCardGridBlock {
+  title?: string | null;
+  description?: string | null;
+  width?: ('medium' | 'large' | 'xlarge' | 'full') | null;
+  style?: {
+    backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
+    cardStyle?: ('shadow' | 'border' | 'minimal') | null;
+    columns?: ('2' | '3' | '4') | null;
+  };
+  /**
+   * Add image cards with photos, icons, titles, and descriptions
+   */
+  cards: {
+    /**
+     * Main image for the card (recommended: 16:9 aspect ratio)
+     */
+    image: string | Media;
+    /**
+     * Small icon for the card title (SVG recommended)
+     */
+    icon?: (string | null) | Media;
+    /**
+     * Use text/emoji instead of an icon
+     */
+    iconText?: string | null;
+    title: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    link?: {
+      url?: string | null;
+      label?: string | null;
+      newTab?: boolean | null;
+    };
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageCardGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsSectionBlock".
+ */
+export interface StatsSectionBlock {
+  layout?: {
+    textPosition?: ('left' | 'right' | 'center') | null;
+    statsCount?: ('2' | '4' | '6') | null;
+  };
+  background?: {
+    type?: ('color' | 'image' | 'none') | null;
+    color?: ('primary' | 'secondary' | 'dark' | 'light' | 'custom') | null;
+    /**
+     * Enter a hex color code (e.g., #059669)
+     */
+    customColor?: string | null;
+    /**
+     * Background image for the section
+     */
+    image?: (string | null) | Media;
+    overlay?: ('dark' | 'light' | 'none') | null;
+  };
+  content?: {
+    title?: string | null;
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    textColor?: ('white' | 'dark' | 'custom') | null;
+    /**
+     * Enter a hex color code (e.g., #ffffff)
+     */
+    customTextColor?: string | null;
+  };
+  /**
+   * Add 2, 4, or 6 statistics with numbers and labels
+   */
+  stats: {
+    /**
+     * e.g., "150+", "50K+", "99%"
+     */
+    number: string;
+    /**
+     * e.g., "Partner Organizations", "Users Served"
+     */
+    label: string;
+    icon?: (string | null) | Media;
+    /**
+     * Use emoji or text instead of uploaded icon
+     */
+    iconText?: string | null;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'statsSection';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1213,6 +1484,11 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        faq?: T | FAQBlockSelect<T>;
+        cardGrid?: T | CardGridBlockSelect<T>;
+        heroBanner?: T | HeroBannerBlockSelect<T>;
+        imageCardGrid?: T | ImageCardGridBlockSelect<T>;
+        statsSection?: T | StatsSectionBlockSelect<T>;
       };
   meta?:
     | T
@@ -1348,6 +1624,171 @@ export interface GalleryBlockSelect<T extends boolean = true> {
   layout?: T;
   columns?: T;
   enableLightbox?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  width?: T;
+  style?:
+    | T
+    | {
+        backgroundColor?: T;
+        questionStyle?: T;
+        showDividers?: T;
+      };
+  faqItems?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        defaultOpen?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CardGridBlock_select".
+ */
+export interface CardGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  width?: T;
+  style?:
+    | T
+    | {
+        backgroundColor?: T;
+        cardStyle?: T;
+        textAlignment?: T;
+      };
+  cards?:
+    | T
+    | {
+        icon?: T;
+        iconText?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              label?: T;
+              newTab?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBannerBlock_select".
+ */
+export interface HeroBannerBlockSelect<T extends boolean = true> {
+  icon?: T;
+  iconText?: T;
+  title?: T;
+  description?: T;
+  style?:
+    | T
+    | {
+        backgroundColor?: T;
+        customBackgroundColor?: T;
+        textColor?: T;
+        customTextColor?: T;
+        alignment?: T;
+        size?: T;
+      };
+  link?:
+    | T
+    | {
+        url?: T;
+        label?: T;
+        style?: T;
+        newTab?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageCardGridBlock_select".
+ */
+export interface ImageCardGridBlockSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  width?: T;
+  style?:
+    | T
+    | {
+        backgroundColor?: T;
+        cardStyle?: T;
+        columns?: T;
+      };
+  cards?:
+    | T
+    | {
+        image?: T;
+        icon?: T;
+        iconText?: T;
+        title?: T;
+        description?: T;
+        link?:
+          | T
+          | {
+              url?: T;
+              label?: T;
+              newTab?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StatsSectionBlock_select".
+ */
+export interface StatsSectionBlockSelect<T extends boolean = true> {
+  layout?:
+    | T
+    | {
+        textPosition?: T;
+        statsCount?: T;
+      };
+  background?:
+    | T
+    | {
+        type?: T;
+        color?: T;
+        customColor?: T;
+        image?: T;
+        overlay?: T;
+      };
+  content?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        textColor?: T;
+        customTextColor?: T;
+      };
+  stats?:
+    | T
+    | {
+        number?: T;
+        label?: T;
+        icon?: T;
+        iconText?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1780,6 +2221,34 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Header {
   id: string;
   /**
+   * Personalizează aspectul header-ului
+   */
+  styling?: {
+    backgroundType?: ('transparent' | 'solid') | null;
+    backgroundColor?: ('theme' | 'custom') | null;
+    customBackgroundColor?: string | null;
+    buttonStyle?: {
+      style?: ('text' | 'background' | 'outlined') | null;
+      roundness?: ('none' | 'small' | 'medium' | 'large' | 'full') | null;
+      /**
+       * Exemple: #4F46E5, rgb(79, 70, 229), rgba(79, 70, 229, 0.8) pentru 80% transparență
+       */
+      primaryColor?: string | null;
+      /**
+       * Exemple: #3730A3, rgba(55, 48, 163, 0.9) pentru 90% transparență
+       */
+      hoverColor?: string | null;
+      /**
+       * Exemple: #FFFFFF, rgba(255, 255, 255, 0.9) pentru text semi-transparent. Dacă nu e specificată, se folosește automat alb/negru
+       */
+      textColor?: string | null;
+      /**
+       * Exemple: #FFFFFF, rgba(255, 255, 255, 1). Dacă nu e specificată, se folosește textColor sau automat
+       */
+      textHoverColor?: string | null;
+    };
+  };
+  /**
    * Adaugă elementele principale ale meniului (ex: Concursuri, Serbări, Orare). Poți avea fie un link simplu, fie un dropdown cu pagini dedesubt.
    */
   navItems?:
@@ -1863,6 +2332,23 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  styling?:
+    | T
+    | {
+        backgroundType?: T;
+        backgroundColor?: T;
+        customBackgroundColor?: T;
+        buttonStyle?:
+          | T
+          | {
+              style?: T;
+              roundness?: T;
+              primaryColor?: T;
+              hoverColor?: T;
+              textColor?: T;
+              textHoverColor?: T;
+            };
+      };
   navItems?:
     | T
     | {

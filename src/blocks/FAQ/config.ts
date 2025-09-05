@@ -1,0 +1,153 @@
+import { Block } from 'payload'
+
+const FAQ: Block = {
+  slug: 'faq',
+  interfaceName: 'FAQBlock',
+  labels: {
+    singular: 'FAQ Block',
+    plural: 'FAQ Blocks',
+  },
+  imageURL: '/api/media/file/faq-block.jpg',
+  imageAltText: 'FAQ Block',
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Title',
+      required: false,
+    },
+    {
+      name: 'description',
+      type: 'text',
+      label: 'Description',
+      required: false,
+    },
+    {
+      name: 'width',
+      type: 'select',
+      label: 'Content Width',
+      defaultValue: 'medium',
+      options: [
+        {
+          label: 'Small',
+          value: 'small',
+        },
+        {
+          label: 'Medium',
+          value: 'medium',
+        },
+        {
+          label: 'Large',
+          value: 'large',
+        },
+        {
+          label: 'Extra Large',
+          value: 'xlarge',
+        },
+        {
+          label: 'Full Width',
+          value: 'full',
+        },
+      ],
+      required: false,
+    },
+    {
+      name: 'style',
+      type: 'group',
+      label: 'Style Options',
+      fields: [
+        {
+          name: 'backgroundColor',
+          type: 'select',
+          label: 'Background Color',
+          defaultValue: 'none',
+          options: [
+            {
+              label: 'None',
+              value: 'none',
+            },
+            {
+              label: 'Light',
+              value: 'light',
+            },
+            {
+              label: 'Dark',
+              value: 'dark',
+            },
+            {
+              label: 'Primary',
+              value: 'primary',
+            },
+          ],
+          required: false,
+        },
+        {
+          name: 'questionStyle',
+          type: 'select',
+          label: 'Question Font Weight',
+          defaultValue: 'semibold',
+          options: [
+            {
+              label: 'Normal',
+              value: 'normal',
+            },
+            {
+              label: 'Medium',
+              value: 'medium',
+            },
+            {
+              label: 'Semi Bold',
+              value: 'semibold',
+            },
+            {
+              label: 'Bold',
+              value: 'bold',
+            },
+          ],
+          required: false,
+        },
+        {
+          name: 'showDividers',
+          type: 'checkbox',
+          label: 'Show Dividers Between Items',
+          defaultValue: true,
+          required: false,
+        },
+      ],
+    },
+    {
+      name: 'faqItems',
+      type: 'array',
+      label: 'FAQ Items',
+      labels: {
+        singular: 'FAQ Item',
+        plural: 'FAQ Items',
+      },
+      fields: [
+        {
+          name: 'question',
+          type: 'text',
+          label: 'Question',
+          required: true,
+        },
+        {
+          name: 'answer',
+          type: 'richText',
+          label: 'Answer',
+          required: true,
+        },
+        {
+          name: 'defaultOpen',
+          type: 'checkbox',
+          label: 'Open by Default',
+          defaultValue: false,
+          required: false,
+        },
+      ],
+      minRows: 1,
+      required: true,
+    },
+  ],
+}
+
+export default FAQ

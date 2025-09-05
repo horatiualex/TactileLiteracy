@@ -4,11 +4,16 @@ import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Archive } from '../../blocks/ArchiveBlock/config'
 import { CallToAction } from '../../blocks/CallToAction/config'
+import CardGrid from '../../blocks/CardGrid/config'
 import { Content } from '../../blocks/Content/config'
+import FAQ from '../../blocks/FAQ/config'
 import { FileList } from '../../blocks/FileList/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { Gallery } from '../../blocks/Gallery/config'
+import HeroBanner from '../../blocks/HeroBanner/config'
+import ImageCardGrid from '../../blocks/ImageCardGrid/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import StatsSection from '../../blocks/StatsSection/config'
 import { TextImage } from '../../blocks/TextImage/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
@@ -78,7 +83,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FileList, Gallery, TextImage],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, FileList, Gallery, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection],
               required: true,
               admin: {
                 initCollapsed: true,

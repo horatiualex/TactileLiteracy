@@ -4,21 +4,31 @@ import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
+import { CardGridBlockComponent } from '@/blocks/CardGrid/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
+import { FAQBlockComponent } from '@/blocks/FAQ/Component'
 import { FileListBlockComponent } from '@/blocks/FileList/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { GalleryBlockComponent } from '@/blocks/Gallery/Component'
+import { HeroBannerBlockComponent } from '@/blocks/HeroBanner/Component'
+import { ImageCardGridBlockComponent } from '@/blocks/ImageCardGrid/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { StatsSectionBlockComponent } from '@/blocks/StatsSection/Component'
 import { TextImageBlockComponent } from '@/blocks/TextImage/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
+  cardGrid: CardGridBlockComponent,
   content: ContentBlock,
   cta: CallToActionBlock,
+  faq: FAQBlockComponent,
   fileList: FileListBlockComponent,
   formBlock: FormBlock,
   gallery: GalleryBlockComponent,
+  heroBanner: HeroBannerBlockComponent,
+  imageCardGrid: ImageCardGridBlockComponent,
   mediaBlock: MediaBlock,
+  statsSection: StatsSectionBlockComponent,
   textImage: TextImageBlockComponent,
 }
 

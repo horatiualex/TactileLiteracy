@@ -12,10 +12,15 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
+import CardGrid from '../../blocks/CardGrid/config'
 import { Code } from '../../blocks/Code/config'
+import FAQ from '../../blocks/FAQ/config'
 import { FileList } from '../../blocks/FileList/config'
 import { Gallery } from '../../blocks/Gallery/config'
+import HeroBanner from '../../blocks/HeroBanner/config'
+import ImageCardGrid from '../../blocks/ImageCardGrid/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import StatsSection from '../../blocks/StatsSection/config'
 import { TextImage } from '../../blocks/TextImage/config'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
 import { populateAuthors } from './hooks/populateAuthors'
@@ -95,7 +100,7 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, TextImage] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
