@@ -56,7 +56,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   // Generate header classes and styles
   const getHeaderClasses = () => {
-    let classes = 'relative z-20 transition-all duration-300'
+    let classes = 'sticky top-0 z-50 transition-all duration-300'
     
     if (backgroundType === 'solid') {
       classes += ' backdrop-blur-md border-b'
@@ -67,7 +67,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
         classes += ' border-black/10'
       }
     } else {
-      classes += ' bg-transparent'
+      classes += ' bg-transparent backdrop-blur-sm'
     }
     
     return classes

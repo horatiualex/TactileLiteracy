@@ -112,16 +112,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
   // Generate button classes based on style
   const getButtonClasses = (_isActive = false) => {
-    const baseClasses = `flex items-center gap-1 px-3 py-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()} font-medium`
+    const baseClasses = `flex items-center gap-1 px-3 py-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()} font-medium shadow-sm hover:shadow-md`
     
     switch (style) {
       case 'background':
-        return `${baseClasses} shadow-sm hover:shadow-md transform hover:-translate-y-0.5`
+        return `${baseClasses} transform hover:-translate-y-0.5`
       case 'outlined':
-        return `${baseClasses} border-2 bg-transparent hover:shadow-md transform hover:-translate-y-0.5`
+        return `${baseClasses} border-2 bg-transparent transform hover:-translate-y-0.5`
       case 'text':
       default:
-        return `${baseClasses} ${!textColor ? 'text-primary hover:text-primary/80' : ''}`
+        return `${baseClasses} ${!textColor ? 'text-primary hover:text-primary/80' : ''} transform hover:-translate-y-0.5`
     }
   }
 

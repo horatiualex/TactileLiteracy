@@ -35,8 +35,165 @@ export const hero: Field = {
           label: 'Low Impact',
           value: 'lowImpact',
         },
+        {
+          label: 'Modular Hero',
+          value: 'modular',
+        },
       ],
       required: true,
+    },
+    {
+      name: 'layout',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      defaultValue: 'centered',
+      label: 'Layout Style',
+      options: [
+        {
+          label: 'Centered with Background',
+          value: 'centered',
+        },
+        {
+          label: 'Text Left - Image Right',
+          value: 'textLeft',
+        },
+        {
+          label: 'Text Right - Image Left',
+          value: 'textRight',
+        },
+        {
+          label: 'Text Only - Centered',
+          value: 'textOnly',
+        },
+        {
+          label: 'Split Screen',
+          value: 'splitScreen',
+        },
+      ],
+    },
+    {
+      name: 'contentAlignment',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      defaultValue: 'center',
+      label: 'Content Alignment',
+      options: [
+        {
+          label: 'Left',
+          value: 'left',
+        },
+        {
+          label: 'Center',
+          value: 'center',
+        },
+        {
+          label: 'Right',
+          value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'backgroundStyle',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      defaultValue: 'image',
+      label: 'Background Style',
+      options: [
+        {
+          label: 'Image Background',
+          value: 'image',
+        },
+        {
+          label: 'Gradient Background',
+          value: 'gradient',
+        },
+        {
+          label: 'Solid Color',
+          value: 'solid',
+        },
+        {
+          label: 'None',
+          value: 'none',
+        },
+      ],
+    },
+    {
+      name: 'backgroundColor',
+      type: 'text',
+      admin: {
+        condition: (_, { type, backgroundStyle }: any = {}) => type === 'modular' && backgroundStyle === 'solid',
+      },
+      label: 'Background Color (hex, rgb, etc.)',
+    },
+    {
+      name: 'backgroundImage',
+      type: 'upload',
+      admin: {
+        condition: (_, { type, backgroundStyle }: any = {}) => type === 'modular' && backgroundStyle === 'image',
+      },
+      relationTo: 'media',
+      label: 'Background Image',
+      required: false,
+    },
+    {
+      name: 'gradientColors',
+      type: 'group',
+      admin: {
+        condition: (_, { type, backgroundStyle }: any = {}) => type === 'modular' && backgroundStyle === 'gradient',
+      },
+      fields: [
+        {
+          name: 'from',
+          type: 'text',
+          label: 'Gradient From Color',
+        },
+        {
+          name: 'to',
+          type: 'text',
+          label: 'Gradient To Color',
+        },
+        {
+          name: 'direction',
+          type: 'select',
+          defaultValue: 'to-br',
+          options: [
+            { label: 'Top to Bottom', value: 'to-b' },
+            { label: 'Bottom Right', value: 'to-br' },
+            { label: 'Left to Right', value: 'to-r' },
+            { label: 'Top Right', value: 'to-tr' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'overlay',
+      type: 'group',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Enable Overlay',
+        },
+        {
+          name: 'color',
+          type: 'text',
+          admin: {
+            condition: (_, siblingData: any) => siblingData.enabled,
+          },
+          defaultValue: 'rgba(0,0,0,0.5)',
+          label: 'Overlay Color',
+        },
+      ],
     },
     {
       name: 'richText',
@@ -62,10 +219,19 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
+        condition: (_, { type }: any = {}) => ['highImpact', 'mediumImpact', 'modular'].includes(type),
       },
       relationTo: 'media',
-      required: true,
+      required: false,
+    },
+    {
+      name: 'secondaryImage',
+      type: 'upload',
+      admin: {
+        condition: (_, { type, layout }: any = {}) => type === 'modular' && ['textLeft', 'textRight', 'splitScreen'].includes(layout),
+      },
+      relationTo: 'media',
+      label: 'Secondary Image (for split layouts)',
     },
   ],
   label: false,
