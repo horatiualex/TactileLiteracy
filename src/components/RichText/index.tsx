@@ -12,10 +12,12 @@ import {
 } from '@payloadcms/richtext-lexical/react'
 
 import { CodeBlock, CodeBlockProps } from '@/blocks/Code/Component'
+import { GalleryBlockComponent } from '@/blocks/Gallery/Component'
 
 import type {
   BannerBlock as BannerBlockProps,
   CallToActionBlock as CTABlockProps,
+  GalleryBlock as GalleryBlockProps,
   MediaBlock as MediaBlockProps,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
@@ -24,7 +26,7 @@ import { cn } from '@/utilities/ui'
 
 type NodeTypes =
   | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps>
+  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps | GalleryBlockProps>
 
 const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   const { value, relationTo } = linkNode.fields.doc!
@@ -52,6 +54,44 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
     ),
     code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
     cta: ({ node }) => <CallToActionBlock {...node.fields} />,
+    gallery: ({ node }) => {
+      // Convert payload gallery data to component props
+      const convertedImages = node.fields.images?.map((item) => {
+        let mediaObject
+        if (typeof item.image === 'string') {
+          mediaObject = { id: item.image }
+        } else if (item.image) {
+          mediaObject = {
+            id: item.image.id,
+            url: item.image.url || undefined,
+            alt: item.image.alt || undefined,
+            width: item.image.width || undefined,
+            height: item.image.height || undefined,
+            filename: item.image.filename || undefined,
+            updatedAt: item.image.updatedAt || undefined,
+            createdAt: item.image.createdAt || undefined,
+          }
+        }
+        
+        return {
+          image: mediaObject,
+          caption: item.caption || undefined,
+          alt: item.alt || undefined,
+        }
+      })
+
+      return (
+        <GalleryBlockComponent 
+          className="col-start-1 col-span-3 my-8" 
+          title={node.fields.title || undefined}
+          description={node.fields.description || undefined}
+          images={convertedImages}
+          layout={node.fields.layout || undefined}
+          columns={node.fields.columns || undefined}
+          enableLightbox={node.fields.enableLightbox || false}
+        />
+      )
+    },
   },
 })
 

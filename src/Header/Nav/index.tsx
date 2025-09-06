@@ -14,16 +14,23 @@ const BadgeNew: React.FC = () => (
 )
 
 interface HeaderStyling {
-  backgroundType?: 'transparent' | 'solid'
-  backgroundColor?: 'theme' | 'custom'
-  customBackgroundColor?: string
+  backgroundType?: 'transparent' | 'semi-transparent' | 'solid'
   buttonStyle?: {
     style?: 'text' | 'background' | 'outlined'
     roundness?: 'none' | 'small' | 'medium' | 'large' | 'full'
-    primaryColor?: string
-    hoverColor?: string
-    textColor?: string
-    textHoverColor?: string
+    colorTheme?: 'auto' | 'custom'
+    lightThemeColors?: {
+      primaryColor?: string
+      hoverColor?: string
+      textColor?: string
+      textHoverColor?: string
+    }
+    darkThemeColors?: {
+      primaryColor?: string
+      hoverColor?: string
+      textColor?: string
+      textHoverColor?: string
+    }
   }
 }
 
@@ -74,50 +81,51 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   }
 
   const getMobileMenuBackgroundStyle = () => {
-    const backgroundType = extendedData?.styling?.backgroundType || 'solid'
-    const backgroundColor = extendedData?.styling?.backgroundColor || 'theme'
-    const customColor = extendedData?.styling?.customBackgroundColor
-
-    if (backgroundType === 'solid' && backgroundColor === 'custom' && customColor) {
-      return { backgroundColor: parseColor(customColor, '#FFFFFF') }
-    }
-
-    // Return empty object - let CSS classes handle the background
+    // For mobile menu, always use theme colors for consistency
     return {}
   }
-
-  // Comment out theme-based mobile menu text color function - now using custom styling
-  // const getMobileMenuTextColor = () => {
-  //   const backgroundColor = extendedData?.styling?.backgroundColor || 'theme'
-  //   const customColor = extendedData?.styling?.customBackgroundColor
-
-  //   if (backgroundColor === 'custom' && customColor) {
-  //     // Simple light/dark detection for text contrast
-  //     const color = parseColor(customColor, '#FFFFFF')
-  //     if (color.startsWith('#')) {
-  //       const hex = color.replace('#', '')
-  //       const r = parseInt(hex.substr(0, 2), 16)
-  //       const g = parseInt(hex.substr(2, 2), 16)
-  //       const b = parseInt(hex.substr(4, 2), 16)
-  //       const brightness = (r * 299 + g * 587 + b * 114) / 1000
-  //       return brightness > 128 ? 'text-gray-900' : 'text-white'
-  //     }
-  //   }
-
-  //   return 'text-gray-900 dark:text-gray-100'
-  // }
 
   // Get button styling from header data
   const extendedData = data as ExtendedHeader
   const buttonStyle = extendedData?.styling?.buttonStyle
   const style = buttonStyle?.style || 'text'
   const roundness = buttonStyle?.roundness || 'medium'
-  const primaryColor = buttonStyle?.primaryColor || '#4F46E5'
-  const hoverColor = buttonStyle?.hoverColor || '#3730A3'
-  const textColor = buttonStyle?.textColor
-  const textHoverColor = buttonStyle?.textHoverColor
+  const colorTheme = buttonStyle?.colorTheme || 'auto'
+  const lightColors = buttonStyle?.lightThemeColors
+  const darkColors = buttonStyle?.darkThemeColors
 
-  // Normalize any path (remove trailing slash except root, ensure leading slash)
+  // Get theme-aware colors
+  const getThemeColors = () => {
+    if (colorTheme === 'auto') {
+      // Use default theme colors
+      return {
+        primaryColor: undefined, // Will use CSS variables
+        hoverColor: undefined,
+        textColor: undefined,
+        textHoverColor: undefined
+      }
+    } else {
+      // Use custom colors that adapt to theme
+      return {
+        lightTheme: {
+          primaryColor: lightColors?.primaryColor || '#4F46E5',
+          hoverColor: lightColors?.hoverColor || '#3730A3',
+          textColor: lightColors?.textColor,
+          textHoverColor: lightColors?.textHoverColor
+        },
+        darkTheme: {
+          primaryColor: darkColors?.primaryColor || '#93C5FD',
+          hoverColor: darkColors?.hoverColor || '#93C5FD',
+          textColor: darkColors?.textColor,
+          textHoverColor: darkColors?.textHoverColor
+        }
+      }
+    }
+  }
+
+  const _themeColors = getThemeColors() // Prefixed with _ to avoid lint warning
+
+    // Normalize any path (remove trailing slash except root, ensure leading slash)
   const normalizePath = (p?: string | null) => {
     if (!p) return '/'
     try {
@@ -159,9 +167,25 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     const current = normalizePath(pathname)
     if (pageLink.type === 'reference' && pageLink.reference) {
       const slug = getSlugFromReference(pageLink.reference)
-      return current === normalizePath(slug)
+      const normalizedSlug = normalizePath(slug)
+      
+      // Handle home page matching
+      if ((current === '/' || current === '') && (normalizedSlug === '/' || normalizedSlug === '' || normalizedSlug === '/home')) {
+        return true
+      }
+      
+      // Exact match or path starts with slug (for nested pages)
+      return current === normalizedSlug || (normalizedSlug !== '/' && current.startsWith(normalizedSlug + '/'))
     } else if (pageLink.type === 'custom' && pageLink.url) {
-      return current === normalizePath(pageLink.url)
+      const normalizedUrl = normalizePath(pageLink.url)
+      
+      // Handle home page matching for custom URLs
+      if ((current === '/' || current === '') && (normalizedUrl === '/' || normalizedUrl === '' || normalizedUrl === '/home')) {
+        return true
+      }
+      
+      // Exact match or path starts with URL (for nested pages)
+      return current === normalizedUrl || (normalizedUrl !== '/' && current.startsWith(normalizedUrl + '/'))
     }
     return false
   }
@@ -173,9 +197,25 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       const link = navItem.singleLink
       if (link.type === 'reference' && link.reference) {
         const slug = getSlugFromReference(link.reference)
-        return current === normalizePath(slug)
+        const normalizedSlug = normalizePath(slug)
+        
+        // Handle home page matching
+        if ((current === '/' || current === '') && (normalizedSlug === '/' || normalizedSlug === '' || normalizedSlug === '/home')) {
+          return true
+        }
+        
+        // Exact match or path starts with slug (for nested pages)
+        return current === normalizedSlug || (normalizedSlug !== '/' && current.startsWith(normalizedSlug + '/'))
       } else if (link.type === 'custom' && link.url) {
-        return current === normalizePath(link.url)
+        const normalizedUrl = normalizePath(link.url)
+        
+        // Handle home page matching for custom URLs
+        if ((current === '/' || current === '') && (normalizedUrl === '/' || normalizedUrl === '' || normalizedUrl === '/home')) {
+          return true
+        }
+        
+        // Exact match or path starts with URL (for nested pages)
+        return current === normalizedUrl || (normalizedUrl !== '/' && current.startsWith(normalizedUrl + '/'))
       }
     } else if (navItem.type === 'dropdown' && navItem.submenu) {
       return navItem.submenu.some((subItem) => isSubmenuItemActive(subItem.pageLink))
@@ -195,76 +235,66 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     }
   }
 
-  // Helper function to validate and parse color (supports hex, rgb, rgba)
-  const parseColor = (color: string | undefined, fallback: string) => {
-    if (!color) return fallback
-    // Check if it's a valid hex, rgb, or rgba color
-    if (color.match(/^#[0-9A-Fa-f]{3,8}$/) || 
-        color.match(/^rgba?\([\d\s,.\%]+\)$/) ||
-        color.match(/^hsla?\([\d\s,.\%]+\)$/)) {
-      return color
-    }
-    return fallback
-  }
-
   // Generate button classes based on style
-  const getButtonClasses = (_isActive = false) => {
-    const baseClasses = `flex items-center gap-1 px-3 py-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()} font-medium shadow-sm hover:shadow-md`
+  // Generate button classes with theme-aware colors
+  const getButtonClasses = (isActive = false) => {
+    const baseClasses = `flex items-center gap-1 px-3 py-2 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()}`
     
-    switch (style) {
-      case 'background':
-        return `${baseClasses} transform hover:-translate-y-0.5`
-      case 'outlined':
-        return `${baseClasses} border-2 bg-transparent transform hover:-translate-y-0.5`
-      case 'text':
-      default:
-        return `${baseClasses} ${!textColor ? 'text-primary hover:text-primary/80' : ''} transform hover:-translate-y-0.5`
-    }
-  }
-
-  // Generate button styles based on custom colors with transparency support
-  const getButtonStyle = (isHover = false, isActive = false) => {
-    const styleObj: React.CSSProperties = {}
-    
-    // Use active state for coloring (isActive takes precedence over isHover)
-    const shouldUseActiveColor = isActive || isHover
-    
-    // Set background colors
-    if (style === 'background') {
-      if (isActive) {
-        styleObj.backgroundColor = parseColor(primaryColor, '#4F46E5')
-      } else if (isHover) {
-        styleObj.backgroundColor = parseColor(hoverColor, '#3730A3')
-      }
-    } else if (style === 'outlined') {
-      styleObj.borderColor = parseColor(primaryColor, '#4F46E5')
-      if (shouldUseActiveColor) {
-        styleObj.backgroundColor = parseColor(primaryColor, '#4F46E5')
-      }
-    }
-    
-    // Set text colors
-    if (textColor) {
-      if (style === 'outlined' && shouldUseActiveColor) {
-        // For outlined buttons when active/hover, use textHoverColor or white
-        styleObj.color = parseColor(textHoverColor, '#FFFFFF')
-      } else {
-        styleObj.color = parseColor(shouldUseActiveColor && textHoverColor ? textHoverColor : textColor, '#FFFFFF')
+    if (colorTheme === 'auto') {
+      // Use theme-aware classes with clean active states
+      switch (style) {
+        case 'background':
+          return `${baseClasses} ${isActive 
+            ? 'bg-primary text-primary-foreground font-medium' 
+            : 'bg-primary/50 text-primary-foreground/80 hover:bg-primary/70'}`
+        case 'outlined':
+          return `${baseClasses} border ${isActive 
+            ? 'border-primary bg-primary text-primary-foreground' 
+            : 'border-primary/60 text-primary/70 bg-transparent hover:border-primary hover:text-primary'}`
+        case 'text':
+        default:
+          return `${baseClasses} ${isActive 
+            ? 'text-primary font-medium bg-primary/10 relative' 
+            : 'text-primary/60 hover:text-primary/80'}`
       }
     } else {
-      // Default text colors based on style
-      if (style === 'background') {
-        styleObj.color = '#FFFFFF'
-      } else if (style === 'outlined') {
-        if (shouldUseActiveColor) {
-          styleObj.color = '#FFFFFF'
-        } else {
-          styleObj.color = parseColor(primaryColor, '#4F46E5')
-        }
+      // Use custom colors with CSS custom properties
+      switch (style) {
+        case 'background':
+          return `${baseClasses} nav-button-bg ${isActive ? 'nav-active-bg' : 'opacity-60 hover:opacity-80'}`
+        case 'outlined':
+          return `${baseClasses} border nav-button-outlined ${isActive ? 'nav-active-outlined' : 'opacity-60 hover:opacity-80'} bg-transparent`
+        case 'text':
+        default:
+          return `${baseClasses} nav-button-text ${isActive ? 'nav-active-text' : 'opacity-60 hover:opacity-80'}`
       }
     }
+  }
+
+  // Generate button styles for custom colors with theme awareness
+  const getButtonStyle = (_isHover = false, _isActive = false) => {
+    if (colorTheme === 'auto') {
+      return {} // Let CSS classes handle styling
+    }
+
+    const styleObj: Record<string, string> = {}
     
-    return styleObj
+    // Create CSS custom properties for theme-aware colors
+    if (lightColors) {
+      styleObj['--nav-light-primary'] = lightColors.primaryColor || '#4F46E5'
+      styleObj['--nav-light-hover'] = lightColors.hoverColor || '#3730A3'
+      styleObj['--nav-light-text'] = lightColors.textColor || '#FFFFFF'
+      styleObj['--nav-light-text-hover'] = lightColors.textHoverColor || '#FFFFFF'
+    }
+    if (darkColors) {
+      styleObj['--nav-dark-primary'] = darkColors.primaryColor || '#93C5FD'
+      styleObj['--nav-dark-hover'] = darkColors.hoverColor || '#93C5FD'
+      styleObj['--nav-dark-text'] = darkColors.textColor || '#1e293b'
+      styleObj['--nav-dark-text-hover'] = darkColors.textHoverColor || '#1e293b'
+    }
+
+    // Apply appropriate classes based on state
+    return styleObj as React.CSSProperties
   }
 
   return (
@@ -279,14 +309,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           if (type === 'link' && singleLink && (singleLink.url || singleLink.reference)) {
             const isActive = isNavItemActive(navItem)
             return (
-              <div 
-                key={i} 
-                className={getButtonClasses(isActive)}
+              <div
+                key={i}
                 style={getButtonStyle(hoveredButton === i, isActive)}
                 onMouseEnter={() => setHoveredButton(i)}
                 onMouseLeave={() => setHoveredButton(null)}
               >
-                <CMSLink {...singleLink} className="block w-full h-full">
+                <CMSLink 
+                  {...singleLink} 
+                  className={getButtonClasses(isActive)}
+                >
                   {label}
                 </CMSLink>
               </div>
@@ -335,28 +367,27 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                         const isSubActive = subIndex === activeSubIndex
                         return (
                           <li key={subIndex}>
-                            <div
-                              className={`mx-1 rounded-md ${getButtonClasses(isSubActive)}`}
-                              style={isSubActive ? getButtonStyle(false, true) : {}}
+                            <CMSLink
+                              {...item.pageLink}
+                              className={`mx-1 rounded-md block px-4 py-3 text-sm transition-colors ${
+                                isSubActive 
+                                  ? 'bg-primary/10 text-primary font-medium' 
+                                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+                              }`}
+                              aria-current={isSubActive ? 'page' : undefined}
                             >
-                              <CMSLink
-                                {...item.pageLink}
-                                className="block px-4 py-3 text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors rounded-md"
-                                aria-current={isSubActive ? 'page' : undefined}
-                              >
-                                <span className="flex items-center gap-2">
-                                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                                    {item.label}
-                                  </span>
-                                  {item.showNewBadge && <BadgeNew />}
+                              <span className="flex items-center gap-2">
+                                <span className="font-medium text-gray-900 dark:text-gray-100">
+                                  {item.label}
                                 </span>
-                                {dropdownStyle === 'with-descriptions' && item.description && (
-                                  <span className="block text-[11px] leading-snug mt-0.5 text-gray-600 dark:text-gray-400">
-                                    {item.description}
-                                  </span>
-                                )}
-                              </CMSLink>
-                            </div>
+                                {item.showNewBadge && <BadgeNew />}
+                              </span>
+                              {dropdownStyle === 'with-descriptions' && item.description && (
+                                <span className="block text-[11px] leading-snug mt-0.5 text-gray-600 dark:text-gray-400">
+                                  {item.description}
+                                </span>
+                              )}
+                            </CMSLink>
                           </li>
                         )
                       })}

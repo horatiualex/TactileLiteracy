@@ -43,6 +43,19 @@ export const Gallery: Block = {
           admin: {
             description: 'Selectează imaginea pentru galerie',
           },
+          validate: (value: unknown) => {
+            if (!value) {
+              return 'Imaginea este obligatorie'
+            }
+            // Ensure value is either a string (ID) or valid object with id
+            if (typeof value === 'string') {
+              return true
+            }
+            if (typeof value === 'object' && value !== null && 'id' in value) {
+              return true
+            }
+            return 'Selectează o imagine validă din biblioteca media'
+          },
         },
         {
           name: 'caption',

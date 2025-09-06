@@ -2371,27 +2371,46 @@ export interface Header {
    */
   styling?: {
     backgroundType?: ('transparent' | 'semi-transparent' | 'solid') | null;
-    backgroundColor?: ('theme' | 'custom') | null;
-    customBackgroundColor?: string | null;
     buttonStyle?: {
       style?: ('text' | 'background' | 'outlined') | null;
       roundness?: ('none' | 'small' | 'medium' | 'large' | 'full') | null;
-      /**
-       * Exemple: #4F46E5, rgb(79, 70, 229), rgba(79, 70, 229, 0.8) pentru 80% transparență
-       */
-      primaryColor?: string | null;
-      /**
-       * Exemple: #3730A3, rgba(55, 48, 163, 0.9) pentru 90% transparență
-       */
-      hoverColor?: string | null;
-      /**
-       * Exemple: #FFFFFF, rgba(255, 255, 255, 0.9) pentru text semi-transparent. Dacă nu e specificată, se folosește automat alb/negru
-       */
-      textColor?: string | null;
-      /**
-       * Exemple: #FFFFFF, rgba(255, 255, 255, 1). Dacă nu e specificată, se folosește textColor sau automat
-       */
-      textHoverColor?: string | null;
+      colorTheme?: ('auto' | 'custom') | null;
+      lightThemeColors?: {
+        /**
+         * Culoarea de fundal/border pentru butoane în temă luminoasă
+         */
+        primaryColor?: string | null;
+        /**
+         * Culoarea la hover în temă luminoasă
+         */
+        hoverColor?: string | null;
+        /**
+         * Culoarea textului pentru temă luminoasă
+         */
+        textColor?: string | null;
+        /**
+         * Culoarea textului la hover pentru temă luminoasă
+         */
+        textHoverColor?: string | null;
+      };
+      darkThemeColors?: {
+        /**
+         * Culoarea de fundal/border pentru butoane în temă întunecată
+         */
+        primaryColor?: string | null;
+        /**
+         * Culoarea la hover în temă întunecată
+         */
+        hoverColor?: string | null;
+        /**
+         * Culoarea textului pentru temă întunecată
+         */
+        textColor?: string | null;
+        /**
+         * Culoarea textului la hover pentru temă întunecată
+         */
+        textHoverColor?: string | null;
+      };
     };
   };
   /**
@@ -2579,17 +2598,28 @@ export interface HeaderSelect<T extends boolean = true> {
     | T
     | {
         backgroundType?: T;
-        backgroundColor?: T;
-        customBackgroundColor?: T;
         buttonStyle?:
           | T
           | {
               style?: T;
               roundness?: T;
-              primaryColor?: T;
-              hoverColor?: T;
-              textColor?: T;
-              textHoverColor?: T;
+              colorTheme?: T;
+              lightThemeColors?:
+                | T
+                | {
+                    primaryColor?: T;
+                    hoverColor?: T;
+                    textColor?: T;
+                    textHoverColor?: T;
+                  };
+              darkThemeColors?:
+                | T
+                | {
+                    primaryColor?: T;
+                    hoverColor?: T;
+                    textColor?: T;
+                    textHoverColor?: T;
+                  };
             };
       };
   navItems?:

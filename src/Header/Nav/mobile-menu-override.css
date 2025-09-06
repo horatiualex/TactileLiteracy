@@ -1,8 +1,96 @@
+/* Custom navigation button styles with theme support */
+.nav-button-bg {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+}
+
+.nav-button-bg:hover {
+  background-color: var(--nav-light-hover, #3730A3);
+  color: var(--nav-light-text-hover, #FFFFFF);
+}
+
+.nav-button-outlined {
+  border-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-primary, #4F46E5);
+}
+
+.nav-button-outlined:hover {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+}
+
+.nav-button-text {
+  color: var(--nav-light-primary, #4F46E5);
+}
+
+.nav-button-text:hover {
+  color: var(--nav-light-hover, #3730A3);
+}
+
+/* Clean active states for custom colors */
+.nav-active-bg {
+  opacity: 1;
+  font-weight: 500;
+}
+
+.nav-active-outlined {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.nav-active-text {
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-active-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+}
+
+/* Clean active states for auto theme - text buttons with background highlight */
+.text-primary.font-medium.bg-primary\/10.relative {
+  background-color: hsl(var(--primary) / 0.1);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.text-primary.font-medium.bg-primary\/10.relative::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: hsl(var(--primary));
+  border-radius: 1px;
+}
+
+/* Dark theme support for text button backgrounds */
+[data-theme="dark"] .text-primary.font-medium.bg-primary\/10.relative {
+  background-color: hsl(var(--primary) / 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .text-primary.font-medium.bg-primary\/10.relative {
+    background-color: hsl(var(--primary) / 0.15);
+  }
+}
+
 /* Mobile Menu Override Styles - High Specificity to Override Hero Components */
 
 /* Force mobile menu overlay to be above everything with solid background */
-.mobile-menu-overlay-force {
-  position: fixed !important;
+.mobile-menu-overlay-force {position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
@@ -113,5 +201,187 @@ html[data-theme="dark"] .mobile-menu-header {
   html:not([data-theme="light"]) .mobile-menu-header {
     background-color: rgb(17, 24, 39) !important;
     color: white !important;
+  }
+}
+
+/* Custom navigation button styles with theme support */
+.nav-button-bg {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+}
+
+.nav-button-bg:hover {
+  background-color: var(--nav-light-hover, #3730A3);
+  color: var(--nav-light-text-hover, #FFFFFF);
+}
+
+.nav-button-outlined {
+  border-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-primary, #4F46E5);
+}
+
+.nav-button-outlined:hover {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+}
+
+.nav-button-text {
+  color: var(--nav-light-primary, #4F46E5);
+}
+
+.nav-button-text:hover {
+  color: var(--nav-light-hover, #3730A3);
+}
+
+/* Clean active states for custom colors */
+.nav-active-bg {
+  opacity: 1;
+  font-weight: 500;
+}
+
+.nav-active-outlined {
+  background-color: var(--nav-light-primary, #4F46E5);
+  color: var(--nav-light-text, #FFFFFF);
+  opacity: 0.9;
+  font-weight: 500;
+}
+
+.nav-active-text {
+  font-weight: 500;
+  position: relative;
+}
+
+.nav-active-text::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+}
+
+/* Clean active states for auto theme - text buttons */
+.text-primary.font-medium.bg-primary\/5.relative::after,
+.text-primary.font-medium.bg-primary\/5::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background-color: hsl(var(--primary));
+  border-radius: 1px;
+}
+
+/* Dark theme styles */
+[data-theme="dark"] .nav-button-bg {
+  background-color: var(--nav-dark-primary, #93C5FD);
+  color: var(--nav-dark-text, #1e293b);
+}
+
+[data-theme="dark"] .nav-button-bg:hover {
+  background-color: var(--nav-dark-hover, #93C5FD);
+  color: var(--nav-dark-text-hover, #1e293b);
+}
+
+[data-theme="dark"] .nav-button-outlined {
+  border-color: var(--nav-dark-primary, #93C5FD);
+  color: var(--nav-dark-primary, #93C5FD);
+}
+
+[data-theme="dark"] .nav-button-outlined:hover {
+  background-color: var(--nav-dark-primary, #93C5FD);
+  color: var(--nav-dark-text, #1e293b);
+}
+
+[data-theme="dark"] .nav-button-text {
+  color: var(--nav-dark-primary, #93C5FD);
+}
+
+[data-theme="dark"] .nav-button-text:hover {
+  color: var(--nav-dark-hover, #93C5FD);
+}
+
+[data-theme="dark"] .nav-active-outlined {
+  background-color: var(--nav-dark-primary, #93C5FD);
+  color: var(--nav-dark-text, #1e293b);
+}
+
+/* System dark mode support */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .nav-button-bg {
+    background-color: var(--nav-dark-primary, #93C5FD);
+    color: var(--nav-dark-text, #1e293b);
+  }
+
+  html:not([data-theme="light"]) .nav-button-bg:hover {
+    background-color: var(--nav-dark-hover, #93C5FD);
+    color: var(--nav-dark-text-hover, #1e293b);
+  }
+
+  html:not([data-theme="light"]) .nav-button-outlined {
+    border-color: var(--nav-dark-primary, #93C5FD);
+    color: var(--nav-dark-primary, #93C5FD);
+  }
+
+  html:not([data-theme="light"]) .nav-button-outlined:hover {
+    background-color: var(--nav-dark-primary, #93C5FD);
+    color: var(--nav-dark-text, #1e293b);
+  }
+
+  html:not([data-theme="light"]) .nav-button-text {
+    color: var(--nav-dark-primary, #93C5FD);
+  }
+
+  html:not([data-theme="light"]) .nav-button-text:hover {
+    color: var(--nav-dark-hover, #93C5FD);
+  }
+
+  html:not([data-theme="light"]) .nav-active-outlined {
+    background-color: var(--nav-dark-primary, #93C5FD);
+    color: var(--nav-dark-text, #1e293b);
+  }
+}
+
+/* Mobile menu clean active state styles */
+.mobile-menu-overlay-force .nav-active-bg,
+.mobile-menu-overlay-force .nav-active-outlined,
+.mobile-menu-overlay-force .nav-active-text,
+.mobile-menu-overlay-force .font-medium {
+  position: relative;
+}
+
+.mobile-menu-overlay-force .nav-active-bg::before,
+.mobile-menu-overlay-force .nav-active-outlined::before,
+.mobile-menu-overlay-force .nav-active-text::before,
+.mobile-menu-overlay-force .font-medium::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background-color: rgb(79, 70, 229);
+  border-radius: 0 2px 2px 0;
+}
+
+[data-theme="dark"] .mobile-menu-overlay-force .nav-active-bg::before,
+[data-theme="dark"] .mobile-menu-overlay-force .nav-active-outlined::before,
+[data-theme="dark"] .mobile-menu-overlay-force .nav-active-text::before,
+[data-theme="dark"] .mobile-menu-overlay-force .font-medium::before {
+  background-color: rgb(147, 197, 253);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .nav-active-bg::before,
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .nav-active-outlined::before,
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .nav-active-text::before,
+  html:not([data-theme="light"]) .mobile-menu-overlay-force .font-medium::before {
+    background-color: rgb(147, 197, 253);
   }
 }

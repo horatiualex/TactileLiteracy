@@ -32,29 +32,7 @@ export const Header: GlobalConfig = {
             { label: 'Solid', value: 'solid' },
           ],
         },
-        {
-          name: 'backgroundColor',
-          type: 'radio',
-          label: 'Culoare fundal',
-          defaultValue: 'theme',
-          admin: { 
-            layout: 'horizontal',
-            condition: (_, siblingData) => siblingData?.backgroundType === 'solid' || siblingData?.backgroundType === 'semi-transparent'
-          },
-          options: [
-            { label: 'Temă curentă', value: 'theme' },
-            { label: 'Personalizată', value: 'custom' },
-          ],
-        },
-        {
-          name: 'customBackgroundColor',
-          type: 'text',
-          label: 'Culoare personalizată (hex)',
-          admin: {
-            condition: (_, siblingData) => (siblingData?.backgroundType === 'solid' || siblingData?.backgroundType === 'semi-transparent') && siblingData?.backgroundColor === 'custom',
-            placeholder: '#000000'
-          },
-        },
+
         {
           name: 'buttonStyle',
           type: 'group',
@@ -87,42 +65,111 @@ export const Header: GlobalConfig = {
               ],
             },
             {
-              name: 'primaryColor',
-              type: 'text',
-              label: 'Culoare primară (hex sau rgba)',
-              admin: {
-                condition: (_, siblingData) => siblingData?.style !== 'text',
-                placeholder: 'rgba(79, 70, 229, 0.8)',
-                description: 'Exemple: #4F46E5, rgb(79, 70, 229), rgba(79, 70, 229, 0.8) pentru 80% transparență'
-              },
+              name: 'colorTheme',
+              type: 'radio',
+              label: 'Schemă de culori',
+              defaultValue: 'auto',
+              admin: { layout: 'horizontal' },
+              options: [
+                { label: 'Automat (se adaptează la temă)', value: 'auto' },
+                { label: 'Personalizată', value: 'custom' },
+              ],
             },
             {
-              name: 'hoverColor',
-              type: 'text',
-              label: 'Culoare hover (hex sau rgba)',
+              name: 'lightThemeColors',
+              type: 'group',
+              label: 'Culori temă luminoasă',
               admin: {
-                condition: (_, siblingData) => siblingData?.style !== 'text',
-                placeholder: 'rgba(55, 48, 163, 0.9)',
-                description: 'Exemple: #3730A3, rgba(55, 48, 163, 0.9) pentru 90% transparență'
+                condition: (_, siblingData) => siblingData?.colorTheme === 'custom',
               },
+              fields: [
+                {
+                  name: 'primaryColor',
+                  type: 'text',
+                  label: 'Culoare primară (hex sau rgba)',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.style !== 'text',
+                    placeholder: 'rgba(79, 70, 229, 0.8)',
+                    description: 'Culoarea de fundal/border pentru butoane în temă luminoasă'
+                  },
+                },
+                {
+                  name: 'hoverColor',
+                  type: 'text',
+                  label: 'Culoare hover (hex sau rgba)',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.style !== 'text',
+                    placeholder: 'rgba(55, 48, 163, 0.9)',
+                    description: 'Culoarea la hover în temă luminoasă'
+                  },
+                },
+                {
+                  name: 'textColor',
+                  type: 'text',
+                  label: 'Culoare text (hex sau rgba)',
+                  admin: {
+                    placeholder: 'rgba(255, 255, 255, 0.9)',
+                    description: 'Culoarea textului pentru temă luminoasă'
+                  },
+                },
+                {
+                  name: 'textHoverColor',
+                  type: 'text',
+                  label: 'Culoare text hover (hex sau rgba)',
+                  admin: {
+                    placeholder: '#FFFFFF',
+                    description: 'Culoarea textului la hover pentru temă luminoasă'
+                  },
+                },
+              ],
             },
             {
-              name: 'textColor',
-              type: 'text',
-              label: 'Culoare text butoane (hex sau rgba)',
+              name: 'darkThemeColors',
+              type: 'group',
+              label: 'Culori temă întunecată',
               admin: {
-                placeholder: 'rgba(255, 255, 255, 0.9)',
-                description: 'Exemple: #FFFFFF, rgba(255, 255, 255, 0.9) pentru text semi-transparent. Dacă nu e specificată, se folosește automat alb/negru'
+                condition: (_, siblingData) => siblingData?.colorTheme === 'custom',
               },
-            },
-            {
-              name: 'textHoverColor',
-              type: 'text',
-              label: 'Culoare text hover (hex sau rgba)',
-              admin: {
-                placeholder: '#FFFFFF',
-                description: 'Exemple: #FFFFFF, rgba(255, 255, 255, 1). Dacă nu e specificată, se folosește textColor sau automat'
-              },
+              fields: [
+                {
+                  name: 'primaryColor',
+                  type: 'text',
+                  label: 'Culoare primară (hex sau rgba)',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.style !== 'text',
+                    placeholder: 'rgba(147, 197, 253, 0.8)',
+                    description: 'Culoarea de fundal/border pentru butoane în temă întunecată'
+                  },
+                },
+                {
+                  name: 'hoverColor',
+                  type: 'text',
+                  label: 'Culoare hover (hex sau rgba)',
+                  admin: {
+                    condition: (_, siblingData) => siblingData?.style !== 'text',
+                    placeholder: 'rgba(147, 197, 253, 1)',
+                    description: 'Culoarea la hover în temă întunecată'
+                  },
+                },
+                {
+                  name: 'textColor',
+                  type: 'text',
+                  label: 'Culoare text (hex sau rgba)',
+                  admin: {
+                    placeholder: 'rgba(30, 41, 59, 0.9)',
+                    description: 'Culoarea textului pentru temă întunecată'
+                  },
+                },
+                {
+                  name: 'textHoverColor',
+                  type: 'text',
+                  label: 'Culoare text hover (hex sau rgba)',
+                  admin: {
+                    placeholder: '#1e293b',
+                    description: 'Culoarea textului la hover pentru temă întunecată'
+                  },
+                },
+              ],
             },
           ],
         },
