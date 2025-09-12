@@ -4,7 +4,6 @@ import type { Page } from '@/payload-types'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
-import { CardGridBlockComponent } from '@/blocks/CardGrid/Component'
 import { ContactBlockComponent } from '@/blocks/Contact/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FAQBlockComponent } from '@/blocks/FAQ/Component'
@@ -20,7 +19,6 @@ import { TimelineBlockComponent } from '@/blocks/Timeline/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
-  cardGrid: CardGridBlockComponent,
   contact: ContactBlockComponent,
   content: ContentBlock,
   cta: CallToActionBlock,

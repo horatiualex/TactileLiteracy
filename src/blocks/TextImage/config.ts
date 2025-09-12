@@ -21,9 +21,56 @@ export const TextImage: Block = {
           label: 'Imagine Stânga, Text Dreapta',
           value: 'imageLeft',
         },
+        {
+          label: 'Hero Overlay (Text pe Imagine)',
+          value: 'overlay',
+        },
+        {
+          label: 'Split Screen (50/50)',
+          value: 'splitScreen',
+        },
+        {
+          label: 'Content Focus (Text Dominant)',
+          value: 'contentFocus',
+        },
+        {
+          label: 'Image Focus (Imagine Dominantă)',
+          value: 'imageFocus',
+        },
       ],
       admin: {
-        description: 'Alege dacă textul apare în stânga sau dreapta',
+        description: 'Alege stilul de layout - traditional, overlay modern, sau focus pe conținut/imagine',
+      },
+    },
+    {
+      name: 'designStyle',
+      type: 'select',
+      label: 'Stil Design',
+      defaultValue: 'standard',
+      options: [
+        {
+          label: 'Standard',
+          value: 'standard',
+        },
+        {
+          label: 'Premium (Porsche-style)',
+          value: 'premium',
+        },
+        {
+          label: 'Tech Modern (Anthropic-style)',
+          value: 'tech',
+        },
+        {
+          label: 'Minimal Elegant',
+          value: 'minimal',
+        },
+        {
+          label: 'Bold Statement',
+          value: 'bold',
+        },
+      ],
+      admin: {
+        description: 'Stilul vizual general al secțiunii',
       },
     },
     {
@@ -40,11 +87,46 @@ export const TextImage: Block = {
           },
         },
         {
+          name: 'headingSize',
+          type: 'select',
+          label: 'Mărime Titlu',
+          defaultValue: 'large',
+          options: [
+            {
+              label: 'Normal',
+              value: 'normal',
+            },
+            {
+              label: 'Mare',
+              value: 'large',
+            },
+            {
+              label: 'Foarte Mare (Hero)',
+              value: 'xl',
+            },
+            {
+              label: 'Extra Mare (Statement)',
+              value: '2xl',
+            },
+          ],
+          admin: {
+            condition: (_, siblingData) => siblingData?.heading,
+          },
+        },
+        {
           name: 'subheading',
           type: 'text',
           label: 'Subtitlu',
           admin: {
             description: 'Subtitlu opțional',
+          },
+        },
+        {
+          name: 'eyebrow',
+          type: 'text',
+          label: 'Eyebrow Text',
+          admin: {
+            description: 'Text mic deasupra titlului (stilul premium)',
           },
         },
         {
@@ -199,23 +281,129 @@ export const TextImage: Block = {
       },
     },
     {
-      name: 'backgroundColor',
-      type: 'select',
-      label: 'Tip Fundal',
-      defaultValue: 'none',
-      options: [
-        {
-          label: 'Fără Fundal',
-          value: 'none',
+          name: 'backgroundColor',
+          type: 'select',
+          label: 'Tip Fundal',
+          defaultValue: 'none',
+          options: [
+            {
+              label: 'Fără Fundal',
+              value: 'none',
+            },
+            {
+              label: 'Fundal Subtil (Auto-Adaptat)',
+              value: 'subtle',
+            },
+            {
+              label: 'Fundal Premium (Gri Elegant)',
+              value: 'premium',
+            },
+            {
+              label: 'Fundal Dark Modern',
+              value: 'dark',
+            },
+            {
+              label: 'Gradient Elegant',
+              value: 'gradient',
+            },
+          ],
+          admin: {
+            description: 'Stilul de fundal al secțiunii',
+          },
         },
         {
-          label: 'Fundal Subtil (Auto-Adaptat)',
-          value: 'subtle',
+          name: 'spacing',
+          type: 'select',
+          label: 'Spațiere',
+          defaultValue: 'large',
+          options: [
+            {
+              label: 'Compactă',
+              value: 'compact',
+            },
+            {
+              label: 'Standard',
+              value: 'standard',
+            },
+            {
+              label: 'Mare (Recommended)',
+              value: 'large',
+            },
+            {
+              label: 'Extra Mare (Hero Style)',
+              value: 'xl',
+            },
+          ],
+          admin: {
+            description: 'Spațierea verticală a secțiunii',
+          },
         },
-      ],
-      admin: {
-        description: 'Fundalul subtil se adaptează automat la tema (gri foarte deschis/întunecat)',
-      },
-    },
+        {
+          name: 'imageStyle',
+          type: 'group',
+          label: 'Stil Imagine',
+          fields: [
+            {
+              name: 'borderRadius',
+              type: 'select',
+              label: 'Rotunjire Colțuri',
+              defaultValue: 'medium',
+              options: [
+                {
+                  label: 'Fără',
+                  value: 'none',
+                },
+                {
+                  label: 'Mică',
+                  value: 'small',
+                },
+                {
+                  label: 'Medie',
+                  value: 'medium',
+                },
+                {
+                  label: 'Mare',
+                  value: 'large',
+                },
+                {
+                  label: 'Extra Mare',
+                  value: 'xl',
+                },
+              ],
+            },
+            {
+              name: 'shadow',
+              type: 'select',
+              label: 'Umbră',
+              defaultValue: 'medium',
+              options: [
+                {
+                  label: 'Fără',
+                  value: 'none',
+                },
+                {
+                  label: 'Subtilă',
+                  value: 'small',
+                },
+                {
+                  label: 'Medie',
+                  value: 'medium',
+                },
+                {
+                  label: 'Mare (Premium)',
+                  value: 'large',
+                },
+              ],
+            },
+            {
+              name: 'overlay',
+              type: 'checkbox',
+              label: 'Overlay pentru Text',
+              admin: {
+                description: 'Adaugă un overlay pentru textul pe imagine (pentru layout overlay)',
+              },
+            },
+          ],
+        },
   ],
 }

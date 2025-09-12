@@ -11,13 +11,29 @@ import './mobile-menu-override.css'
 
 interface HeaderStyling {
   backgroundType?: 'transparent' | 'semi-transparent' | 'solid'
+  layout?: 'container' | 'full-width'
   buttonStyle?: {
+    activeStyle?: 'button' | 'underline'
     roundness?: 'none' | 'small' | 'medium' | 'large' | 'full'
   }
 }
 
+interface HeaderBranding {
+  showLogo?: boolean
+  showText?: boolean
+  brandText?: string
+  linkToHome?: boolean
+}
+
+interface HeaderSearch {
+  showSearch?: boolean
+  searchUrl?: string
+}
+
 interface ExtendedHeader extends HeaderType {
   styling?: HeaderStyling
+  branding?: HeaderBranding
+  search?: HeaderSearch
 }
 
 export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
@@ -27,6 +43,14 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const pathname = usePathname()
+
+  // Get data from header
+  const extendedData = data as ExtendedHeader
+  const buttonStyle = extendedData?.styling?.buttonStyle
+  const branding = extendedData?.branding
+  const search = extendedData?.search
+  const activeStyle = buttonStyle?.activeStyle || 'button'
+  const roundness = buttonStyle?.roundness || 'medium'
 
   // Close mobile menu when screen size changes to desktop
   useEffect(() => {
@@ -62,11 +86,6 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     setMobileOpenIndex(null)
   }
 
-  // Get button styling from header data
-  const extendedData = data as ExtendedHeader
-  const buttonStyle = extendedData?.styling?.buttonStyle
-  const roundness = buttonStyle?.roundness || 'medium'
-
   // Helper function to get roundness classes
   const getRoundnessClass = () => {
     switch (roundness) {
@@ -85,14 +104,30 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     }
   }
 
-  const getButtonClasses = (isActive = false) => {
-    const baseClasses = `flex items-center gap-1 px-3 py-2 text-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()}`
-    
-    if (isActive) {
-      return `${baseClasses} bg-primary text-primary-foreground shadow-md ring-1 ring-primary/20`
+  const getButtonClasses = (isActive = false, isHovered = false) => {
+    if (activeStyle === 'underline') {
+      // Wix-style underline approach
+      const baseClasses = `flex items-center gap-1 px-3 py-3 text-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary relative`
+      
+      if (isActive) {
+        return `${baseClasses} text-gray-900 dark:text-white font-medium after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-gray-900 dark:after:bg-white after:rounded-full after:transition-all after:duration-200`
+      }
+      
+      if (isHovered) {
+        return `${baseClasses} text-gray-900 dark:text-white after:absolute after:bottom-0 after:left-3 after:right-3 after:h-0.5 after:bg-gray-400 dark:after:bg-gray-400 after:rounded-full after:transition-all after:duration-200`
+      }
+      
+      return `${baseClasses} text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white`
+    } else {
+      // Original button style approach
+      const baseClasses = `flex items-center gap-1 px-3 py-2 text-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()}`
+      
+      if (isActive) {
+        return `${baseClasses} bg-primary text-primary-foreground shadow-md ring-1 ring-primary/20`
+      }
+      
+      return `${baseClasses} text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800`
     }
-    
-    return `${baseClasses} text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800`
   }
 
   // Normalize any path (remove trailing slash except root, ensure leading slash)
@@ -195,9 +230,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   }
 
   return (
-    <>
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:flex gap-3 items-center header-nav-container" aria-label="Meniu principal">
+    <div className="flex-1 flex items-center justify-between">
+      {/* Desktop Navigation - Center positioned */}
+      <nav className="hidden lg:flex gap-3 items-center header-nav-container flex-1 justify-center" aria-label="Meniu principal">
         {navItems.map((navItem, i) => {
           if (!navItem) return null
           const { label, type, singleLink, submenu, dropdownStyle } = navItem
@@ -214,7 +249,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 onMouseLeave={() => setHoveredIndex(null)}
               >
                 <CMSLink
-                  className={getButtonClasses(isActive || isHovered)}
+                  className={getButtonClasses(isActive, isHovered)}
                   {...singleLink}
                 >
                   {label}
@@ -249,7 +284,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 }}
               >
                 <button
-                  className={`${getButtonClasses(isActive || isOpen)}`}
+                  className={`${getButtonClasses(isActive, isOpen)}`}
                   aria-expanded={isOpen}
                   aria-haspopup="true"
                 >
@@ -313,31 +348,42 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         })}
       </nav>
 
-      {/* Desktop Search Icon */}
-      <button
-        className="hidden lg:flex items-center justify-center p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
-        aria-label="Căutare"
-      >
-        <SearchIcon className="w-5 h-5" />
-      </button>
+      {/* Desktop and Mobile Actions */}
+      <div className="flex items-center gap-3">
+        {/* Desktop Search Button - Right side, black button like Anthropic */}
+        {search?.showSearch !== false && (
+          <Link
+            href={search?.searchUrl || '/search'}
+            className="hidden lg:flex items-center justify-center w-10 h-10 bg-gray-900 dark:bg-white text-white dark:text-gray-900 hover:bg-gray-800 dark:hover:bg-gray-100 rounded-lg transition-colors duration-200"
+            aria-label="Căutare"
+          >
+            <SearchIcon className="w-5 h-5" />
+          </Link>
+        )}
 
-      {/* Mobile Menu Button */}
-      <button
-        className="lg:hidden p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        aria-label={mobileMenuOpen ? 'Închide meniul' : 'Deschide meniul'}
-        aria-expanded={mobileMenuOpen}
-      >
-        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
+        {/* Mobile Menu Button */}
+        <button
+          className="lg:hidden p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? 'Închide meniul' : 'Deschide meniul'}
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-[9999] lg:hidden bg-background overflow-y-auto min-h-screen">
           {/* Mobile Header */}
           <div className="flex items-center justify-between p-4 border-b border-border bg-background">
-            <Link href="/" onClick={closeMobileMenu}>
-              <Logo />
+            <Link href="/" onClick={closeMobileMenu} className="flex items-center gap-3">
+              {branding?.showLogo !== false && <Logo />}
+              {branding?.showText && branding?.brandText && (
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
+                  {branding.brandText}
+                </span>
+              )}
             </Link>
             <button
               onClick={closeMobileMenu}
@@ -435,16 +481,19 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             })}
 
             {/* Mobile Search */}
-            <button
-              className="w-full flex items-center gap-3 px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
-              onClick={closeMobileMenu}
-            >
-              <SearchIcon className="w-5 h-5" />
-              Căutare
-            </button>
+            {search?.showSearch !== false && (
+              <Link
+                href={search?.searchUrl || '/search'}
+                className="w-full flex items-center gap-3 px-4 py-3 text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+                onClick={closeMobileMenu}
+              >
+                <SearchIcon className="w-5 h-5" />
+                Căutare
+              </Link>
+            )}
           </nav>
         </div>
       )}
-    </>
+    </div>
   )
 }

@@ -61,6 +61,76 @@ const columnFields: Field[] = [
     ],
   },
   {
+    name: 'typography',
+    type: 'group',
+    label: 'Stiluri text',
+    admin: {
+      description: 'Controlează mărimea și stilul textului din această coloană',
+    },
+    fields: [
+      {
+        name: 'headingSize',
+        type: 'select',
+        label: 'Mărime titluri (H1, H2, H3)',
+        defaultValue: 'default',
+        options: [
+          {
+            label: 'Foarte mic',
+            value: 'xs',
+          },
+          {
+            label: 'Mic',
+            value: 'sm',
+          },
+          {
+            label: 'Normal (implicit)',
+            value: 'default',
+          },
+          {
+            label: 'Mare',
+            value: 'lg',
+          },
+          {
+            label: 'Foarte mare',
+            value: 'xl',
+          },
+          {
+            label: 'Extra mare',
+            value: '2xl',
+          },
+        ],
+      },
+      {
+        name: 'bodySize',
+        type: 'select',
+        label: 'Mărime text normal',
+        defaultValue: 'default',
+        options: [
+          {
+            label: 'Foarte mic',
+            value: 'xs',
+          },
+          {
+            label: 'Mic',
+            value: 'sm',
+          },
+          {
+            label: 'Normal (implicit)',
+            value: 'default',
+          },
+          {
+            label: 'Mare',
+            value: 'lg',
+          },
+          {
+            label: 'Foarte mare',
+            value: 'xl',
+          },
+        ],
+      },
+    ],
+  },
+  {
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({

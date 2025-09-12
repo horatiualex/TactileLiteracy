@@ -42,6 +42,19 @@ const HeroBanner: Block = {
       required: false,
     },
     {
+      name: 'backgroundMedia',
+      type: 'upload',
+      relationTo: 'media',
+      label: 'Background Image',
+      required: false,
+      admin: {
+        description: 'Background image for split screen layout or visual element for other themes',
+        condition: (data, siblingData) => {
+          return siblingData?.style?.backgroundTheme === 'split' || siblingData?.style?.backgroundTheme === 'modern'
+        },
+      },
+    },
+    {
       name: 'style',
       type: 'group',
       label: 'Style Options',
@@ -84,6 +97,77 @@ const HeroBanner: Block = {
           ],
           required: false,
         },
+        {
+          name: 'backgroundTheme',
+          type: 'select',
+          label: 'Style Theme',
+          defaultValue: 'modern',
+          options: [
+            {
+              label: 'Modern (Clean theme-aware background)',
+              value: 'modern',
+            },
+            {
+              label: 'Split Screen (Blue gradient with image)',
+              value: 'split',
+            },
+            {
+              label: 'Card Style (Blue gradient card)',
+              value: 'card',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Choose the style and layout for the hero banner',
+          },
+        },
+        {
+          name: 'layout',
+          type: 'select',
+          label: 'Icon & Title Layout',
+          defaultValue: 'default',
+          options: [
+            {
+              label: 'Inline (Icon next to title)',
+              value: 'default',
+            },
+            {
+              label: 'Stacked (Icon above title)',
+              value: 'stacked',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Control how the icon and title are positioned',
+            condition: (data, siblingData) => {
+              return siblingData?.backgroundTheme === 'modern'
+            },
+          },
+        },
+        {
+          name: 'titleSize',
+          type: 'select',
+          label: 'Title Size',
+          defaultValue: 'normal',
+          options: [
+            {
+              label: 'Normal',
+              value: 'normal',
+            },
+            {
+              label: 'Large',
+              value: 'large',
+            },
+            {
+              label: 'Extra Large',
+              value: 'xl',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Control the size of the main title',
+          },
+        },
       ],
     },
     {
@@ -107,7 +191,7 @@ const HeroBanner: Block = {
           name: 'style',
           type: 'select',
           label: 'Button Style',
-          defaultValue: 'outline',
+          defaultValue: 'solid',
           options: [
             {
               label: 'Solid',
@@ -117,8 +201,19 @@ const HeroBanner: Block = {
               label: 'Outline',
               value: 'outline',
             },
+            {
+              label: 'Ghost',
+              value: 'ghost',
+            },
+            {
+              label: 'Modern Gradient',
+              value: 'modern',
+            },
           ],
           required: false,
+          admin: {
+            description: 'Choose the visual style of the call-to-action button',
+          },
         },
         {
           name: 'newTab',

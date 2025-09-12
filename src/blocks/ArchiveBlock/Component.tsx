@@ -12,7 +12,15 @@ export const ArchiveBlock: React.FC<
     id?: string
   }
 > = async (props) => {
-  const { id, categories, introContent, limit: limitFromProps, populateBy, selectedDocs } = props
+  const { 
+    id, 
+    categories, 
+    introContent, 
+    limit: limitFromProps, 
+    populateBy, 
+    selectedDocs,
+    displaySettings 
+  } = props
 
   const limit = limitFromProps || 3
 
@@ -59,7 +67,17 @@ export const ArchiveBlock: React.FC<
           <RichText className="ms-0 max-w-[48rem]" data={introContent} enableGutter={false} />
         </div>
       )}
-      <CollectionArchive posts={posts} />
+      <CollectionArchive 
+        posts={posts} 
+        displaySettings={displaySettings ? {
+          cardStyle: displaySettings.cardStyle || 'default',
+          showDate: displaySettings.showDate ?? true,
+          showDescription: displaySettings.showDescription ?? true,
+          showCategories: displaySettings.showCategories ?? true,
+          aspectRatio: displaySettings.aspectRatio || '4/3',
+          buttonText: displaySettings.buttonText || 'Citește mai mult'
+        } : undefined} 
+      />
     </div>
   )
 }

@@ -52,6 +52,23 @@ const FAQ: Block = {
       required: false,
     },
     {
+      name: 'showSearch',
+      type: 'checkbox',
+      label: 'Show Search Bar',
+      defaultValue: false,
+      required: false,
+    },
+    {
+      name: 'searchPlaceholder',
+      type: 'text',
+      label: 'Search Placeholder Text',
+      defaultValue: 'Search for a question',
+      admin: {
+        condition: (data, siblingData) => siblingData.showSearch,
+      },
+      required: false,
+    },
+    {
       name: 'style',
       type: 'group',
       label: 'Style Options',

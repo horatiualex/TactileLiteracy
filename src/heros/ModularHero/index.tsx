@@ -27,6 +27,8 @@ interface ModularHeroProps {
     enabled?: boolean | null
     color?: string | null
   } | null
+  bottomText?: string | null
+  showDownArrow?: boolean | null
 }
 
 export const ModularHero: React.FC<ModularHeroProps> = ({
@@ -41,6 +43,8 @@ export const ModularHero: React.FC<ModularHeroProps> = ({
   backgroundColor,
   gradientColors,
   overlay,
+  bottomText,
+  showDownArrow,
 }) => {
   const { setHeaderTheme } = useHeaderTheme()
 
@@ -236,6 +240,49 @@ export const ModularHero: React.FC<ModularHeroProps> = ({
           </div>
         )}
       </div>
+
+      {/* Bottom Text - Clean minimal styling */}
+      {bottomText && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 max-w-[90%] md:max-w-none">
+          <p className="text-white/80 text-xs sm:text-sm font-medium text-center">
+            {bottomText}
+          </p>
+        </div>
+      )}
+
+      {/* Down Arrow - Similar to Porsche website */}
+      {showDownArrow && (
+        <div className="absolute bottom-8 right-4 sm:right-8 z-30">
+          <button 
+            className="group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+            onClick={() => {
+              const heroElement = document.querySelector('[class*="min-h-screen"]')
+              if (heroElement) {
+                const heroHeight = heroElement.getBoundingClientRect().height
+                window.scrollTo({
+                  top: heroHeight,
+                  behavior: 'smooth'
+                })
+              }
+            }}
+            aria-label="Scroll past hero section"
+          >
+            <svg 
+              className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:translate-y-1 transition-transform duration-300" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                strokeWidth={2} 
+                d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+              />
+            </svg>
+          </button>
+        </div>
+      )}
     </div>
   )
 }

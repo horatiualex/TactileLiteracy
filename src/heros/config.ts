@@ -233,6 +233,23 @@ export const hero: Field = {
       relationTo: 'media',
       label: 'Secondary Image (for split layouts)',
     },
+    {
+      name: 'bottomText',
+      type: 'text',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      label: 'Bottom Text (e.g., "Consum combinat: 11,7 – 11,5 l/100 km")',
+    },
+    {
+      name: 'showDownArrow',
+      type: 'checkbox',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'modular',
+      },
+      defaultValue: false,
+      label: 'Show Down Arrow',
+    },
   ],
   label: false,
 }

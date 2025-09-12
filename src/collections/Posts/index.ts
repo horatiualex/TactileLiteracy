@@ -12,7 +12,6 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
-import CardGrid from '../../blocks/CardGrid/config'
 import { Code } from '../../blocks/Code/config'
 import FAQ from '../../blocks/FAQ/config'
 import { FileList } from '../../blocks/FileList/config'
@@ -101,7 +100,7 @@ export const Posts: CollectionConfig<'posts'> = {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, List, TextImage, FAQ, CardGrid, HeroBanner, ImageCardGrid, StatsSection] }),
+                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, List, TextImage, FAQ, HeroBanner, ImageCardGrid, StatsSection] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),

@@ -13,6 +13,67 @@ export const Header: GlobalConfig = {
   access: { read: () => true },
   fields: [
     {
+      name: 'branding',
+      type: 'group',
+      label: 'Logo și titlu',
+      admin: {
+        description: 'Configurează logo-ul și textul din partea stângă a header-ului',
+      },
+      fields: [
+        {
+          name: 'showLogo',
+          type: 'checkbox',
+          label: 'Afișează logo',
+          defaultValue: true,
+        },
+        {
+          name: 'showText',
+          type: 'checkbox',
+          label: 'Afișează text',
+          defaultValue: false,
+        },
+        {
+          name: 'brandText',
+          type: 'text',
+          label: 'Text brand',
+          admin: {
+            condition: (_, siblingData) => siblingData?.showText,
+          },
+        },
+        {
+          name: 'linkToHome',
+          type: 'checkbox',
+          label: 'Logo/text să ducă la pagina principală',
+          defaultValue: true,
+        },
+      ],
+    },
+    {
+      name: 'search',
+      type: 'group',
+      label: 'Opțiuni căutare',
+      admin: {
+        description: 'Configurează butonul de căutare din header',
+      },
+      fields: [
+        {
+          name: 'showSearch',
+          type: 'checkbox',
+          label: 'Afișează butonul de căutare',
+          defaultValue: true,
+        },
+        {
+          name: 'searchUrl',
+          type: 'text',
+          label: 'URL căutare',
+          admin: {
+            condition: (_, siblingData) => siblingData?.showSearch,
+            description: 'URL-ul către pagina de căutare (ex: /cautare)',
+          },
+        },
+      ],
+    },
+    {
       name: 'styling',
       type: 'group',
       label: 'Opțiuni stil header',
@@ -32,6 +93,17 @@ export const Header: GlobalConfig = {
             { label: 'Solid', value: 'solid' },
           ],
         },
+        {
+          name: 'layout',
+          type: 'radio',
+          label: 'Lățime header',
+          defaultValue: 'container',
+          admin: { layout: 'horizontal' },
+          options: [
+            { label: 'Container (Conținut centrat)', value: 'container' },
+            { label: 'Full Width (Lățime completă)', value: 'full-width' },
+          ],
+        },
 
         {
           name: 'buttonStyle',
@@ -39,11 +111,25 @@ export const Header: GlobalConfig = {
           label: 'Stil butoane navigare',
           fields: [
             {
+              name: 'activeStyle',
+              type: 'radio',
+              label: 'Stil stare activă',
+              defaultValue: 'button',
+              admin: { layout: 'horizontal' },
+              options: [
+                { label: 'Buton (fundal colorat)', value: 'button' },
+                { label: 'Underline (subliniere ca Wix)', value: 'underline' },
+              ],
+            },
+            {
               name: 'roundness',
               type: 'radio',
               label: 'Rotunjire butoane',
               defaultValue: 'medium',
-              admin: { layout: 'horizontal' },
+              admin: { 
+                layout: 'horizontal',
+                condition: (_, siblingData) => siblingData?.activeStyle === 'button',
+              },
               options: [
                 { label: 'Fără', value: 'none' },
                 { label: 'Puțin', value: 'small' },

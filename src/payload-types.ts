@@ -205,6 +205,8 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
     secondaryImage?: (string | null) | Media;
+    bottomText?: string | null;
+    showDownArrow?: boolean | null;
   };
   layout: (
     | CallToActionBlock
@@ -218,18 +220,27 @@ export interface Page {
     | ListBlock
     | {
         /**
-         * Alege dacă textul apare în stânga sau dreapta
+         * Alege stilul de layout - traditional, overlay modern, sau focus pe conținut/imagine
          */
-        layout?: ('textLeft' | 'imageLeft') | null;
+        layout?: ('textLeft' | 'imageLeft' | 'overlay' | 'splitScreen' | 'contentFocus' | 'imageFocus') | null;
+        /**
+         * Stilul vizual general al secțiunii
+         */
+        designStyle?: ('standard' | 'premium' | 'tech' | 'minimal' | 'bold') | null;
         content: {
           /**
            * Titlul principal pentru această secțiune
            */
           heading?: string | null;
+          headingSize?: ('normal' | 'large' | 'xl' | '2xl') | null;
           /**
            * Subtitlu opțional
            */
           subheading?: string | null;
+          /**
+           * Text mic deasupra titlului (stilul premium)
+           */
+          eyebrow?: string | null;
           /**
            * Conținutul principal de text
            */
@@ -277,16 +288,27 @@ export interface Page {
          */
         verticalAlignment?: ('start' | 'center' | 'end') | null;
         /**
-         * Fundalul subtil se adaptează automat la tema (gri foarte deschis/întunecat)
+         * Stilul de fundal al secțiunii
          */
-        backgroundColor?: ('none' | 'subtle') | null;
+        backgroundColor?: ('none' | 'subtle' | 'premium' | 'dark' | 'gradient') | null;
+        /**
+         * Spațierea verticală a secțiunii
+         */
+        spacing?: ('compact' | 'standard' | 'large' | 'xl') | null;
+        imageStyle?: {
+          borderRadius?: ('none' | 'small' | 'medium' | 'large' | 'xl') | null;
+          shadow?: ('none' | 'small' | 'medium' | 'large') | null;
+          /**
+           * Adaugă un overlay pentru textul pe imagine (pentru layout overlay)
+           */
+          overlay?: boolean | null;
+        };
         id?: string | null;
         blockName?: string | null;
         blockType: 'textImage';
       }
     | TimelineBlock
     | FAQBlock
-    | CardGridBlock
     | HeroBannerBlock
     | ImageCardGridBlock
     | StatsSectionBlock
@@ -600,6 +622,13 @@ export interface ContentBlock {
          * Alege cum să fie aliniat textul în această coloană
          */
         textAlign?: ('left' | 'center' | 'right' | 'justify') | null;
+        /**
+         * Controlează mărimea și stilul textului din această coloană
+         */
+        typography?: {
+          headingSize?: ('xs' | 'sm' | 'default' | 'lg' | 'xl' | '2xl') | null;
+          bodySize?: ('xs' | 'sm' | 'default' | 'lg' | 'xl') | null;
+        };
         richText?: {
           root: {
             type: string;
@@ -682,6 +711,17 @@ export interface ArchiveBlock {
         value: string | Post;
       }[]
     | null;
+  displaySettings?: {
+    cardStyle?: ('default' | 'minimal' | 'imageFocus') | null;
+    showDate?: boolean | null;
+    showDescription?: boolean | null;
+    showCategories?: boolean | null;
+    aspectRatio?: ('16/9' | '4/3' | '1/1' | '3/4') | null;
+    /**
+     * Text for the action button/link
+     */
+    buttonText?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'archive';
@@ -1123,6 +1163,8 @@ export interface FAQBlock {
   title?: string | null;
   description?: string | null;
   width?: ('small' | 'medium' | 'large' | 'xlarge' | 'full') | null;
+  showSearch?: boolean | null;
+  searchPlaceholder?: string | null;
   style?: {
     backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
     questionStyle?: ('normal' | 'medium' | 'semibold' | 'bold') | null;
@@ -1154,58 +1196,6 @@ export interface FAQBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CardGridBlock".
- */
-export interface CardGridBlock {
-  title?: string | null;
-  description?: string | null;
-  width?: ('medium' | 'large' | 'xlarge' | 'full') | null;
-  style?: {
-    backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
-    cardStyle?: ('shadow' | 'border' | 'minimal') | null;
-    textAlignment?: ('left' | 'center') | null;
-  };
-  /**
-   * Add 3, 6, or 9 cards (multiples of 3 work best for the grid layout)
-   */
-  cards: {
-    /**
-     * Upload an icon/image for this card (recommended: SVG or small PNG)
-     */
-    icon?: (string | null) | Media;
-    /**
-     * Use text instead of an icon (e.g., emoji or single character)
-     */
-    iconText?: string | null;
-    title: string;
-    description: {
-      root: {
-        type: string;
-        children: {
-          type: string;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    link?: {
-      url?: string | null;
-      label?: string | null;
-      newTab?: boolean | null;
-    };
-    id?: string | null;
-  }[];
-  id?: string | null;
-  blockName?: string | null;
-  blockType: 'cardGrid';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "HeroBannerBlock".
  */
 export interface HeroBannerBlock {
@@ -1233,14 +1223,33 @@ export interface HeroBannerBlock {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Background image for split screen layout or visual element for other themes
+   */
+  backgroundMedia?: (string | null) | Media;
   style?: {
     alignment?: ('left' | 'center') | null;
     size?: ('small' | 'medium' | 'large') | null;
+    /**
+     * Choose the style and layout for the hero banner
+     */
+    backgroundTheme?: ('modern' | 'split' | 'card') | null;
+    /**
+     * Control how the icon and title are positioned
+     */
+    layout?: ('default' | 'stacked') | null;
+    /**
+     * Control the size of the main title
+     */
+    titleSize?: ('normal' | 'large' | 'xl') | null;
   };
   link?: {
     url?: string | null;
     label?: string | null;
-    style?: ('solid' | 'outline') | null;
+    /**
+     * Choose the visual style of the call-to-action button
+     */
+    style?: ('solid' | 'outline' | 'ghost' | 'modern') | null;
     newTab?: boolean | null;
   };
   id?: string | null;
@@ -1674,6 +1683,8 @@ export interface PagesSelect<T extends boolean = true> {
             };
         media?: T;
         secondaryImage?: T;
+        bottomText?: T;
+        showDownArrow?: T;
       };
   layout?:
     | T
@@ -1691,11 +1702,14 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               layout?: T;
+              designStyle?: T;
               content?:
                 | T
                 | {
                     heading?: T;
+                    headingSize?: T;
                     subheading?: T;
+                    eyebrow?: T;
                     text?: T;
                     buttons?:
                       | T
@@ -1716,12 +1730,19 @@ export interface PagesSelect<T extends boolean = true> {
               imageAspect?: T;
               verticalAlignment?: T;
               backgroundColor?: T;
+              spacing?: T;
+              imageStyle?:
+                | T
+                | {
+                    borderRadius?: T;
+                    shadow?: T;
+                    overlay?: T;
+                  };
               id?: T;
               blockName?: T;
             };
         timeline?: T | TimelineBlockSelect<T>;
         faq?: T | FAQBlockSelect<T>;
-        cardGrid?: T | CardGridBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
         imageCardGrid?: T | ImageCardGridBlockSelect<T>;
         statsSection?: T | StatsSectionBlockSelect<T>;
@@ -1811,6 +1832,12 @@ export interface ContentBlockSelect<T extends boolean = true> {
     | {
         size?: T;
         textAlign?: T;
+        typography?:
+          | T
+          | {
+              headingSize?: T;
+              bodySize?: T;
+            };
         richText?: T;
         enableLink?: T;
         link?:
@@ -1848,6 +1875,16 @@ export interface ArchiveBlockSelect<T extends boolean = true> {
   categories?: T;
   limit?: T;
   selectedDocs?: T;
+  displaySettings?:
+    | T
+    | {
+        cardStyle?: T;
+        showDate?: T;
+        showDescription?: T;
+        showCategories?: T;
+        aspectRatio?: T;
+        buttonText?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1972,6 +2009,8 @@ export interface FAQBlockSelect<T extends boolean = true> {
   title?: T;
   description?: T;
   width?: T;
+  showSearch?: T;
+  searchPlaceholder?: T;
   style?:
     | T
     | {
@@ -1992,40 +2031,6 @@ export interface FAQBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CardGridBlock_select".
- */
-export interface CardGridBlockSelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
-  width?: T;
-  style?:
-    | T
-    | {
-        backgroundColor?: T;
-        cardStyle?: T;
-        textAlignment?: T;
-      };
-  cards?:
-    | T
-    | {
-        icon?: T;
-        iconText?: T;
-        title?: T;
-        description?: T;
-        link?:
-          | T
-          | {
-              url?: T;
-              label?: T;
-              newTab?: T;
-            };
-        id?: T;
-      };
-  id?: T;
-  blockName?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "HeroBannerBlock_select".
  */
 export interface HeroBannerBlockSelect<T extends boolean = true> {
@@ -2033,11 +2038,15 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   iconText?: T;
   title?: T;
   description?: T;
+  backgroundMedia?: T;
   style?:
     | T
     | {
         alignment?: T;
         size?: T;
+        backgroundTheme?: T;
+        layout?: T;
+        titleSize?: T;
       };
   link?:
     | T
@@ -2550,11 +2559,32 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Header {
   id: string;
   /**
+   * Configurează logo-ul și textul din partea stângă a header-ului
+   */
+  branding?: {
+    showLogo?: boolean | null;
+    showText?: boolean | null;
+    brandText?: string | null;
+    linkToHome?: boolean | null;
+  };
+  /**
+   * Configurează butonul de căutare din header
+   */
+  search?: {
+    showSearch?: boolean | null;
+    /**
+     * URL-ul către pagina de căutare (ex: /cautare)
+     */
+    searchUrl?: string | null;
+  };
+  /**
    * Personalizează aspectul header-ului
    */
   styling?: {
     backgroundType?: ('transparent' | 'semi-transparent' | 'solid') | null;
+    layout?: ('container' | 'full-width') | null;
     buttonStyle?: {
+      activeStyle?: ('button' | 'underline') | null;
       roundness?: ('none' | 'small' | 'medium' | 'large' | 'full') | null;
     };
   };
@@ -2739,13 +2769,29 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  branding?:
+    | T
+    | {
+        showLogo?: T;
+        showText?: T;
+        brandText?: T;
+        linkToHome?: T;
+      };
+  search?:
+    | T
+    | {
+        showSearch?: T;
+        searchUrl?: T;
+      };
   styling?:
     | T
     | {
         backgroundType?: T;
+        layout?: T;
         buttonStyle?:
           | T
           | {
+              activeStyle?: T;
               roundness?: T;
             };
       };
