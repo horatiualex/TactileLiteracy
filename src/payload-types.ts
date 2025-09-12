@@ -208,6 +208,7 @@ export interface Page {
   };
   layout: (
     | CallToActionBlock
+    | ContactBlock
     | ContentBlock
     | MediaBlock
     | ArchiveBlock
@@ -283,6 +284,7 @@ export interface Page {
         blockName?: string | null;
         blockType: 'textImage';
       }
+    | TimelineBlock
     | FAQBlock
     | CardGridBlock
     | HeroBannerBlock
@@ -536,6 +538,55 @@ export interface CallToActionBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock".
+ */
+export interface ContactBlock {
+  contactInfo?: {
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+  };
+  googleMaps?: {
+    /**
+     * Copiază URL-ul de embed de la Google Maps (src="..." din iframe)
+     */
+    embedUrl?: string | null;
+    /**
+     * Înălțimea hărții în pixeli (200-800px)
+     */
+    height?: number | null;
+  };
+  /**
+   * Adaugă programul de lucru pentru fiecare zi
+   */
+  businessHours?:
+    | {
+        day: string;
+        hours: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Adaugă link-uri către rețelele sociale
+   */
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'instagram' | 'twitter' | 'linkedin' | 'youtube' | 'tiktok' | 'other';
+        url: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Alege cum să fie aranjate elementele
+   */
+  layout?: ('grid' | 'split') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contact';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -989,6 +1040,83 @@ export interface ListBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  title?: string | null;
+  /**
+   * Urmărește evoluția instituției noastre de-a lungul anilor
+   */
+  subtitle?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Adaugă evenimentele importante din istoria instituției în ordine cronologică
+   */
+  events: {
+    /**
+     * Anul evenimentului
+     */
+    year: string;
+    /**
+     * Titlul scurt al evenimentului
+     */
+    title: string;
+    /**
+     * Descrierea completă a evenimentului (opțional)
+     */
+    description?: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    id?: string | null;
+  }[];
+  layout?: {
+    /**
+     * Cum să fie afișat timeline-ul
+     */
+    style?: ('auto' | 'vertical') | null;
+  };
+  background?: {
+    type?: ('color' | 'image' | 'none') | null;
+    /**
+     * Imaginea care va fi folosită ca fundal
+     */
+    image?: (string | null) | Media;
+    /**
+     * Overlay-ul care va fi aplicat peste imagine pentru a îmbunătăți citibilitatea textului
+     */
+    overlay?: ('none' | 'dark' | 'light') | null;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FAQBlock".
  */
 export interface FAQBlock {
@@ -1106,16 +1234,6 @@ export interface HeroBannerBlock {
     [k: string]: unknown;
   } | null;
   style?: {
-    backgroundColor?: ('primary' | 'secondary' | 'dark' | 'light' | 'none' | 'custom') | null;
-    /**
-     * Enter a hex color code (e.g., #3b82f6) or CSS color name
-     */
-    customBackgroundColor?: string | null;
-    textColor?: ('white' | 'dark' | 'custom') | null;
-    /**
-     * Enter a hex color code (e.g., #ffffff) or CSS color name
-     */
-    customTextColor?: string | null;
     alignment?: ('left' | 'center') | null;
     size?: ('small' | 'medium' | 'large') | null;
   };
@@ -1561,6 +1679,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         cta?: T | CallToActionBlockSelect<T>;
+        contact?: T | ContactBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
@@ -1600,6 +1719,7 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        timeline?: T | TimelineBlockSelect<T>;
         faq?: T | FAQBlockSelect<T>;
         cardGrid?: T | CardGridBlockSelect<T>;
         heroBanner?: T | HeroBannerBlockSelect<T>;
@@ -1641,6 +1761,43 @@ export interface CallToActionBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContactBlock_select".
+ */
+export interface ContactBlockSelect<T extends boolean = true> {
+  contactInfo?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+      };
+  googleMaps?:
+    | T
+    | {
+        embedUrl?: T;
+        height?: T;
+      };
+  businessHours?:
+    | T
+    | {
+        day?: T;
+        hours?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        label?: T;
+        id?: T;
+      };
+  layout?: T;
   id?: T;
   blockName?: T;
 }
@@ -1779,6 +1936,36 @@ export interface ListBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  events?:
+    | T
+    | {
+        year?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  layout?:
+    | T
+    | {
+        style?: T;
+      };
+  background?:
+    | T
+    | {
+        type?: T;
+        image?: T;
+        overlay?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FAQBlock_select".
  */
 export interface FAQBlockSelect<T extends boolean = true> {
@@ -1849,10 +2036,6 @@ export interface HeroBannerBlockSelect<T extends boolean = true> {
   style?:
     | T
     | {
-        backgroundColor?: T;
-        customBackgroundColor?: T;
-        textColor?: T;
-        customTextColor?: T;
         alignment?: T;
         size?: T;
       };
@@ -2372,45 +2555,7 @@ export interface Header {
   styling?: {
     backgroundType?: ('transparent' | 'semi-transparent' | 'solid') | null;
     buttonStyle?: {
-      style?: ('text' | 'background' | 'outlined') | null;
       roundness?: ('none' | 'small' | 'medium' | 'large' | 'full') | null;
-      colorTheme?: ('auto' | 'custom') | null;
-      lightThemeColors?: {
-        /**
-         * Culoarea de fundal/border pentru butoane în temă luminoasă
-         */
-        primaryColor?: string | null;
-        /**
-         * Culoarea la hover în temă luminoasă
-         */
-        hoverColor?: string | null;
-        /**
-         * Culoarea textului pentru temă luminoasă
-         */
-        textColor?: string | null;
-        /**
-         * Culoarea textului la hover pentru temă luminoasă
-         */
-        textHoverColor?: string | null;
-      };
-      darkThemeColors?: {
-        /**
-         * Culoarea de fundal/border pentru butoane în temă întunecată
-         */
-        primaryColor?: string | null;
-        /**
-         * Culoarea la hover în temă întunecată
-         */
-        hoverColor?: string | null;
-        /**
-         * Culoarea textului pentru temă întunecată
-         */
-        textColor?: string | null;
-        /**
-         * Culoarea textului la hover pentru temă întunecată
-         */
-        textHoverColor?: string | null;
-      };
     };
   };
   /**
@@ -2601,25 +2746,7 @@ export interface HeaderSelect<T extends boolean = true> {
         buttonStyle?:
           | T
           | {
-              style?: T;
               roundness?: T;
-              colorTheme?: T;
-              lightThemeColors?:
-                | T
-                | {
-                    primaryColor?: T;
-                    hoverColor?: T;
-                    textColor?: T;
-                    textHoverColor?: T;
-                  };
-              darkThemeColors?:
-                | T
-                | {
-                    primaryColor?: T;
-                    hoverColor?: T;
-                    textColor?: T;
-                    textHoverColor?: T;
-                  };
             };
       };
   navItems?:

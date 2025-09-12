@@ -1,4 +1,3 @@
-'use client'
 import Link from 'next/link'
 import React from 'react'
 
@@ -50,9 +49,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     let classes = 'sticky top-0 z-50 transition-all duration-300'
     
     if (backgroundType === 'solid') {
-      classes += ' backdrop-blur-md border-b bg-primary/95 border-primary/50 text-primary-foreground'
+      classes += ' border-b bg-background border-border'
     } else if (backgroundType === 'semi-transparent') {
-      classes += ' backdrop-blur-md border-b bg-primary/85 border-primary/30 text-primary-foreground'
+      classes += ' backdrop-blur-md border-b bg-background/85 border-border/30'
     } else {
       classes += ' bg-transparent backdrop-blur-sm'
     }

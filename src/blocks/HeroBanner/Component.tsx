@@ -13,10 +13,6 @@ type Props = {
   title: string
   description?: DefaultTypedEditorState
   style?: {
-    backgroundColor?: 'primary' | 'secondary' | 'dark' | 'light' | 'none' | 'custom'
-    customBackgroundColor?: string
-    textColor?: 'white' | 'dark' | 'custom'
-    customTextColor?: string
     alignment?: 'left' | 'center'
     size?: 'small' | 'medium' | 'large'
   }
@@ -28,7 +24,7 @@ type Props = {
   }
 }
 
-export const HeroBannerBlockComponent: React.FC<Props> = ({
+export const HeroBanner: React.FC<Props> = ({ 
   className,
   icon,
   iconText,
@@ -37,52 +33,6 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
   style = {},
   link,
 }) => {
-  const getBackgroundClass = () => {
-    switch (style.backgroundColor) {
-      case 'primary':
-        return 'bg-primary'
-      case 'secondary':
-        return 'bg-secondary'
-      case 'dark':
-        return 'bg-gray-800'
-      case 'light':
-        return 'bg-gray-50'
-      case 'none':
-        return 'bg-transparent'
-      case 'custom':
-        return ''
-      default:
-        return 'bg-primary'
-    }
-  }
-
-  const getCustomBackgroundStyle = () => {
-    if (style.backgroundColor === 'custom' && style.customBackgroundColor) {
-      return { backgroundColor: style.customBackgroundColor }
-    }
-    return {}
-  }
-
-  const getTextColorClass = () => {
-    switch (style.textColor) {
-      case 'white':
-        return 'text-white dark:text-gray-100'
-      case 'dark':
-        return 'text-gray-900 dark:text-white'
-      case 'custom':
-        return ''
-      default:
-        return 'text-white dark:text-gray-100'
-    }
-  }
-
-  const getCustomTextStyle = () => {
-    if (style.textColor === 'custom' && style.customTextColor) {
-      return { color: style.customTextColor }
-    }
-    return {}
-  }
-
   const getAlignmentClass = () => {
     switch (style.alignment) {
       case 'center':
@@ -110,11 +60,7 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
     <section className={`py-8 lg:py-12 ${className || ''}`}>
       <div className="container">
         <div 
-          className={`${getSizeClass()} ${getBackgroundClass()} ${getTextColorClass()} rounded-2xl`}
-          style={{
-            ...getCustomBackgroundStyle(),
-            ...getCustomTextStyle(),
-          }}
+          className={`${getSizeClass()} bg-gray-50 dark:bg-gray-900 rounded-2xl`}
         >
           <div className="container">
             <div className={`max-w-4xl ${style.alignment === 'center' ? 'mx-auto' : ''}`}>
@@ -125,14 +71,14 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
                   {(icon || iconText) && (
                     <div className="flex-shrink-0">
                       {iconText ? (
-                        <div className="text-4xl lg:text-5xl">
+                        <div className="text-4xl lg:text-5xl text-gray-900 dark:text-white">
                           {iconText}
                         </div>
                       ) : icon && typeof icon === 'object' ? (
                         <div className="w-12 h-12 lg:w-16 lg:h-16">
                           <Media
                             resource={icon}
-                            className="w-full h-full object-contain filter brightness-0 invert"
+                            className="w-full h-full object-contain filter brightness-0 dark:invert transition-all duration-200"
                           />
                         </div>
                       ) : null}
@@ -140,7 +86,7 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
                   )}
 
                   {/* Title */}
-                  <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight">
+                  <h1 className="text-2xl lg:text-3xl xl:text-4xl font-bold leading-tight text-gray-900 dark:text-white">
                     {title}
                   </h1>
                 </div>
@@ -152,7 +98,7 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
                       data={description} 
                       enableGutter={false} 
                       enableProse={false}
-                      className="prose prose-lg prose-invert max-w-none"
+                      className="prose prose-lg prose-gray dark:prose-invert max-w-none"
                     />
                   </div>
                 )}
@@ -164,11 +110,7 @@ export const HeroBannerBlockComponent: React.FC<Props> = ({
                       href={link.url}
                       target={link.newTab ? '_blank' : undefined}
                       rel={link.newTab ? 'noopener noreferrer' : undefined}
-                      className={`inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 ${
-                        link.style === 'solid'
-                          ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700'
-                          : 'border-2 border-white dark:border-gray-300 text-white dark:text-gray-100 hover:bg-white dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
-                      }`}
+                      className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
                     >
                       {link.label}
                       <svg

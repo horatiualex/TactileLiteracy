@@ -73,23 +73,23 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       case 'none':
         return 'rounded-none'
       case 'small':
-        return 'rounded-md'
+        return 'rounded-sm'
       case 'medium':
-        return 'rounded-lg'
+        return 'rounded-md'
       case 'large':
-        return 'rounded-xl'
+        return 'rounded-lg'
       case 'full':
         return 'rounded-full'
       default:
-        return 'rounded-lg'
+        return 'rounded-md'
     }
   }
 
   const getButtonClasses = (isActive = false) => {
-    const baseClasses = `flex items-center gap-1 px-3 py-2 text-lg transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()}`
+    const baseClasses = `flex items-center gap-1 px-3 py-2 text-base transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${getRoundnessClass()}`
     
     if (isActive) {
-      return `${baseClasses} bg-primary text-primary-foreground shadow-md ring-1 ring-primary/20`
+      return `${baseClasses} bg-primary text-primary-foreground shadow-sm`
     }
     
     return `${baseClasses} text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800`
@@ -232,20 +232,19 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             return (
               <div
                 key={i}
-                className="relative group"
+                className="relative"
                 onMouseEnter={() => {
                   setOpenIndex(i)
                   setHoveredIndex(i)
                 }}
                 onMouseLeave={() => {
-                  // Delay closing to allow moving to submenu
-                  setTimeout(() => {
-                    // Only close if we're not hovering this item anymore
-                    if (hoveredIndex !== i) {
-                      setOpenIndex(null)
-                      setHoveredIndex(null)
-                    }
+                  // Keep dropdown open longer to allow navigation to submenu
+                  const timer = setTimeout(() => {
+                    setOpenIndex(null)
+                    setHoveredIndex(null)
                   }, 150)
+                  // Store timer to clear it if mouse re-enters
+                  return () => clearTimeout(timer)
                 }}
               >
                 <button
@@ -263,17 +262,10 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 {/* Dropdown Menu */}
                 {isOpen && (
                   <div
-                    className={`absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 ${getRoundnessClass()} shadow-lg border border-gray-200 dark:border-gray-700 min-w-56 z-50 transition-all duration-150 opacity-100 visible translate-y-0`}
+                    className={`absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 ${getRoundnessClass()} shadow-lg border border-gray-200 dark:border-gray-700 min-w-56 z-50 transition-all duration-150 opacity-100 visible translate-y-0`}
                     role="menu"
                     onMouseEnter={() => {
-                      setHoveredIndex(i) // Keep tracking hover when in submenu
-                    }}
-                    onMouseLeave={() => {
-                      // Close when leaving submenu area
-                      setTimeout(() => {
-                        setOpenIndex(null)
-                        setHoveredIndex(null)
-                      }, 100)
+                      setOpenIndex(i) // Keep open when hovering submenu
                     }}
                   >
                     <div className="py-1">
@@ -282,22 +274,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                           const isSubActive = subIndex === activeSubIndex
                           return (
                             <li key={subIndex}>
-                              <div
-                                onMouseEnter={() => {
-                                  setHoveredIndex(i) // Maintain hover state when hovering submenu item
-                                }}
+                              <CMSLink
+                                {...item.pageLink}
+                                className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                                  isSubActive
+                                    ? 'bg-primary text-primary-foreground font-medium'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                                }`}
                               >
-                                <CMSLink
-                                  {...item.pageLink}
-                                  className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                                    isSubActive
-                                      ? 'bg-primary text-primary-foreground font-medium'
-                                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
-                                  }`}
-                                >
-                                  {item.label}
-                                </CMSLink>
-                              </div>
+                                {item.label}
+                              </CMSLink>
                             </li>
                           )
                         })}
@@ -312,14 +298,6 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
           return null
         })}
       </nav>
-
-      {/* Desktop Search Icon */}
-      <button
-        className="hidden lg:flex items-center justify-center p-2 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors duration-200"
-        aria-label="Căutare"
-      >
-        <SearchIcon className="w-5 h-5" />
-      </button>
 
       {/* Mobile Menu Button */}
       <button

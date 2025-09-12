@@ -1,2 +1,2 @@
-export { HeroBannerBlockComponent as Component } from './Component'
+export { HeroBanner as Component } from './Component'
 export { default as config } from './config'
