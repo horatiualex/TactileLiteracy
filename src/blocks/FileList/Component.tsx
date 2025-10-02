@@ -79,7 +79,7 @@ export const FileListBlockComponent: React.FC<Props> = ({
                 className="border-l-4 border-gray-900 dark:border-gray-100 pl-6 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-r-lg"
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-xl mt-0.5 flex-shrink-0">
+                  <span className="text-xl mt-0.5 flex-shrink-0" aria-hidden="true">
                     {getFileIcon(media.mimeType)}
                   </span>
                   <div className="flex-1 min-w-0">
@@ -87,7 +87,7 @@ export const FileListBlockComponent: React.FC<Props> = ({
                       href={media.url || ''}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-gray-900 dark:text-gray-100 hover:text-primary dark:hover:text-primary font-medium transition-colors block mb-1"
+                      className="text-gray-900 dark:text-gray-100 hover:underline font-medium transition-all block mb-1"
                     >
                       {fileTitle}
                     </a>
@@ -126,11 +126,11 @@ export const FileListBlockComponent: React.FC<Props> = ({
                 className="block p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-primary/30 hover:shadow-md transition-all"
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl flex-shrink-0">
+                  <span className="text-2xl flex-shrink-0" aria-hidden="true">
                     {getFileIcon(media.mimeType)}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate">
+                    <h3 className="font-medium text-gray-900 dark:text-gray-100 truncate hover:underline">
                       {fileTitle}
                     </h3>
                     {description && (
@@ -167,10 +167,10 @@ export const FileListBlockComponent: React.FC<Props> = ({
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors group"
               >
-                <span className="text-sm">
+                <span className="text-sm" aria-hidden="true">
                   {getFileIcon(media.mimeType)}
                 </span>
-                <span className="text-primary group-hover:text-primary/80 transition-colors flex-1">
+                <span className="text-gray-900 dark:text-gray-100 group-hover:underline transition-all flex-1">
                   {fileTitle}
                 </span>
                 {media.filesize && (

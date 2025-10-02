@@ -334,7 +334,10 @@ export interface Page {
  */
 export interface Media {
   id: string;
-  alt?: string | null;
+  /**
+   * Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG
+   */
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -984,10 +987,6 @@ export interface GalleryBlock {
          * Titlu/descriere pentru imagine (opțional)
          */
         caption?: string | null;
-        /**
-         * Text alternativ pentru accesibilitate (opțional)
-         */
-        alt?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1930,7 +1929,6 @@ export interface GalleryBlockSelect<T extends boolean = true> {
     | {
         image?: T;
         caption?: T;
-        alt?: T;
         id?: T;
       };
   layout?: T;

@@ -243,8 +243,8 @@ export const ModularHero: React.FC<ModularHeroProps> = ({
 
       {/* Bottom Text - Clean minimal styling */}
       {bottomText && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 max-w-[90%] md:max-w-none">
-          <p className="text-white/80 text-xs sm:text-sm font-medium text-center">
+        <div className="absolute bottom-8 left-8 right-20 sm:right-24 z-30">
+          <p className="text-white/80 text-xs sm:text-sm font-medium">
             {bottomText}
           </p>
         </div>

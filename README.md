@@ -1,6 +1,6 @@
-# Payload Website Template
+# S58 Studio Website
 
-This is the official [Payload Website Template](https://github.com/payloadcms/payload/blob/main/templates/website). Use it to power websites, blogs, or portfolios from small to enterprise. This repo includes a fully-working backend, enterprise-grade admin panel, and a beautifully designed, production-ready website.
+Welcome to S58 Studio - a modern content management system for websites, blogs, and portfolios. This repo includes a fully-working backend, admin panel, and a beautifully designed, production-ready website.
 
 This template is right for you if you are working on:
 

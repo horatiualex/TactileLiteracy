@@ -45,9 +45,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
 export const metadata: Metadata = {
   metadataBase: new URL(getServerSideURL()),
+  title: {
+    default: 'S58 Studio',
+    template: '%s | S58 Studio',
+  },
+  description: 'S58 Studio - Modern Content Management System',
   openGraph: mergeOpenGraph(),
   twitter: {
     card: 'summary_large_image',
-    creator: '@payloadcms',
+    creator: '@s58studio',
   },
 }

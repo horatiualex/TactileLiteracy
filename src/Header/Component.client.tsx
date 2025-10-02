@@ -103,7 +103,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
     if (linkToHome) {
       return (
-        <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+        <Link href="/acasa" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           {brandingContent}
         </Link>
       )
@@ -119,12 +119,12 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       <div className={layout === 'full-width' ? 'w-full px-4 sm:px-6 lg:px-8' : 'container'}>
         <div className="py-3 flex items-center">
           {/* Left: Branding (Logo and/or Text) */}
-          <div className="flex items-center lg:mr-8">
+          <div className="flex items-center lg:mr-8 flex-shrink-0">
             {renderBranding()}
           </div>
 
           {/* Center and Right: Navigation and Actions - This includes nav + search/mobile button */}
-          <div className="flex-1 flex items-center">
+          <div className="flex-1 flex items-center justify-end lg:justify-between">
             <HeaderNav data={data} />
           </div>
         </div>

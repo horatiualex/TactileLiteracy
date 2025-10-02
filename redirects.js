@@ -1,4 +1,10 @@
 const redirects = async () => {
+  const homeToAcasaRedirect = {
+    source: '/',
+    destination: '/acasa',
+    permanent: true,
+  }
+
   const internetExplorerRedirect = {
     destination: '/ie-incompatible.html',
     has: [
@@ -12,7 +18,7 @@ const redirects = async () => {
     source: '/:path((?!ie-incompatible.html$).*)', // all pages except the incompatibility page
   }
 
-  const redirects = [internetExplorerRedirect]
+  const redirects = [homeToAcasaRedirect, internetExplorerRedirect]
 
   return redirects
 }

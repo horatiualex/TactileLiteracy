@@ -66,6 +66,25 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      // Check if click is outside the navigation
+      if (!target.closest('.header-nav-container')) {
+        setOpenIndex(null)
+      }
+    }
+
+    if (openIndex !== null) {
+      document.addEventListener('click', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [openIndex])
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -230,9 +249,9 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   }
 
   return (
-    <div className="flex-1 flex items-center justify-between">
+    <div className="flex-1 flex items-center justify-end lg:justify-between">
       {/* Desktop Navigation - Center positioned */}
-      <nav className="hidden lg:flex gap-3 items-center header-nav-container flex-1 justify-center" aria-label="Meniu principal">
+      <nav className="hidden lg:flex gap-3 items-center header-nav-container lg:flex-1 lg:justify-center" aria-label="Meniu principal">
         {navItems.map((navItem, i) => {
           if (!navItem) return null
           const { label, type, singleLink, submenu, dropdownStyle } = navItem
@@ -268,25 +287,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               <div
                 key={i}
                 className="relative group"
-                onMouseEnter={() => {
-                  setOpenIndex(i)
-                  setHoveredIndex(i)
-                }}
-                onMouseLeave={() => {
-                  // Delay closing to allow moving to submenu
-                  setTimeout(() => {
-                    // Only close if we're not hovering this item anymore
-                    if (hoveredIndex !== i) {
-                      setOpenIndex(null)
-                      setHoveredIndex(null)
-                    }
-                  }, 150)
-                }}
               >
                 <button
                   className={`${getButtonClasses(isActive, isOpen)}`}
                   aria-expanded={isOpen}
                   aria-haspopup="true"
+                  onClick={() => {
+                    setOpenIndex(isOpen ? null : i)
+                  }}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex(null)}
                 >
                   {label}
                   <ChevronDownIcon 
@@ -300,16 +310,6 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                   <div
                     className={`absolute top-full left-0 mt-1 bg-white dark:bg-gray-800 ${getRoundnessClass()} shadow-lg border border-gray-200 dark:border-gray-700 min-w-56 z-50 transition-all duration-150 opacity-100 visible translate-y-0`}
                     role="menu"
-                    onMouseEnter={() => {
-                      setHoveredIndex(i) // Keep tracking hover when in submenu
-                    }}
-                    onMouseLeave={() => {
-                      // Close when leaving submenu area
-                      setTimeout(() => {
-                        setOpenIndex(null)
-                        setHoveredIndex(null)
-                      }, 100)
-                    }}
                   >
                     <div className="py-1">
                       <ul>
@@ -317,22 +317,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                           const isSubActive = subIndex === activeSubIndex
                           return (
                             <li key={subIndex}>
-                              <div
-                                onMouseEnter={() => {
-                                  setHoveredIndex(i) // Maintain hover state when hovering submenu item
-                                }}
+                              <CMSLink
+                                {...item.pageLink}
+                                className={`block px-4 py-2 text-sm transition-colors duration-200 ${
+                                  isSubActive
+                                    ? 'bg-primary text-primary-foreground font-medium'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                                }`}
                               >
-                                <CMSLink
-                                  {...item.pageLink}
-                                  className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-                                    isSubActive
-                                      ? 'bg-primary text-primary-foreground font-medium'
-                                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
-                                  }`}
-                                >
-                                  {item.label}
-                                </CMSLink>
-                              </div>
+                                {item.label}
+                              </CMSLink>
                             </li>
                           )
                         })}
@@ -377,7 +371,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
         <div className="fixed inset-0 z-[9999] lg:hidden bg-background overflow-y-auto min-h-screen">
           {/* Mobile Header */}
           <div className="flex items-center justify-between p-4 border-b border-border bg-background">
-            <Link href="/" onClick={closeMobileMenu} className="flex items-center gap-3">
+            <Link href="/acasa" onClick={closeMobileMenu} className="flex items-center gap-3">
               {branding?.showLogo !== false && <Logo />}
               {branding?.showText && branding?.brandText && (
                 <span className="text-xl font-bold text-gray-900 dark:text-white">

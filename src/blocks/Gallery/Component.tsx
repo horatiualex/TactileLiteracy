@@ -18,7 +18,6 @@ type MediaObject = {
 type GalleryImage = {
   image?: MediaObject
   caption?: string
-  alt?: string
 }
 
 type Props = {
@@ -274,7 +273,7 @@ export const GalleryBlockComponent: React.FC<Props> = ({
                     src={typeof images[lightboxIndex].image === 'object' && images[lightboxIndex].image?.url 
                       ? images[lightboxIndex].image.url 
                       : ''}
-                    alt={images[lightboxIndex].alt || images[lightboxIndex].image?.alt || ''}
+                    alt={images[lightboxIndex].image?.alt || ''}
                     className="block max-w-full max-h-full w-auto h-auto object-contain"
                     style={{
                       maxWidth: 'calc(100vw - 8rem)',

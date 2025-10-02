@@ -26,7 +26,10 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      //required: true,
+      required: true,
+      admin: {
+        description: 'Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG',
+      },
     },
     {
       name: 'caption',
@@ -39,7 +42,7 @@ export const Media: CollectionConfig = {
     },
   ],
   upload: {
-    // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
+    // Upload to the public/media directory in Next.js making them publicly accessible
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,

@@ -65,14 +65,6 @@ export const Gallery: Block = {
             description: 'Titlu/descriere pentru imagine (opțional)',
           },
         },
-        {
-          name: 'alt',
-          type: 'text',
-          label: 'Text alternativ',
-          admin: {
-            description: 'Text alternativ pentru accesibilitate (opțional)',
-          },
-        },
       ],
     },
     {
