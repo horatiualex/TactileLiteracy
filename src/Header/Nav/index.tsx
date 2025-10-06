@@ -7,6 +7,7 @@ import { CMSLink } from '@/components/Link'
 import { Logo } from '@/components/Logo/Logo'
 import Link from 'next/link'
 import { SearchIcon, ChevronDownIcon, Menu, X } from 'lucide-react'
+import { ThemeToggle } from '@/components/ThemeToggle'
 import './mobile-menu-override.css'
 
 interface HeaderStyling {
@@ -344,6 +345,11 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
 
       {/* Desktop and Mobile Actions */}
       <div className="flex items-center gap-3">
+        {/* Theme Toggle Button */}
+        <div className="hidden lg:block">
+          <ThemeToggle variant="header" />
+        </div>
+
         {/* Desktop Search Button - Right side, black button like Anthropic */}
         {search?.showSearch !== false && (
           <Link
@@ -485,6 +491,13 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
                 Căutare
               </Link>
             )}
+
+            {/* Mobile Theme Toggle */}
+            <div className="px-4 py-3 border-t border-border mt-4 pt-4">
+              <div className="flex items-center gap-2">
+                <ThemeToggle variant="footer" />
+              </div>
+            </div>
           </nav>
         </div>
       )}

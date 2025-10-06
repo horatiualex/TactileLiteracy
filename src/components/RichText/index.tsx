@@ -76,7 +76,6 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
         return {
           image: mediaObject,
           caption: item.caption || undefined,
-          alt: item.alt || undefined,
         }
       })
 

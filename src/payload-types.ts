@@ -103,10 +103,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    settings: Setting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: 'ro' | 'en';
   user: User & {
@@ -2764,6 +2766,37 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings".
+ */
+export interface Setting {
+  id: string;
+  backToTop?: {
+    /**
+     * Show a button to scroll back to top on long pages
+     */
+    enabled?: boolean | null;
+    /**
+     * Number of pixels to scroll before showing the button
+     */
+    showAfterScroll?: number | null;
+    position?: ('bottom-right' | 'bottom-left') | null;
+  };
+  themeToggle?: {
+    /**
+     * Display theme toggle button in the header for quick access
+     */
+    showInHeader?: boolean | null;
+    /**
+     * Display theme toggle button in the footer
+     */
+    showInFooter?: boolean | null;
+  };
+  siteName?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2920,6 +2953,29 @@ export interface FooterSelect<T extends boolean = true> {
             };
         showThemeSelector?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings_select".
+ */
+export interface SettingsSelect<T extends boolean = true> {
+  backToTop?:
+    | T
+    | {
+        enabled?: T;
+        showAfterScroll?: T;
+        position?: T;
+      };
+  themeToggle?:
+    | T
+    | {
+        showInHeader?: T;
+        showInFooter?: T;
+      };
+  siteName?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

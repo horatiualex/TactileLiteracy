@@ -57,7 +57,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const extendedData = data as ExtendedHeader
   const styling = extendedData?.styling
   const branding = extendedData?.branding
-  const search = extendedData?.search
   const backgroundType = styling?.backgroundType || 'transparent'
   const layout = styling?.layout || 'container'
 

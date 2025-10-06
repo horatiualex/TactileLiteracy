@@ -42,18 +42,30 @@ export const seed = async ({
 
   // clear the database
   await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
+    globals.map((global) => {
+      // Only clear navItems for header and footer, not settings
+      if (global === 'settings') {
+        return payload.updateGlobal({
+          slug: global,
+          data: {} as any,
+          depth: 0,
+          context: {
+            disableRevalidate: true,
+          },
+        })
+      }
+      
+      return payload.updateGlobal({
         slug: global,
         data: {
           navItems: [],
-        },
+        } as any,
         depth: 0,
         context: {
           disableRevalidate: true,
         },
-      }),
-    ),
+      })
+    }),
   )
 
   await Promise.all(
@@ -288,16 +300,18 @@ export const seed = async ({
       data: {
         navItems: [
           {
-            link: {
+            type: 'link',
+            label: 'Posts',
+            singleLink: {
               type: 'custom',
-              label: 'Posts',
               url: '/posts',
             },
           },
           {
-            link: {
+            type: 'link',
+            label: 'Contact',
+            singleLink: {
               type: 'reference',
-              label: 'Contact',
               reference: {
                 relationTo: 'pages',
                 value: contactPage.id,
@@ -305,37 +319,29 @@ export const seed = async ({
             },
           },
         ],
-      },
+      } as any,
     }),
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        columns: [
           {
-            link: {
-              type: 'custom',
-              label: 'Admin',
-              url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
+            type: 'linkList',
+            linkList: {
+              title: 'Links',
+              links: [
+                {
+                  link: {
+                    type: 'custom',
+                    label: 'Admin',
+                    url: '/admin',
+                  },
+                },
+              ],
             },
           },
         ],
-      },
+      } as any,
     }),
   ])
 

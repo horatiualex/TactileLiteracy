@@ -26,6 +26,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       slug: true,
       categories: true,
       meta: true,
+      createdAt: true,
     },
     // pagination: false reduces overhead if you don't need totalDocs
     pagination: false,
@@ -64,7 +65,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       <PageClient />
       <div className="container mb-16">
         <div className="prose dark:prose-invert max-w-none text-center">
-          <h1 className="mb-8 lg:mb-16">Search</h1>
+          <h1 className="mb-8 lg:mb-16">Căutare</h1>
 
           <div className="max-w-[50rem] mx-auto">
             <Search />
@@ -75,7 +76,9 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
       {posts.totalDocs > 0 ? (
         <CollectionArchive posts={posts.docs as CardPostData[]} />
       ) : (
-        <div className="container">No results found.</div>
+        <div className="container">
+          <p className="text-center text-muted-foreground">Nu au fost găsite rezultate.</p>
+        </div>
       )}
     </div>
   )
@@ -83,6 +86,7 @@ export default async function Page({ searchParams: searchParamsPromise }: Args) 
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Search - S58 Studio`,
+    title: `Căutare - S58 Studio`,
+    description: 'Caută conținut pe site-ul S58 Studio',
   }
 }

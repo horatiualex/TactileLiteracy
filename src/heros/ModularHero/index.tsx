@@ -250,11 +250,19 @@ export const ModularHero: React.FC<ModularHeroProps> = ({
         </div>
       )}
 
-      {/* Down Arrow - Similar to Porsche website */}
+      {/* Down Arrow - Improved visibility and WCAG compliance */}
       {showDownArrow && (
         <div className="absolute bottom-8 right-4 sm:right-8 z-30">
           <button 
-            className="group flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+            className="group flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16
+            bg-white dark:bg-white
+            text-gray-900 dark:text-gray-900
+            rounded-full shadow-xl 
+            hover:bg-gray-100 dark:hover:bg-gray-200
+            hover:shadow-2xl hover:scale-110
+            focus:outline-none focus:ring-4 focus:ring-white focus:ring-offset-4 focus:ring-offset-black/50
+            transition-all duration-300 ease-in-out
+            border-2 border-white/20"
             onClick={() => {
               const heroElement = document.querySelector('[class*="min-h-screen"]')
               if (heroElement) {
@@ -265,21 +273,23 @@ export const ModularHero: React.FC<ModularHeroProps> = ({
                 })
               }
             }}
-            aria-label="Scroll past hero section"
+            aria-label="Derulează la secțiunea următoare"
+            title="Derulează jos"
           >
             <svg 
-              className="w-5 h-5 sm:w-6 sm:h-6 text-white group-hover:translate-y-1 transition-transform duration-300" 
+              className="w-7 h-7 sm:w-8 sm:h-8 text-gray-900 group-hover:translate-y-1 transition-transform duration-300" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
+              strokeWidth={2.5}
             >
               <path 
                 strokeLinecap="round" 
                 strokeLinejoin="round" 
-                strokeWidth={2} 
                 d="M19 14l-7 7m0 0l-7-7m7 7V3" 
               />
             </svg>
+            <span className="sr-only">Derulează la următoarea secțiune</span>
           </button>
         </div>
       )}
