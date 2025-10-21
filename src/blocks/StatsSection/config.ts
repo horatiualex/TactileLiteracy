@@ -7,8 +7,6 @@ const StatsSection: Block = {
     singular: 'Secțiune Statistici',
     plural: 'Secțiuni Statistici',
   },
-  imageURL: '/api/media/file/stats-section-block.jpg',
-  imageAltText: 'Stats Section Block',
   fields: [
     {
       name: 'layout',

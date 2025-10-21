@@ -74,6 +74,57 @@ export const hero: Field = {
       ],
     },
     {
+      name: 'splitScreenRightContent',
+      type: 'select',
+      admin: {
+        condition: (_, { type, layout }: any = {}) => type === 'modular' && layout === 'splitScreen',
+      },
+      defaultValue: 'image',
+      label: 'Right Side Content',
+      options: [
+        {
+          label: 'Image',
+          value: 'image',
+        },
+        {
+          label: 'Blog Posts (4 most recent)',
+          value: 'blogPosts',
+        },
+      ],
+    },
+    {
+      name: 'blogPostsMode',
+      type: 'select',
+      admin: {
+        condition: (_, { type, layout, splitScreenRightContent }: any = {}) => 
+          type === 'modular' && layout === 'splitScreen' && splitScreenRightContent === 'blogPosts',
+      },
+      defaultValue: 'newest',
+      label: 'Blog Posts Selection',
+      options: [
+        {
+          label: 'Show 4 Newest Posts',
+          value: 'newest',
+        },
+        {
+          label: 'Choose Specific Posts',
+          value: 'selected',
+        },
+      ],
+    },
+    {
+      name: 'selectedBlogPosts',
+      type: 'relationship',
+      relationTo: 'posts',
+      hasMany: true,
+      maxRows: 4,
+      admin: {
+        condition: (_, { type, layout, splitScreenRightContent, blogPostsMode }: any = {}) => 
+          type === 'modular' && layout === 'splitScreen' && splitScreenRightContent === 'blogPosts' && blogPostsMode === 'selected',
+      },
+      label: 'Select Blog Posts (max 4)',
+    },
+    {
       name: 'contentAlignment',
       type: 'select',
       admin: {

@@ -7,8 +7,6 @@ const HeroBanner: Block = {
     singular: 'Hero Banner Block',
     plural: 'Hero Banner Blocks',
   },
-  imageURL: '/api/media/file/hero-banner-block.jpg',
-  imageAltText: 'Hero Banner Block',
   fields: [
     {
       name: 'icon',

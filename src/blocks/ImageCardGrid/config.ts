@@ -7,8 +7,6 @@ const ImageCardGrid: Block = {
     singular: 'Image Card Grid Block',
     plural: 'Image Card Grid Blocks',
   },
-  imageURL: '/api/media/file/image-card-grid-block.jpg',
-  imageAltText: 'Image Card Grid Block',
   fields: [
     {
       name: 'title',

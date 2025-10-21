@@ -7,8 +7,6 @@ const FAQ: Block = {
     singular: 'FAQ Block',
     plural: 'FAQ Blocks',
   },
-  imageURL: '/api/media/file/faq-block.jpg',
-  imageAltText: 'FAQ Block',
   fields: [
     {
       name: 'title',
