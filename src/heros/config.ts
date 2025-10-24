@@ -17,26 +17,26 @@ export const hero: Field = {
       name: 'type',
       type: 'select',
       defaultValue: 'lowImpact',
-      label: 'Type',
+      label: 'Tip',
       options: [
         {
-          label: 'None',
+          label: 'Fără',
           value: 'none',
         },
         {
-          label: 'High Impact',
+          label: 'Impact Mare',
           value: 'highImpact',
         },
         {
-          label: 'Medium Impact',
+          label: 'Impact Mediu',
           value: 'mediumImpact',
         },
         {
-          label: 'Low Impact',
+          label: 'Impact Mic',
           value: 'lowImpact',
         },
         {
-          label: 'Modular Hero',
+          label: 'Hero Modular',
           value: 'modular',
         },
       ],
@@ -49,26 +49,26 @@ export const hero: Field = {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
       defaultValue: 'centered',
-      label: 'Layout Style',
+      label: 'Stil Layout',
       options: [
         {
-          label: 'Centered with Background',
+          label: 'Centrat cu Fundal',
           value: 'centered',
         },
         {
-          label: 'Text Left - Image Right',
+          label: 'Text Stânga - Imagine Dreapta',
           value: 'textLeft',
         },
         {
-          label: 'Text Right - Image Left',
+          label: 'Text Dreapta - Imagine Stânga',
           value: 'textRight',
         },
         {
-          label: 'Text Only - Centered',
+          label: 'Doar Text - Centrat',
           value: 'textOnly',
         },
         {
-          label: 'Split Screen',
+          label: 'Ecran Împărțit',
           value: 'splitScreen',
         },
       ],
@@ -80,14 +80,14 @@ export const hero: Field = {
         condition: (_, { type, layout }: any = {}) => type === 'modular' && layout === 'splitScreen',
       },
       defaultValue: 'image',
-      label: 'Right Side Content',
+      label: 'Conținut Partea Dreaptă',
       options: [
         {
-          label: 'Image',
+          label: 'Imagine',
           value: 'image',
         },
         {
-          label: 'Blog Posts (4 most recent)',
+          label: 'Articole Blog (4 cele mai recente)',
           value: 'blogPosts',
         },
       ],
@@ -100,14 +100,14 @@ export const hero: Field = {
           type === 'modular' && layout === 'splitScreen' && splitScreenRightContent === 'blogPosts',
       },
       defaultValue: 'newest',
-      label: 'Blog Posts Selection',
+      label: 'Selectare Articole Blog',
       options: [
         {
-          label: 'Show 4 Newest Posts',
+          label: 'Afișează 4 Articole Recente',
           value: 'newest',
         },
         {
-          label: 'Choose Specific Posts',
+          label: 'Alege Articole Specifice',
           value: 'selected',
         },
       ],
@@ -122,7 +122,7 @@ export const hero: Field = {
         condition: (_, { type, layout, splitScreenRightContent, blogPostsMode }: any = {}) => 
           type === 'modular' && layout === 'splitScreen' && splitScreenRightContent === 'blogPosts' && blogPostsMode === 'selected',
       },
-      label: 'Select Blog Posts (max 4)',
+      label: 'Selectează Articole Blog (max 4)',
     },
     {
       name: 'contentAlignment',
@@ -131,18 +131,18 @@ export const hero: Field = {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
       defaultValue: 'center',
-      label: 'Content Alignment',
+      label: 'Aliniere Conținut',
       options: [
         {
-          label: 'Left',
+          label: 'Stânga',
           value: 'left',
         },
         {
-          label: 'Center',
+          label: 'Centru',
           value: 'center',
         },
         {
-          label: 'Right',
+          label: 'Dreapta',
           value: 'right',
         },
       ],
@@ -154,22 +154,22 @@ export const hero: Field = {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
       defaultValue: 'image',
-      label: 'Background Style',
+      label: 'Stil Fundal',
       options: [
         {
-          label: 'Image Background',
+          label: 'Fundal Imagine',
           value: 'image',
         },
         {
-          label: 'Gradient Background',
+          label: 'Fundal Gradient',
           value: 'gradient',
         },
         {
-          label: 'Solid Color',
+          label: 'Culoare Solidă',
           value: 'solid',
         },
         {
-          label: 'None',
+          label: 'Fără',
           value: 'none',
         },
       ],
@@ -180,7 +180,7 @@ export const hero: Field = {
       admin: {
         condition: (_, { type, backgroundStyle }: any = {}) => type === 'modular' && backgroundStyle === 'solid',
       },
-      label: 'Background Color (hex, rgb, etc.)',
+      label: 'Culoare Fundal (hex, rgb, etc.)',
     },
     {
       name: 'backgroundImage',
@@ -189,7 +189,7 @@ export const hero: Field = {
         condition: (_, { type, backgroundStyle }: any = {}) => type === 'modular' && backgroundStyle === 'image',
       },
       relationTo: 'media',
-      label: 'Background Image',
+      label: 'Imagine Fundal',
       required: false,
     },
     {
@@ -202,22 +202,22 @@ export const hero: Field = {
         {
           name: 'from',
           type: 'text',
-          label: 'Gradient From Color',
+          label: 'Culoare Început Gradient',
         },
         {
           name: 'to',
           type: 'text',
-          label: 'Gradient To Color',
+          label: 'Culoare Sfârșit Gradient',
         },
         {
           name: 'direction',
           type: 'select',
           defaultValue: 'to-br',
           options: [
-            { label: 'Top to Bottom', value: 'to-b' },
-            { label: 'Bottom Right', value: 'to-br' },
-            { label: 'Left to Right', value: 'to-r' },
-            { label: 'Top Right', value: 'to-tr' },
+            { label: 'Sus către Jos', value: 'to-b' },
+            { label: 'Spre Dreapta-Jos', value: 'to-br' },
+            { label: 'Stânga către Dreapta', value: 'to-r' },
+            { label: 'Spre Dreapta-Sus', value: 'to-tr' },
           ],
         },
       ],
@@ -233,7 +233,7 @@ export const hero: Field = {
           name: 'enabled',
           type: 'checkbox',
           defaultValue: false,
-          label: 'Enable Overlay',
+          label: 'Activează Overlay',
         },
         {
           name: 'color',
@@ -242,7 +242,7 @@ export const hero: Field = {
             condition: (_, siblingData: any) => siblingData.enabled,
           },
           defaultValue: 'rgba(0,0,0,0.5)',
-          label: 'Overlay Color',
+          label: 'Culoare Overlay',
         },
       ],
     },
@@ -282,7 +282,7 @@ export const hero: Field = {
         condition: (_, { type, layout }: any = {}) => type === 'modular' && ['textLeft', 'textRight', 'splitScreen'].includes(layout),
       },
       relationTo: 'media',
-      label: 'Secondary Image (for split layouts)',
+      label: 'Imagine Secundară (pentru layout-uri împărțite)',
     },
     {
       name: 'bottomText',
@@ -290,7 +290,7 @@ export const hero: Field = {
       admin: {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
-      label: 'Bottom Text (e.g., "Consum combinat: 11,7 – 11,5 l/100 km")',
+      label: 'Text Jos (ex: "Consum combinat: 11,7 – 11,5 l/100 km")',
     },
     {
       name: 'showDownArrow',
@@ -299,7 +299,7 @@ export const hero: Field = {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
       defaultValue: false,
-      label: 'Show Down Arrow',
+      label: 'Afișează Săgeată Jos',
     },
   ],
   label: false,

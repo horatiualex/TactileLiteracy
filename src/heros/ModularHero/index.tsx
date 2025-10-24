@@ -32,7 +32,7 @@ interface ModularHeroProps {
   showDownArrow?: boolean | null
   splitScreenRightContent?: 'image' | 'blogPosts' | null
   blogPostsMode?: 'newest' | 'selected' | null
-  selectedBlogPosts?: (string | Post)[]
+  selectedBlogPosts?: (string | Post)[] | null
 }
 
 export const ModularHero = async ({
@@ -138,14 +138,14 @@ export const ModularHero = async ({
 
   // Generate content layout classes
   const getContentClasses = () => {
-    let classes = 'container mx-auto px-6 lg:px-8 z-20 relative w-full'
+    let classes = 'z-20 relative w-full'
     
     if (normalizedLayout === 'textLeft' || normalizedLayout === 'textRight') {
-      classes += ' grid lg:grid-cols-2 gap-16 xl:gap-20 items-center'
+      classes += ' container mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 xl:gap-20 items-center'
     } else if (normalizedLayout === 'splitScreen') {
-      classes += ' grid lg:grid-cols-2 gap-20 xl:gap-24 items-center'
+      classes += ' container mx-auto flex flex-col lg:flex-row items-center justify-between px-6 lg:px-8 gap-12 lg:gap-16'
     } else {
-      classes += ' max-w-5xl'
+      classes += ' container mx-auto px-6 lg:px-8 max-w-5xl'
       // Only center text if not using image background layouts
       if (normalizedLayout === 'centered' || normalizedLayout === 'textOnly') {
         classes += ' text-center'
@@ -169,7 +169,7 @@ export const ModularHero = async ({
   }
 
   const renderContent = () => (
-    <div className={`${getTextClasses()} ${normalizedLayout === 'splitScreen' ? 'flex flex-col justify-center max-w-xl' : ''} ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'max-w-2xl' : ''}`}>
+    <div className={`${getTextClasses()} ${normalizedLayout === 'splitScreen' ? 'flex flex-col justify-center w-full lg:max-w-2xl' : ''} ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'max-w-2xl' : ''}`}>
       <div className="border-l-4 border-white/30 pl-6 mb-10">
         {richText && (
           <RichText 
@@ -180,23 +180,37 @@ export const ModularHero = async ({
         )}
       </div>
       {Array.isArray(links) && links.length > 0 && (
-        <div className={`flex gap-4 ${
-          normalizedContentAlignment === 'center' ? 'justify-center' : 
-          normalizedContentAlignment === 'right' ? 'justify-end' : 'justify-start'
-        } ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'flex-wrap' : ''}`}>
+        <div className={`flex gap-4 ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'flex-wrap' : ''} justify-start`}>
           {links.map(({ link }, i) => (
             <CMSLink
               key={i}
-              className={`inline-flex items-center gap-2 px-8 py-4 font-semibold rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent ${
+              className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent ${
                 i === 0 
-                  ? 'bg-white text-gray-900 shadow-lg hover:bg-gray-100 focus:ring-white' 
-                  : 'bg-transparent text-white border-2 border-white/30 hover:bg-white hover:text-gray-900 hover:border-white focus:ring-white'
+                  ? normalizedBackgroundStyle === 'image' || overlay?.enabled
+                    ? 'bg-white text-gray-900 shadow-lg hover:bg-gray-100 hover:shadow-xl hover:-translate-y-0.5 focus:ring-white'
+                    : 'bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-blue-500'
+                  : normalizedBackgroundStyle === 'image' || overlay?.enabled
+                    ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 focus:ring-white/50 backdrop-blur-sm'
+                    : 'bg-gray-200 text-gray-900 border border-gray-300 hover:bg-gray-300 hover:border-gray-400 focus:ring-gray-500'
               }`}
               {...link}
             >
               {link.label}
+              {i === 0 && (
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              )}
             </CMSLink>
           ))}
+        </div>
+      )}
+      {/* Bottom Text - Integrated into content flow */}
+      {bottomText && (
+        <div className="mt-12">
+          <p className="text-white/80 text-xs sm:text-sm font-medium">
+            {bottomText}
+          </p>
         </div>
       )}
     </div>
@@ -249,69 +263,92 @@ export const ModularHero = async ({
 
         {normalizedLayout === 'splitScreen' && (
           <>
-            <div className="flex items-center justify-start">
+            <div className="flex-1 flex items-center w-full">
               {renderContent()}
             </div>
             {splitScreenRightContent === 'blogPosts' ? (
-              <div className="flex items-center justify-end pr-4">
-                <div className="grid grid-cols-2 gap-4 w-full max-w-[600px]">
-                  {blogPosts.map((post, index) => {
-                    const featuredImage = typeof post.meta?.image === 'object' ? post.meta.image : null
-                    
-                    return (
-                      <Link
-                        key={post.id}
-                        href={`/posts/${post.slug}`}
-                        className="group relative block bg-white rounded-[20px] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.08)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)] hover:-translate-y-1.5 transition-all duration-400 focus:outline-none focus:ring-2 focus:ring-white/60 focus:ring-offset-2 focus:ring-offset-transparent"
-                        style={{
-                          animationDelay: `${index * 75}ms`
-                        }}
-                      >
-                        {/* Post Image */}
-                        {featuredImage && (
-                          <div className="aspect-[1.2/1] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 relative">
-                            {/* Hover overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-20 pointer-events-none" />
-                            <Media
-                              resource={featuredImage}
-                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[600ms] ease-out"
-                            />
+              <div className="flex-1 flex items-center w-full lg:max-w-[500px] xl:max-w-[600px]">
+                <div className="w-full space-y-4">
+                  {/* Header with View All link */}
+                  <div className="flex items-center justify-between mb-6 lg:mb-8">
+                    <h2 className={`text-2xl lg:text-3xl font-bold ${normalizedBackgroundStyle === 'image' || overlay?.enabled ? 'text-white' : 'text-gray-900'}`}>
+                      Ultimele Noutăți
+                    </h2>
+                    <Link 
+                      href="/posts" 
+                      className={`text-sm lg:text-base font-semibold inline-flex items-center gap-1.5 transition-colors ${
+                        normalizedBackgroundStyle === 'image' || overlay?.enabled 
+                          ? 'text-blue-400 hover:text-blue-300' 
+                          : 'text-blue-600 hover:text-blue-700'
+                      }`}
+                    >
+                      Vezi Toate
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                  </div>
+                  
+                  {/* Stacked blog post cards */}
+                  <div className="space-y-3 lg:space-y-4">
+                    {blogPosts.map((post) => {
+                      const featuredImage = typeof post.meta?.image === 'object' ? post.meta.image : null
+                      const isDarkTheme = normalizedBackgroundStyle === 'image' || overlay?.enabled
+                      
+                      return (
+                        <Link
+                          key={post.id}
+                          href={`/posts/${post.slug}`}
+                          className={`group block rounded-xl lg:rounded-2xl p-4 lg:p-6 border transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${
+                            isDarkTheme
+                              ? 'bg-gray-800/70 backdrop-blur-md border-gray-700/50 hover:bg-gray-800/90 hover:border-gray-600/50'
+                              : 'bg-white/90 backdrop-blur-sm border-gray-200 hover:bg-white hover:border-gray-300 shadow-md'
+                          }`}
+                        >
+                          <div className="flex flex-col gap-2 lg:gap-3">
+                            {/* Post Title */}
+                            <h3 className={`font-bold text-base lg:text-lg leading-tight line-clamp-2 transition-colors ${
+                              isDarkTheme
+                                ? 'text-white group-hover:text-blue-400'
+                                : 'text-gray-900 group-hover:text-blue-600'
+                            }`}>
+                              {post.title}
+                            </h3>
+                            
+                            {/* Post Meta - Date and Read Time */}
+                            <div className={`flex items-center gap-3 lg:gap-4 text-xs lg:text-sm ${
+                              isDarkTheme ? 'text-gray-400' : 'text-gray-500'
+                            }`}>
+                              {post.publishedAt && (
+                                <span className="flex items-center gap-1.5 lg:gap-2">
+                                  <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                  </svg>
+                                  {new Date(post.publishedAt).toLocaleDateString('ro-RO', { 
+                                    month: 'short', 
+                                    day: 'numeric', 
+                                    year: 'numeric' 
+                                  })}
+                                </span>
+                              )}
+                              <span className="flex items-center gap-1.5 lg:gap-2">
+                                <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                5 min read
+                              </span>
+                            </div>
                           </div>
-                        )}
-                        
-                        {/* Post Content */}
-                        <div className="p-5 relative bg-white">
-                          <h3 className="text-gray-900 font-bold text-[13px] leading-[1.4] line-clamp-2 group-hover:text-gray-700 transition-colors duration-300 mb-3 min-h-[2.3rem]">
-                            {post.title}
-                          </h3>
-                          
-                          {/* Read more indicator */}
-                          <div className="flex items-center text-[11px] font-bold text-gray-400 group-hover:text-blue-500 transition-all duration-300">
-                            <span className="uppercase tracking-wide">Citește mai mult</span>
-                            <svg 
-                              className="w-3.5 h-3.5 ml-1.5 group-hover:translate-x-1 transition-transform duration-300" 
-                              fill="none" 
-                              viewBox="0 0 24 24" 
-                              stroke="currentColor"
-                              strokeWidth={2.5}
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                          </div>
-                        </div>
-                        
-                        {/* Subtle shine effect on hover */}
-                        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                          <div className="absolute top-0 -left-full h-full w-1/2 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-[-25deg] group-hover:left-full transition-all duration-700" />
-                        </div>
-                      </Link>
-                    )
-                  })}
+                        </Link>
+                      )
+                    })}
+                  </div>
+                  {showDownArrow && <ScrollDownButton />}
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-end">
-                {renderImage(media || secondaryImage, 'relative max-w-2xl')}
+              <div className="flex-1 flex items-center justify-center">
+                {renderImage(media || secondaryImage, 'relative w-full max-w-2xl')}
               </div>
             )}
           </>
@@ -325,7 +362,7 @@ export const ModularHero = async ({
       </div>
 
       {/* Bottom Text - Clean minimal styling */}
-      {bottomText && (
+      {bottomText && normalizedLayout !== 'splitScreen' && (
         <div className="absolute bottom-8 left-8 right-20 sm:right-24 z-30">
           <p className="text-white/80 text-xs sm:text-sm font-medium">
             {bottomText}
@@ -334,7 +371,7 @@ export const ModularHero = async ({
       )}
 
       {/* Down Arrow - Improved visibility and WCAG compliance */}
-      {showDownArrow && <ScrollDownButton />}
+      {showDownArrow && normalizedLayout !== 'splitScreen' && <ScrollDownButton />}
     </div>
   )
 }

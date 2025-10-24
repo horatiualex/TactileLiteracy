@@ -201,7 +201,7 @@ export interface Page {
             url?: string | null;
             label: string;
             /**
-             * Choose how the link should be rendered.
+             * Alege cum ar trebui afișat link-ul.
              */
             appearance?: ('default' | 'outline') | null;
           };
@@ -558,7 +558,7 @@ export interface CallToActionBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Alege cum ar trebui afișat link-ul.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -668,7 +668,7 @@ export interface ContentBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Alege cum ar trebui afișat link-ul.
            */
           appearance?: ('default' | 'outline') | null;
         };
@@ -726,7 +726,7 @@ export interface ArchiveBlock {
     showCategories?: boolean | null;
     aspectRatio?: ('16/9' | '4/3' | '1/1' | '3/4') | null;
     /**
-     * Text for the action button/link
+     * Text pentru butonul/link-ul de acțiune
      */
     buttonText?: string | null;
   };
@@ -1063,7 +1063,7 @@ export interface ListBlock {
           url?: string | null;
           label: string;
           /**
-           * Choose how the link should be rendered.
+           * Alege cum ar trebui afișat link-ul.
            */
           appearance?: ('default' | 'outline') | null;
         };

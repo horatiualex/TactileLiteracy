@@ -24,7 +24,7 @@ export const Archive: Block = {
           ]
         },
       }),
-      label: 'Intro Content',
+      label: 'Conținut Introducere',
     },
     {
       name: 'populateBy',
@@ -32,11 +32,11 @@ export const Archive: Block = {
       defaultValue: 'collection',
       options: [
         {
-          label: 'Collection',
+          label: 'Colecție',
           value: 'collection',
         },
         {
-          label: 'Individual Selection',
+          label: 'Selecție Individuală',
           value: 'selection',
         },
       ],
@@ -48,10 +48,10 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       defaultValue: 'posts',
-      label: 'Collections To Show',
+      label: 'Colecții de Afișat',
       options: [
         {
-          label: 'Posts',
+          label: 'Articole',
           value: 'posts',
         },
       ],
@@ -63,7 +63,7 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'collection',
       },
       hasMany: true,
-      label: 'Categories To Show',
+      label: 'Categorii de Afișat',
       relationTo: 'categories',
     },
     {
@@ -74,7 +74,7 @@ export const Archive: Block = {
         step: 1,
       },
       defaultValue: 10,
-      label: 'Limit',
+      label: 'Limită',
     },
     {
       name: 'selectedDocs',
@@ -83,30 +83,30 @@ export const Archive: Block = {
         condition: (_, siblingData) => siblingData.populateBy === 'selection',
       },
       hasMany: true,
-      label: 'Selection',
+      label: 'Selecție',
       relationTo: ['posts'],
     },
     {
       name: 'displaySettings',
       type: 'group',
-      label: 'Display Settings',
+      label: 'Setări Afișare',
       fields: [
         {
           name: 'cardStyle',
           type: 'select',
-          label: 'Card Style',
+          label: 'Stil Card',
           defaultValue: 'default',
           options: [
             {
-              label: 'Default (Full card with all details)',
+              label: 'Implicit (Card complet cu toate detaliile)',
               value: 'default',
             },
             {
-              label: 'Minimal (Image + Button only)',
+              label: 'Minimal (Doar Imagine + Buton)',
               value: 'minimal',
             },
             {
-              label: 'Image Focus (Large image, minimal text)',
+              label: 'Focus Imagine (Imagine mare, text minimal)',
               value: 'imageFocus',
             },
           ],
@@ -114,7 +114,7 @@ export const Archive: Block = {
         {
           name: 'showDate',
           type: 'checkbox',
-          label: 'Show Date',
+          label: 'Afișează Data',
           defaultValue: true,
           admin: {
             condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
@@ -123,7 +123,7 @@ export const Archive: Block = {
         {
           name: 'showDescription',
           type: 'checkbox',
-          label: 'Show Description',
+          label: 'Afișează Descrierea',
           defaultValue: true,
           admin: {
             condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
@@ -132,7 +132,7 @@ export const Archive: Block = {
         {
           name: 'showCategories',
           type: 'checkbox',
-          label: 'Show Categories',
+          label: 'Afișează Categoriile',
           defaultValue: true,
           admin: {
             condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
@@ -141,11 +141,11 @@ export const Archive: Block = {
         {
           name: 'aspectRatio',
           type: 'select',
-          label: 'Image Aspect Ratio',
+          label: 'Raport Aspect Imagine',
           defaultValue: '4/3',
           options: [
             {
-              label: '16:9 (Landscape)',
+              label: '16:9 (Peisaj)',
               value: '16/9',
             },
             {
@@ -153,11 +153,11 @@ export const Archive: Block = {
               value: '4/3',
             },
             {
-              label: '1:1 (Square)',
+              label: '1:1 (Pătrat)',
               value: '1/1',
             },
             {
-              label: '3:4 (Portrait)',
+              label: '3:4 (Portret)',
               value: '3/4',
             },
           ],
@@ -165,17 +165,17 @@ export const Archive: Block = {
         {
           name: 'buttonText',
           type: 'text',
-          label: 'Button Text',
+          label: 'Text Buton',
           defaultValue: 'Citește mai mult',
           admin: {
-            description: 'Text for the action button/link',
+            description: 'Text pentru butonul/link-ul de acțiune',
           },
         },
       ],
     },
   ],
   labels: {
-    plural: 'Archives',
-    singular: 'Archive',
+    plural: 'Arhive',
+    singular: 'Arhivă',
   },
 }
