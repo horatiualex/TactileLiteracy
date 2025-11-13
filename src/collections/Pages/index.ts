@@ -33,6 +33,10 @@ import {
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
+  labels: {
+    singular: 'Pagină',
+    plural: 'Pagini',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

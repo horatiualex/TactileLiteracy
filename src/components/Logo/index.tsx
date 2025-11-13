@@ -1,13 +1,9 @@
 import React from 'react'
+import styles from './index.module.css'
 
 export const Logo: React.FC = () => {
   return (
-    <div style={{ 
-      fontWeight: 'bold', 
-      fontSize: '42px',
-      letterSpacing: '0.5px',
-      color: 'white'
-    }}>
+    <div className={styles.logo}>
       S58 Studio
     </div>
   )

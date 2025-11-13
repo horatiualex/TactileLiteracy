@@ -30,9 +30,14 @@ interface ModularHeroProps {
   } | null
   bottomText?: string | null
   showDownArrow?: boolean | null
-  splitScreenRightContent?: 'image' | 'blogPosts' | null
+  splitScreenRightContent?: 'image' | 'blogPosts' | 'statistics' | null
   blogPostsMode?: 'newest' | 'selected' | null
   selectedBlogPosts?: (string | Post)[] | null
+  statisticsCards?: Array<{
+    number: string
+    label: string
+    icon?: string
+  }> | null
 }
 
 export const ModularHero = async ({
@@ -52,6 +57,7 @@ export const ModularHero = async ({
   splitScreenRightContent = 'image',
   blogPostsMode = 'newest',
   selectedBlogPosts,
+  statisticsCards,
 }: ModularHeroProps) => {
 
   // Normalize null values to defaults
@@ -98,7 +104,11 @@ export const ModularHero = async ({
     const style: React.CSSProperties = {}
 
     if (normalizedBackgroundStyle === 'solid' && backgroundColor) {
-      style.backgroundColor = backgroundColor
+      // Ensure color has # prefix if it's a hex value without it
+      const normalizedColor = backgroundColor.trim()
+      // Check if it's a hex color without # (6 or 3 characters)
+      const isHexWithoutHash = /^[0-9A-Fa-f]{6}$|^[0-9A-Fa-f]{3}$/.test(normalizedColor)
+      style.backgroundColor = isHexWithoutHash ? `#${normalizedColor}` : normalizedColor
     } else if (normalizedBackgroundStyle === 'gradient' && gradientColors?.from && gradientColors?.to) {
       const direction = gradientColors.direction || 'to-br'
       const gradientMap: Record<string, string> = {
@@ -107,7 +117,10 @@ export const ModularHero = async ({
         'to-r': 'to right',
         'to-tr': 'to top right',
       }
-      style.background = `linear-gradient(${gradientMap[direction] || 'to bottom right'}, ${gradientColors.from}, ${gradientColors.to})`
+      // Ensure colors have # prefix if they're hex values without it
+      const fromColor = gradientColors.from.startsWith('#') ? gradientColors.from : `#${gradientColors.from}`
+      const toColor = gradientColors.to.startsWith('#') ? gradientColors.to : `#${gradientColors.to}`
+      style.background = `linear-gradient(${gradientMap[direction] || 'to bottom right'}, ${fromColor}, ${toColor})`
     } else if (normalizedBackgroundStyle === 'image' && backgroundImage && typeof backgroundImage === 'object' && 'url' in backgroundImage) {
       // Use CSS background-image for perfect coverage
       style.backgroundImage = `url(${backgroundImage.url})`
@@ -123,7 +136,10 @@ export const ModularHero = async ({
   const getContainerClasses = () => {
     let classes = 'relative -mt-[10.4rem] pt-[10.4rem] flex items-center overflow-hidden'
     
-    if (normalizedBackgroundStyle === 'image' && backgroundImage) {
+    // Add white text for image, gradient, and solid backgrounds
+    if ((normalizedBackgroundStyle === 'image' && backgroundImage) || 
+        (normalizedBackgroundStyle === 'gradient' && gradientColors?.from && gradientColors?.to) ||
+        (normalizedBackgroundStyle === 'solid' && backgroundColor)) {
       classes += ' text-white'
     }
     
@@ -141,7 +157,7 @@ export const ModularHero = async ({
     let classes = 'z-20 relative w-full'
     
     if (normalizedLayout === 'textLeft' || normalizedLayout === 'textRight') {
-      classes += ' container mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 xl:gap-20 items-center'
+      classes += ' container mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-32 xl:gap-40 items-center'
     } else if (normalizedLayout === 'splitScreen') {
       classes += ' container mx-auto flex flex-col lg:flex-row items-center justify-between px-6 lg:px-8 gap-12 lg:gap-16'
     } else {
@@ -161,11 +177,27 @@ export const ModularHero = async ({
   const getTextClasses = () => {
     let classes = ''
     
+    // For split layouts, always left-align text
     if (normalizedLayout === 'textLeft' || normalizedLayout === 'textRight') {
-      classes += normalizedContentAlignment === 'center' ? 'text-center' : `text-${normalizedContentAlignment}`
+      classes += 'text-left'
     }
     
     return classes
+  }
+
+  // Generate button alignment classes
+  const getButtonAlignmentClasses = () => {
+    if (normalizedLayout === 'textLeft' || normalizedLayout === 'textRight') {
+      return 'justify-start'
+    }
+    
+    if (normalizedLayout === 'centered' || normalizedLayout === 'textOnly') {
+      if (normalizedContentAlignment === 'left') return 'justify-start'
+      if (normalizedContentAlignment === 'right') return 'justify-end'
+      return 'justify-center'
+    }
+    
+    return 'justify-start'
   }
 
   const renderContent = () => (
@@ -180,35 +212,43 @@ export const ModularHero = async ({
         )}
       </div>
       {Array.isArray(links) && links.length > 0 && (
-        <div className={`flex gap-4 ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'flex-wrap' : ''} justify-start`}>
-          {links.map(({ link }, i) => (
-            <CMSLink
-              key={i}
-              className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent ${
-                i === 0 
-                  ? normalizedBackgroundStyle === 'image' || overlay?.enabled
-                    ? 'bg-white text-gray-900 shadow-lg hover:bg-gray-100 hover:shadow-xl hover:-translate-y-0.5 focus:ring-white'
-                    : 'bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-blue-500'
-                  : normalizedBackgroundStyle === 'image' || overlay?.enabled
-                    ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 focus:ring-white/50 backdrop-blur-sm'
-                    : 'bg-gray-200 text-gray-900 border border-gray-300 hover:bg-gray-300 hover:border-gray-400 focus:ring-gray-500'
-              }`}
-              {...link}
-            >
-              {link.label}
-              {i === 0 && (
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              )}
-            </CMSLink>
-          ))}
+        <div className={`flex gap-4 ${normalizedLayout === 'textLeft' || normalizedLayout === 'textRight' ? 'flex-wrap' : ''} ${getButtonAlignmentClasses()}`}>
+          {links.map(({ link }, i) => {
+            // Determine if we should use light buttons (for dark backgrounds)
+            const useLightButtons = normalizedBackgroundStyle === 'image' || 
+                                   normalizedBackgroundStyle === 'gradient' ||
+                                   normalizedBackgroundStyle === 'solid' ||
+                                   overlay?.enabled
+            
+            return (
+              <CMSLink
+                key={i}
+                className={`inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent ${
+                  i === 0 
+                    ? useLightButtons
+                      ? 'bg-white text-gray-900 shadow-lg hover:bg-gray-100 hover:shadow-xl hover:-translate-y-0.5 focus:ring-white'
+                      : 'bg-blue-600 text-white shadow-lg hover:bg-blue-700 hover:shadow-xl hover:-translate-y-0.5 focus:ring-blue-500'
+                    : useLightButtons
+                      ? 'bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30 focus:ring-white/50 backdrop-blur-sm'
+                      : 'bg-gray-200 text-gray-900 border border-gray-300 hover:bg-gray-300 hover:border-gray-400 focus:ring-gray-500'
+                }`}
+                {...link}
+              >
+                {link.label}
+                {i === 0 && (
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                )}
+              </CMSLink>
+            )
+          })}
         </div>
       )}
       {/* Bottom Text - Integrated into content flow */}
       {bottomText && (
         <div className="mt-12">
-          <p className="text-white/80 text-xs sm:text-sm font-medium">
+          <p className="text-white/80 text-sm sm:text-base font-medium">
             {bottomText}
           </p>
         </div>
@@ -248,13 +288,13 @@ export const ModularHero = async ({
             <div className="space-y-8">
               {renderContent()}
             </div>
-            {renderImage(media || secondaryImage, 'lg:order-2')}
+            {renderImage(secondaryImage, '')}
           </>
         )}
 
         {normalizedLayout === 'textRight' && (
           <>
-            {renderImage(media || secondaryImage, 'lg:order-1')}
+            {renderImage(secondaryImage, '')}
             <div className="space-y-8">
               {renderContent()}
             </div>
@@ -317,7 +357,7 @@ export const ModularHero = async ({
                             
                             {/* Post Meta - Date and Read Time */}
                             <div className={`flex items-center gap-3 lg:gap-4 text-xs lg:text-sm ${
-                              isDarkTheme ? 'text-gray-400' : 'text-gray-500'
+                              isDarkTheme ? 'text-white/80' : 'text-gray-500'
                             }`}>
                               {post.publishedAt && (
                                 <span className="flex items-center gap-1.5 lg:gap-2">
@@ -335,7 +375,7 @@ export const ModularHero = async ({
                                 <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                5 min read
+                                5 min citire
                               </span>
                             </div>
                           </div>
@@ -346,9 +386,49 @@ export const ModularHero = async ({
                   {showDownArrow && <ScrollDownButton />}
                 </div>
               </div>
+            ) : splitScreenRightContent === 'statistics' && statisticsCards && statisticsCards.length > 0 ? (
+              <div className="flex-1 flex items-center w-full lg:max-w-[550px] xl:max-w-[650px]">
+                <div className="w-full grid grid-cols-2 gap-4 lg:gap-6">
+                  {statisticsCards.map((stat, index) => {
+                    const isDarkTheme = normalizedBackgroundStyle === 'image' || normalizedBackgroundStyle === 'gradient' || normalizedBackgroundStyle === 'solid' || overlay?.enabled
+                    
+                    return (
+                      <div
+                        key={index}
+                        className={`rounded-xl p-6 lg:p-8 text-center border transition-all duration-300 hover:scale-105 ${
+                          isDarkTheme
+                            ? 'bg-white/10 backdrop-blur-sm border-white/20 hover:bg-white/20'
+                            : 'bg-white border-gray-200 shadow-md hover:shadow-xl'
+                        }`}
+                      >
+                        {/* Icon */}
+                        {stat.icon && (
+                          <div className={`text-3xl lg:text-4xl mb-3 ${isDarkTheme ? 'opacity-90' : ''}`}>
+                            {stat.icon}
+                          </div>
+                        )}
+                        
+                        {/* Number */}
+                        <div className={`text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 leading-none ${
+                          isDarkTheme ? 'text-white' : 'text-gray-900'
+                        }`}>
+                          {stat.number}
+                        </div>
+                        
+                        {/* Label */}
+                        <div className={`text-sm lg:text-base font-medium leading-tight ${
+                          isDarkTheme ? 'text-white/90' : 'text-gray-600'
+                        }`}>
+                          {stat.label}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             ) : (
               <div className="flex-1 flex items-center justify-center">
-                {renderImage(media || secondaryImage, 'relative w-full max-w-2xl')}
+                {renderImage(secondaryImage, 'relative w-full max-w-2xl')}
               </div>
             )}
           </>
@@ -364,7 +444,7 @@ export const ModularHero = async ({
       {/* Bottom Text - Clean minimal styling */}
       {bottomText && normalizedLayout !== 'splitScreen' && (
         <div className="absolute bottom-8 left-8 right-20 sm:right-24 z-30">
-          <p className="text-white/80 text-xs sm:text-sm font-medium">
+          <p className="text-white/80 text-sm sm:text-base font-medium">
             {bottomText}
           </p>
         </div>

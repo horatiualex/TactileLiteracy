@@ -147,15 +147,7 @@ export const TimelineBlockComponent: React.FC<
 
   const getOverlayClass = () => {
     if (background?.type !== 'image') return ''
-    
-    switch (background.overlay) {
-      case 'dark':
-        return 'relative before:absolute before:inset-0 before:bg-black before:bg-opacity-50 before:z-0'
-      case 'light':
-        return 'relative before:absolute before:inset-0 before:bg-white before:bg-opacity-30 before:z-0'
-      default:
-        return ''
-    }
+    return 'relative'
   }
 
   const getTextColorClass = () => {
@@ -167,6 +159,13 @@ export const TimelineBlockComponent: React.FC<
       className={`py-16 lg:py-24 ${getBackgroundClass()} ${getOverlayClass()} ${className || ''}`}
       style={getCustomBackgroundStyle()}
     >
+      {/* Overlay with custom intensity */}
+      {background?.type === 'image' && (
+        <div 
+          className="absolute inset-0 bg-black z-0"
+          style={{ opacity: background.overlayIntensity ?? 0.5 }}
+        />
+      )}
       <div className="container relative z-10">
         {/* Header */}
         {(title || subtitle) && (

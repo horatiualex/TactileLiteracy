@@ -64,10 +64,6 @@ export const hero: Field = {
           value: 'textRight',
         },
         {
-          label: 'Doar Text - Centrat',
-          value: 'textOnly',
-        },
-        {
           label: 'Ecran Împărțit',
           value: 'splitScreen',
         },
@@ -89,6 +85,10 @@ export const hero: Field = {
         {
           label: 'Articole Blog (4 cele mai recente)',
           value: 'blogPosts',
+        },
+        {
+          label: 'Statistici (4 carduri)',
+          value: 'statistics',
         },
       ],
     },
@@ -125,10 +125,44 @@ export const hero: Field = {
       label: 'Selectează Articole Blog (max 4)',
     },
     {
+      name: 'statisticsCards',
+      type: 'array',
+      admin: {
+        condition: (_, { type, layout, splitScreenRightContent }: any = {}) => 
+          type === 'modular' && layout === 'splitScreen' && splitScreenRightContent === 'statistics',
+      },
+      label: 'Carduri Statistici',
+      minRows: 4,
+      maxRows: 4,
+      fields: [
+        {
+          name: 'number',
+          type: 'text',
+          label: 'Număr',
+          required: true,
+        },
+        {
+          name: 'label',
+          type: 'text',
+          label: 'Etichetă',
+          required: true,
+        },
+        {
+          name: 'icon',
+          type: 'text',
+          label: 'Emoji Icon (opțional)',
+          admin: {
+            description: 'Adaugă un emoji ca icon (ex: 📚, 🎓, 👨‍🏫, 🏆)',
+          },
+        },
+      ],
+    },
+    {
       name: 'contentAlignment',
       type: 'select',
       admin: {
-        condition: (_, { type }: any = {}) => type === 'modular',
+        condition: (_, { type, layout }: any = {}) => 
+          type === 'modular' && layout === 'centered',
       },
       defaultValue: 'center',
       label: 'Aliniere Conținut',
@@ -144,6 +178,121 @@ export const hero: Field = {
         {
           label: 'Dreapta',
           value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'lowImpactAlignment',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'lowImpact',
+      },
+      defaultValue: 'left',
+      label: 'Aliniere Conținut',
+      options: [
+        {
+          label: 'Stânga',
+          value: 'left',
+        },
+        {
+          label: 'Centru',
+          value: 'center',
+        },
+        {
+          label: 'Dreapta',
+          value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'mediumImpactAlignment',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'mediumImpact',
+      },
+      defaultValue: 'left',
+      label: 'Aliniere Conținut',
+      options: [
+        {
+          label: 'Stânga',
+          value: 'left',
+        },
+        {
+          label: 'Centru',
+          value: 'center',
+        },
+        {
+          label: 'Dreapta',
+          value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'mediumImpactMediaPosition',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'mediumImpact',
+      },
+      defaultValue: 'after',
+      label: 'Poziție Media',
+      options: [
+        {
+          label: 'Înainte de Text',
+          value: 'before',
+        },
+        {
+          label: 'După Text',
+          value: 'after',
+        },
+      ],
+    },
+    {
+      name: 'highImpactAlignment',
+      type: 'select',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'highImpact',
+      },
+      defaultValue: 'center',
+      label: 'Aliniere Conținut',
+      options: [
+        {
+          label: 'Stânga',
+          value: 'left',
+        },
+        {
+          label: 'Centru',
+          value: 'center',
+        },
+        {
+          label: 'Dreapta',
+          value: 'right',
+        },
+      ],
+    },
+    {
+      name: 'highImpactOverlay',
+      type: 'group',
+      admin: {
+        condition: (_, { type }: any = {}) => type === 'highImpact',
+      },
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          defaultValue: false,
+          label: 'Activează Overlay Întunecare',
+        },
+        {
+          name: 'opacity',
+          type: 'number',
+          admin: {
+            condition: (_, siblingData: any) => siblingData.enabled,
+            description: 'Valoare între 0 (transparent) și 1 (complet opac). Recomandare: 0.4-0.6 pentru WCAG',
+          },
+          defaultValue: 0.5,
+          min: 0,
+          max: 1,
+          label: 'Opacitate Overlay',
         },
       ],
     },
@@ -167,10 +316,6 @@ export const hero: Field = {
         {
           label: 'Culoare Solidă',
           value: 'solid',
-        },
-        {
-          label: 'Fără',
-          value: 'none',
         },
       ],
     },
@@ -270,7 +415,7 @@ export const hero: Field = {
       name: 'media',
       type: 'upload',
       admin: {
-        condition: (_, { type }: any = {}) => ['highImpact', 'mediumImpact', 'modular'].includes(type),
+        condition: (_, { type }: any = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
       required: false,
@@ -290,7 +435,7 @@ export const hero: Field = {
       admin: {
         condition: (_, { type }: any = {}) => type === 'modular',
       },
-      label: 'Text Jos (ex: "Consum combinat: 11,7 – 11,5 l/100 km")',
+      label: 'Text Jos (informații suplimentare)',
     },
     {
       name: 'showDownArrow',

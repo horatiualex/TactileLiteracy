@@ -4,8 +4,8 @@ const BeforeLogin: React.FC = () => {
   return (
     <div>
       <p>
-        <b>Welcome to S58 Studio!</b>
-        {' This is where site admins will log in to manage your website.'}
+        <b>Bun venit la S58 Studio!</b>
+        {' Aici se vor autentifica administratorii site-ului pentru a gestiona site-ul web.'}
       </p>
     </div>
   )

@@ -115,9 +115,20 @@ export const GalleryBlockComponent: React.FC<Props> = ({
   }
 
   const getGridClasses = () => {
+    const imageCount = images.length
+    
     if (layout === 'masonry') {
+      if (columns === 'auto') {
+        // Smart auto mode based on image count
+        if (imageCount === 1) return 'columns-1 gap-4 space-y-4'
+        if (imageCount === 2) return 'columns-1 md:columns-2 gap-4 space-y-4'
+        if (imageCount === 3) return 'columns-2 md:columns-3 gap-4 space-y-4'
+        if (imageCount === 4) return 'columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4'
+        // 5 or more images
+        return 'columns-2 md:columns-3 lg:columns-4 xl:columns-5 gap-4 space-y-4'
+      }
+      
       const colsMap = {
-        'auto': 'columns-2 md:columns-3 lg:columns-4 xl:columns-5',
         '2': 'columns-2',
         '3': 'columns-3',
         '4': 'columns-4',
@@ -127,8 +138,17 @@ export const GalleryBlockComponent: React.FC<Props> = ({
     }
     
     if (layout === 'grid') {
+      if (columns === 'auto') {
+        // Smart auto mode based on image count
+        if (imageCount === 1) return 'grid grid-cols-1 gap-4'
+        if (imageCount === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-4'
+        if (imageCount === 3) return 'grid grid-cols-2 md:grid-cols-3 gap-4'
+        if (imageCount === 4) return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
+        // 5 or more images
+        return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'
+      }
+      
       const gridMap = {
-        'auto': 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5',
         '2': 'grid-cols-2',
         '3': 'grid-cols-3',
         '4': 'grid-cols-4',
@@ -137,7 +157,26 @@ export const GalleryBlockComponent: React.FC<Props> = ({
       return `grid ${gridMap[columns]} gap-4`
     }
 
-    return 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'
+    // Featured layout: large image on the left, thumbnails grid on the right
+    if (layout === 'featured') {
+      if (columns === 'auto') {
+        // For featured, first image takes 2 cols, so we need different calculation
+        if (imageCount <= 2) return 'grid grid-cols-2 gap-4 auto-rows-min'
+        if (imageCount <= 4) return 'grid grid-cols-2 md:grid-cols-3 gap-4 auto-rows-min'
+        if (imageCount <= 7) return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-min'
+        return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 auto-rows-min'
+      }
+      
+      const featuredGridMap = {
+        '2': 'grid-cols-2',
+        '3': 'grid-cols-3',
+        '4': 'grid-cols-4',
+        '5': 'grid-cols-5',
+      }
+      return `grid ${featuredGridMap[columns]} gap-4 auto-rows-min`
+    }
+
+    return 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'
   }
 
   return (
@@ -160,13 +199,18 @@ export const GalleryBlockComponent: React.FC<Props> = ({
           
           const { image, caption } = imageItem
           
+          // For featured layout, first image spans 2 columns and 2 rows
+          const featuredClasses = layout === 'featured' && index === 0 
+            ? 'col-span-2 row-span-2' 
+            : ''
+          
           return (
             <div 
               key={index} 
-              className={`group relative overflow-hidden rounded-lg ${
+              className={`group relative overflow-hidden rounded-lg ${featuredClasses} ${
                 layout === 'masonry' ? 'break-inside-avoid mb-4' : 
                 layout === 'grid' ? 'aspect-square' : 
-                index === 0 ? 'aspect-[2/1] md:aspect-square' : 'aspect-square'
+                layout === 'featured' && index === 0 ? 'aspect-[4/3] md:aspect-square' : 'aspect-square'
               } ${enableLightbox ? 'cursor-pointer' : ''}`}
               onClick={() => openLightbox(index)}
             >
@@ -174,11 +218,11 @@ export const GalleryBlockComponent: React.FC<Props> = ({
                 <Media
                   // @ts-expect-error - Media component expects Payload Media type
                   resource={image}
-                  fill={layout === 'grid'}
-                  className={`w-full h-full transition-transform duration-300 ${
-                    layout === 'grid' ? 'object-cover' : 
-                    layout === 'masonry' ? 'object-cover' : 'object-cover'
-                  } ${enableLightbox ? 'group-hover:scale-105' : ''}`}
+                  fill={layout === 'grid' || layout === 'featured'}
+                  imgClassName={`w-full h-full object-cover object-center transition-transform duration-300 ${
+                    enableLightbox ? 'group-hover:scale-105' : ''
+                  }`}
+                  className="w-full h-full"
                 />
                 
                 {/* Overlay */}
@@ -191,13 +235,14 @@ export const GalleryBlockComponent: React.FC<Props> = ({
                     </div>
                   </div>
                 )}
+                
+                {/* Caption overlay */}
+                {caption && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-8 pb-2 px-3">
+                    <p className="text-white text-sm font-medium">{caption}</p>
+                  </div>
+                )}
               </div>
-              
-              {caption && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                  <p className="text-white text-sm font-medium">{caption}</p>
-                </div>
-              )}
             </div>
           )
         })}

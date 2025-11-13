@@ -152,12 +152,34 @@ export interface Page {
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact' | 'modular';
-    layout?: ('centered' | 'textLeft' | 'textRight' | 'textOnly' | 'splitScreen') | null;
-    splitScreenRightContent?: ('image' | 'blogPosts') | null;
+    layout?: ('centered' | 'textLeft' | 'textRight' | 'splitScreen') | null;
+    splitScreenRightContent?: ('image' | 'blogPosts' | 'statistics') | null;
     blogPostsMode?: ('newest' | 'selected') | null;
     selectedBlogPosts?: (string | Post)[] | null;
+    statisticsCards?:
+      | {
+          number: string;
+          label: string;
+          /**
+           * Adaugă un emoji ca icon (ex: 📚, 🎓, 👨‍🏫, 🏆)
+           */
+          icon?: string | null;
+          id?: string | null;
+        }[]
+      | null;
     contentAlignment?: ('left' | 'center' | 'right') | null;
-    backgroundStyle?: ('image' | 'gradient' | 'solid' | 'none') | null;
+    lowImpactAlignment?: ('left' | 'center' | 'right') | null;
+    mediumImpactAlignment?: ('left' | 'center' | 'right') | null;
+    mediumImpactMediaPosition?: ('before' | 'after') | null;
+    highImpactAlignment?: ('left' | 'center' | 'right') | null;
+    highImpactOverlay?: {
+      enabled?: boolean | null;
+      /**
+       * Valoare între 0 (transparent) și 1 (complet opac). Recomandare: 0.4-0.6 pentru WCAG
+       */
+      opacity?: number | null;
+    };
+    backgroundStyle?: ('image' | 'gradient' | 'solid') | null;
     backgroundColor?: string | null;
     backgroundImage?: (string | null) | Media;
     gradientColors?: {
@@ -227,11 +249,7 @@ export interface Page {
         /**
          * Alege stilul de layout - traditional, overlay modern, sau focus pe conținut/imagine
          */
-        layout?: ('textLeft' | 'imageLeft' | 'overlay' | 'splitScreen' | 'contentFocus' | 'imageFocus') | null;
-        /**
-         * Stilul vizual general al secțiunii
-         */
-        designStyle?: ('standard' | 'premium' | 'tech' | 'minimal' | 'bold') | null;
+        layout?: ('textLeft' | 'imageLeft' | 'overlay' | 'contentFocus' | 'imageFocus') | null;
         content: {
           /**
            * Titlul principal pentru această secțiune
@@ -1145,15 +1163,15 @@ export interface TimelineBlock {
     style?: ('auto' | 'vertical') | null;
   };
   background?: {
-    type?: ('color' | 'image' | 'none') | null;
+    type?: ('color' | 'image') | null;
     /**
      * Imaginea care va fi folosită ca fundal
      */
     image?: (string | null) | Media;
     /**
-     * Overlay-ul care va fi aplicat peste imagine pentru a îmbunătăți citibilitatea textului
+     * Intensitatea overlay-ului întunecat (0 = transparent, 1 = complet întunecat)
      */
-    overlay?: ('none' | 'dark' | 'light') | null;
+    overlayIntensity?: number | null;
   };
   id?: string | null;
   blockName?: string | null;
@@ -1655,7 +1673,25 @@ export interface PagesSelect<T extends boolean = true> {
         splitScreenRightContent?: T;
         blogPostsMode?: T;
         selectedBlogPosts?: T;
+        statisticsCards?:
+          | T
+          | {
+              number?: T;
+              label?: T;
+              icon?: T;
+              id?: T;
+            };
         contentAlignment?: T;
+        lowImpactAlignment?: T;
+        mediumImpactAlignment?: T;
+        mediumImpactMediaPosition?: T;
+        highImpactAlignment?: T;
+        highImpactOverlay?:
+          | T
+          | {
+              enabled?: T;
+              opacity?: T;
+            };
         backgroundStyle?: T;
         backgroundColor?: T;
         backgroundImage?: T;
@@ -1709,7 +1745,6 @@ export interface PagesSelect<T extends boolean = true> {
           | T
           | {
               layout?: T;
-              designStyle?: T;
               content?:
                 | T
                 | {
@@ -2002,7 +2037,7 @@ export interface TimelineBlockSelect<T extends boolean = true> {
     | {
         type?: T;
         image?: T;
-        overlay?: T;
+        overlayIntensity?: T;
       };
   id?: T;
   blockName?: T;

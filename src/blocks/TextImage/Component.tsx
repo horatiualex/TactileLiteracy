@@ -22,21 +22,19 @@ type MediaObject = {
 type ButtonType = {
   label: string
   link: {
-    type: 'reference' | 'custom'
+    type: 'internal' | 'external'
     reference?: {
       value: string
       relationTo: 'pages' | 'posts'
     }
     url?: string
-    newTab?: boolean
   }
   style: 'primary' | 'secondary' | 'outline'
 }
 
 type Props = {
   className?: string
-  layout?: 'textLeft' | 'imageLeft' | 'overlay' | 'splitScreen' | 'contentFocus' | 'imageFocus'
-  designStyle?: 'standard' | 'premium' | 'tech' | 'minimal' | 'bold'
+  layout?: 'textLeft' | 'imageLeft' | 'overlay' | 'contentFocus' | 'imageFocus'
   content?: {
     heading?: string
     headingSize?: 'normal' | 'large' | 'xl' | '2xl'
@@ -60,7 +58,6 @@ type Props = {
 export const TextImageBlockComponent: React.FC<Props> = ({
   className,
   layout = 'textLeft',
-  designStyle = 'standard',
   content,
   image,
   imageAspect = 'auto',
@@ -171,75 +168,73 @@ export const TextImageBlockComponent: React.FC<Props> = ({
     }
   }
 
-  // Enhanced button styles for different design styles
+  // Button styles
   const getButtonStyle = (style: string) => {
-    const baseClass = 'inline-flex items-center justify-center font-medium transition-all duration-200'
+    const baseClass = 'inline-flex items-center justify-center gap-2 font-medium transition-all duration-200'
     
-    if (designStyle === 'premium') {
-      switch (style) {
-        case 'primary':
-          return `${baseClass} px-8 py-4 text-base bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 rounded-md`
-        case 'secondary':
-          return `${baseClass} px-8 py-4 text-base border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500 rounded-md`
-        case 'outline':
-          return `${baseClass} px-8 py-4 text-base border border-current hover:bg-current hover:text-white rounded-md`
-        default:
-          return `${baseClass} px-8 py-4 text-base bg-black text-white hover:bg-gray-800 rounded-md`
-      }
-    }
-
-    if (designStyle === 'tech') {
-      switch (style) {
-        case 'primary':
-          return `${baseClass} px-6 py-3 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg`
-        case 'secondary':
-          return `${baseClass} px-6 py-3 text-sm bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 rounded-lg`
-        case 'outline':
-          return `${baseClass} px-6 py-3 text-sm border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white rounded-lg`
-        default:
-          return `${baseClass} px-6 py-3 text-sm bg-blue-600 text-white hover:bg-blue-700 rounded-lg`
-      }
-    }
-
-    // Standard style (original)
     switch (style) {
       case 'primary':
-        return `${baseClass} rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90`
+        return `${baseClass} rounded-lg bg-primary px-6 py-3 text-base text-primary-foreground hover:bg-primary/90`
       case 'secondary':
-        return `${baseClass} rounded-md bg-secondary px-4 py-2 text-sm text-secondary-foreground hover:bg-secondary/80`
+        return `${baseClass} rounded-lg bg-secondary px-6 py-3 text-base text-secondary-foreground hover:bg-secondary/80`
       case 'outline':
-        return `${baseClass} rounded-md border border-input bg-background px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground`
+        return `${baseClass} rounded-lg border-2 border-input bg-background px-6 py-3 text-base hover:bg-accent hover:text-accent-foreground`
       default:
-        return `${baseClass} rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground hover:bg-primary/90`
+        return `${baseClass} rounded-lg bg-primary px-6 py-3 text-base text-primary-foreground hover:bg-primary/90`
     }
   }
 
   const renderButton = (button: ButtonType, index: number) => {
     const { label, link, style } = button
     
-    if (link.type === 'custom' && link.url) {
+    if (link.type === 'external' && link.url) {
       return (
         <a
           key={index}
           href={link.url}
-          target={link.newTab ? '_blank' : '_self'}
-          rel={link.newTab ? 'noopener noreferrer' : undefined}
+          target="_blank"
+          rel="noopener noreferrer"
           className={getButtonStyle(style)}
         >
           {label}
+          <svg 
+            className="w-4 h-4" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M9 5l7 7-7 7" 
+            />
+          </svg>
         </a>
       )
     }
 
-    if (link.type === 'reference' && link.reference) {
+    if (link.type === 'internal' && link.reference) {
       return (
         <CMSLink
           key={index}
           reference={link.reference}
           className={getButtonStyle(style)}
-          newTab={link.newTab}
         >
           {label}
+          <svg 
+            className="w-4 h-4" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M9 5l7 7-7 7" 
+            />
+          </svg>
         </CMSLink>
       )
     }
@@ -299,9 +294,9 @@ export const TextImageBlockComponent: React.FC<Props> = ({
             // @ts-expect-error - Media component expects Payload Media type
             resource={image}
             fill={imageAspect !== 'auto'}
-            className={cn(
+            imgClassName={cn(
               'w-full h-full',
-              imageAspect !== 'auto' ? 'object-cover' : 'object-contain'
+              imageAspect !== 'auto' ? 'object-cover object-center' : 'object-contain'
             )}
           />
           
@@ -316,7 +311,7 @@ export const TextImageBlockComponent: React.FC<Props> = ({
 
   // Layout rendering logic
   const renderLayout = () => {
-    const containerClass = designStyle === 'premium' ? 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' : 'container'
+    const containerClass = 'container'
     
     switch (layout) {
       case 'overlay':
@@ -331,18 +326,6 @@ export const TextImageBlockComponent: React.FC<Props> = ({
                   {renderContent('text-white [&_h2]:text-white [&_p]:text-white/90')}
                 </div>
               </div>
-            </div>
-          </div>
-        )
-
-      case 'splitScreen':
-        return (
-          <div className="min-h-screen flex">
-            <div className="flex-1 flex items-center justify-center p-8 lg:p-16">
-              {renderContent('max-w-lg')}
-            </div>
-            <div className="flex-1">
-              {renderImage('h-full')}
             </div>
           </div>
         )

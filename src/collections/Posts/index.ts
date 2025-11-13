@@ -37,6 +37,10 @@ import { slugField } from '@/fields/slug'
 
 export const Posts: CollectionConfig<'posts'> = {
   slug: 'posts',
+  labels: {
+    singular: 'Articol',
+    plural: 'Articole',
+  },
   access: {
     create: authenticated,
     delete: authenticated,

@@ -26,10 +26,6 @@ export const TextImage: Block = {
           value: 'overlay',
         },
         {
-          label: 'Split Screen (50/50)',
-          value: 'splitScreen',
-        },
-        {
           label: 'Content Focus (Text Dominant)',
           value: 'contentFocus',
         },
@@ -40,37 +36,6 @@ export const TextImage: Block = {
       ],
       admin: {
         description: 'Alege stilul de layout - traditional, overlay modern, sau focus pe conținut/imagine',
-      },
-    },
-    {
-      name: 'designStyle',
-      type: 'select',
-      label: 'Stil Design',
-      defaultValue: 'standard',
-      options: [
-        {
-          label: 'Standard',
-          value: 'standard',
-        },
-        {
-          label: 'Premium (Porsche-style)',
-          value: 'premium',
-        },
-        {
-          label: 'Tech Modern (Anthropic-style)',
-          value: 'tech',
-        },
-        {
-          label: 'Minimal Elegant',
-          value: 'minimal',
-        },
-        {
-          label: 'Bold Statement',
-          value: 'bold',
-        },
-      ],
-      admin: {
-        description: 'Stilul vizual general al secțiunii',
       },
     },
     {

@@ -135,10 +135,6 @@ export const Timeline: Block = {
               label: 'Imagine',
               value: 'image',
             },
-            {
-              label: 'Transparent',
-              value: 'none',
-            },
           ],
           required: false,
         },
@@ -153,27 +149,16 @@ export const Timeline: Block = {
           },
         },
         {
-          name: 'overlay',
-          type: 'select',
-          label: 'Overlay Imagine',
-          defaultValue: 'dark',
-          options: [
-            {
-              label: 'Fără overlay',
-              value: 'none',
-            },
-            {
-              label: 'Overlay întunecat',
-              value: 'dark',
-            },
-            {
-              label: 'Overlay luminos',
-              value: 'light',
-            },
-          ],
+          name: 'overlayIntensity',
+          type: 'number',
+          label: 'Intensitate Overlay',
+          defaultValue: 0.5,
+          min: 0,
+          max: 1,
+          step: 0.1,
           admin: {
             condition: (_, siblingData) => siblingData?.type === 'image',
-            description: 'Overlay-ul care va fi aplicat peste imagine pentru a îmbunătăți citibilitatea textului',
+            description: 'Intensitatea overlay-ului întunecat (0 = transparent, 1 = complet întunecat)',
           },
         },
       ],
