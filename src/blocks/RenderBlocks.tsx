@@ -12,6 +12,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { GalleryBlockComponent } from '@/blocks/Gallery/Component'
 import { HeroBanner } from '@/blocks/HeroBanner/Component'
 import { ImageCardGridBlockComponent } from '@/blocks/ImageCardGrid/Component'
+import { ListBlockComponent } from '@/blocks/List/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StatsSectionBlockComponent } from '@/blocks/StatsSection/Component'
 import { TextImageBlockComponent } from '@/blocks/TextImage/Component'
@@ -28,6 +29,7 @@ const blockComponents = {
   gallery: GalleryBlockComponent,
   heroBanner: HeroBanner,
   imageCardGrid: ImageCardGridBlockComponent,
+  list: ListBlockComponent,
   mediaBlock: MediaBlock,
   statsSection: StatsSectionBlockComponent,
   textImage: TextImageBlockComponent,

@@ -2,6 +2,8 @@ import { Block } from 'payload'
 
 export const TextImage: Block = {
   slug: 'textImage',
+  imageURL: '/block-previews/textimage.png',
+  imageAltText: 'Text & Imagine - Layout text alături de imagine',
   labels: {
     singular: 'Text & Imagine',
     plural: 'Blocuri Text & Imagine',

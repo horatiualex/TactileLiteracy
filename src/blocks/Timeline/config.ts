@@ -9,9 +9,11 @@ import {
 export const Timeline: Block = {
   slug: 'timeline',
   interfaceName: 'TimelineBlock',
+  imageURL: '/block-previews/timeline.png',
+  imageAltText: 'Cronologie - Prezintă evenimente în timp',
   labels: {
-    singular: 'Timeline',
-    plural: 'Timeline-uri',
+    singular: 'Cronologie (Timeline)',
+    plural: 'Cronologii',
   },
   fields: [
     {
@@ -155,7 +157,6 @@ export const Timeline: Block = {
           defaultValue: 0.5,
           min: 0,
           max: 1,
-          step: 0.1,
           admin: {
             condition: (_, siblingData) => siblingData?.type === 'image',
             description: 'Intensitatea overlay-ului întunecat (0 = transparent, 1 = complet întunecat)',

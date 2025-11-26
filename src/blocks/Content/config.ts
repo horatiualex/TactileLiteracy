@@ -163,6 +163,12 @@ const columnFields: Field[] = [
 export const Content: Block = {
   slug: 'content',
   interfaceName: 'ContentBlock',
+  imageURL: '/block-previews/content.png',
+  imageAltText: 'Conținut - Text cu coloane personalizabile',
+  labels: {
+    singular: 'Bloc Conținut',
+    plural: 'Blocuri Conținut',
+  },
   fields: [
     {
       name: 'columns',

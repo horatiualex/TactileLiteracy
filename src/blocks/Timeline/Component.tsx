@@ -69,37 +69,37 @@ const TimelineEventComponent: React.FC<{
 
   // Vertical layout
   return (
-    <div className="flex items-start space-x-6 relative">
+    <div className="flex items-start gap-4 md:gap-6 relative">
       {/* Timeline line */}
-      <div className="flex flex-col items-center">
-        <div className={`flex items-center justify-center w-12 h-12 rounded-full border-2 shadow-md ${
+      <div className="flex flex-col items-center flex-shrink-0">
+        <div className={`flex items-center justify-center w-14 h-14 md:w-16 md:h-16 rounded-full border-3 shadow-lg ${
           backgroundType === 'image' 
             ? 'bg-white/20 backdrop-blur-sm text-white border-white/30' 
             : 'bg-primary text-primary-foreground border-background'
         }`}>
-          <span className="text-xs font-bold">
+          <span className="text-sm md:text-base font-bold text-center leading-tight px-1">
             {event.year}
           </span>
         </div>
         {!isLast && (
-          <div className={`w-0.5 h-16 mt-2 ${
+          <div className={`w-0.5 flex-1 min-h-[80px] mt-4 ${
             backgroundType === 'image' ? 'bg-white/30' : 'bg-primary/30'
           }`} />
         )}
       </div>
       
       {/* Content */}
-      <div className="flex-1 pb-8">
-        <h3 className={`text-xl font-semibold mb-3 ${getTextColorClass()}`}>
+      <div className="flex-1 pb-12">
+        <h3 className={`text-xl md:text-2xl font-semibold mb-3 ${getTextColorClass()}`}>
           {event.title}
         </h3>
         {event.description && (
-          <div className={`text-base opacity-90 ${getTextColorClass()}`}>
+          <div className={`text-base md:text-lg opacity-90 ${getTextColorClass()}`}>
             <RichText 
               data={event.description} 
               enableGutter={false} 
               enableProse={false}
-              className="prose max-w-none"
+              className="prose prose-base md:prose-lg max-w-none"
             />
           </div>
         )}
@@ -122,8 +122,10 @@ export const TimelineBlockComponent: React.FC<
     return null
   }
 
-  // Smart layout decision based on number of events and screen size
-  const shouldUseHorizontal = events.length <= 4 && layout?.style !== 'vertical'
+  // Smart layout decision: use horizontal only if 'auto' mode with <= 4 events
+  const isAutoMode = !layout?.style || layout?.style === 'auto'
+  const shouldUseHorizontal = isAutoMode && events.length <= 4
+  const forceVertical = layout?.style === 'vertical'
   
   const getBackgroundClass = () => {
     if (background?.type === 'image') return ''
@@ -190,7 +192,7 @@ export const TimelineBlockComponent: React.FC<
 
         {/* Timeline */}
         <div className="relative">
-          {shouldUseHorizontal ? (
+          {shouldUseHorizontal && !forceVertical ? (
             /* Horizontal Timeline for Desktop with few events */
             <div className="hidden lg:block">
               <div className="grid gap-8 relative" 
@@ -218,9 +220,9 @@ export const TimelineBlockComponent: React.FC<
             </div>
           ) : null}
 
-          {/* Vertical Timeline (always shown on mobile, or when many events) */}
-          <div className={shouldUseHorizontal ? 'lg:hidden' : 'block'}>
-            <div className="space-y-0">
+          {/* Vertical Timeline (always shown on mobile, when many events, or when forced) */}
+          <div className={shouldUseHorizontal && !forceVertical ? 'lg:hidden' : 'block'}>
+            <div className="max-w-4xl mx-auto">
               {events.map((event, index) => (
                 <TimelineEventComponent
                   key={index}

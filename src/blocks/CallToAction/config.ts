@@ -12,6 +12,8 @@ import { linkGroup } from '../../fields/linkGroup'
 export const CallToAction: Block = {
   slug: 'cta',
   interfaceName: 'CallToActionBlock',
+  imageURL: '/block-previews/cta.png',
+  imageAltText: 'Apel la Acțiune - Secțiune cu butoane',
   fields: [
     {
       name: 'richText',
@@ -36,7 +38,7 @@ export const CallToAction: Block = {
     }),
   ],
   labels: {
-    plural: 'Calls to Action',
-    singular: 'Call to Action',
+    plural: 'Apeluri la Acțiune',
+    singular: 'Apel la Acțiune (CTA)',
   },
 }

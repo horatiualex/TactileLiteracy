@@ -1,7 +1,7 @@
 {
-  "name": "s58-studio",
+  "name": "tactile-cms",
   "version": "1.0.0",
-  "description": "S58 Studio Website",
+  "description": "Tactile CMS Website",
   "license": "MIT",
   "type": "module",
   "scripts": {

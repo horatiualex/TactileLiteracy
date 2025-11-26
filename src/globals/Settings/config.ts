@@ -132,7 +132,7 @@ export const Settings: GlobalConfig = {
         {
           label: {
             en: 'General',
-            ro: 'General',
+            ro: 'Generale',
           },
           fields: [
             {
@@ -142,7 +142,59 @@ export const Settings: GlobalConfig = {
                 en: 'Site Name',
                 ro: 'Nume Site',
               },
-              defaultValue: 'S58 Studio',
+              defaultValue: 'Tactile CMS',
+              required: true,
+              admin: {
+                description: {
+                  en: 'This name will appear in the browser tab and as the default page title',
+                  ro: 'Acest nume va apărea în tab-ul browserului și ca titlu implicit al paginii',
+                },
+              },
+            },
+            {
+              name: 'siteTitle',
+              type: 'text',
+              label: {
+                en: 'Site Title Template',
+                ro: 'Șablon Titlu Site',
+              },
+              defaultValue: '%s | Tactile CMS',
+              admin: {
+                description: {
+                  en: 'Template for page titles. Use %s as placeholder for page name',
+                  ro: 'Șablon pentru titlurile paginilor. Folosiți %s ca placeholder pentru numele paginii',
+                },
+              },
+            },
+            {
+              name: 'favicon',
+              type: 'upload',
+              label: {
+                en: 'Favicon',
+                ro: 'Favicon',
+              },
+              relationTo: 'media',
+              admin: {
+                description: {
+                  en: 'Upload a .ico, .png, or .svg file for the browser tab icon (recommended: 32x32px or 48x48px)',
+                  ro: 'Încărcați un fișier .ico, .png sau .svg pentru iconița din tab-ul browserului (recomandat: 32x32px sau 48x48px)',
+                },
+              },
+            },
+            {
+              name: 'faviconSvg',
+              type: 'upload',
+              label: {
+                en: 'Favicon SVG',
+                ro: 'Favicon SVG',
+              },
+              relationTo: 'media',
+              admin: {
+                description: {
+                  en: 'Optional: Upload an SVG version for modern browsers',
+                  ro: 'Opțional: Încărcați o versiune SVG pentru browsere moderne',
+                },
+              },
             },
           ],
         },

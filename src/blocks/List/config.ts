@@ -59,6 +59,7 @@ const listItemFields: Field[] = [
 export const List: Block = {
   slug: 'list',
   interfaceName: 'ListBlock',
+  imageURL: '/block-previews/list.png',
   labels: {
     singular: 'Listă',
     plural: 'Liste',

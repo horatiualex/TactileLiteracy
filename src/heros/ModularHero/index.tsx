@@ -36,7 +36,8 @@ interface ModularHeroProps {
   statisticsCards?: Array<{
     number: string
     label: string
-    icon?: string
+    icon?: string | null
+    id?: string | null
   }> | null
 }
 

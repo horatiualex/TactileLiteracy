@@ -10,6 +10,8 @@ import {
 export const Archive: Block = {
   slug: 'archive',
   interfaceName: 'ArchiveBlock',
+  imageURL: '/block-previews/archive.png',
+  imageAltText: 'Arhivă - Listare articole și postări',
   fields: [
     {
       name: 'introContent',
@@ -176,6 +178,6 @@ export const Archive: Block = {
   ],
   labels: {
     plural: 'Arhive',
-    singular: 'Arhivă',
+    singular: 'Arhivă Articole',
   },
 }

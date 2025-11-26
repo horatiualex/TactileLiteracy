@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 export const Gallery: Block = {
   slug: 'gallery',
   interfaceName: 'GalleryBlock',
+  imageURL: '/block-previews/gallery.png',
+  imageAltText: 'Galerie - Grilă de poze cu lightbox',
   labels: {
     singular: 'Galerie',
     plural: 'Galerii',

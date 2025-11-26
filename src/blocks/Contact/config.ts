@@ -3,6 +3,12 @@ import type { Block } from 'payload'
 export const Contact: Block = {
   slug: 'contact',
   interfaceName: 'ContactBlock',
+  imageURL: '/block-previews/contact.png',
+  imageAltText: 'Contact - Secțiune cu formular și hartă',
+  labels: {
+    singular: 'Secțiune Contact',
+    plural: 'Secțiuni Contact',
+  },
   fields: [
     {
       name: 'contactInfo',

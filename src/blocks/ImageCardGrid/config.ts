@@ -3,9 +3,11 @@ import type { Block } from 'payload'
 const ImageCardGrid: Block = {
   slug: 'imageCardGrid',
   interfaceName: 'ImageCardGridBlock',
+  imageURL: '/block-previews/imagecardgrid.png',
+  imageAltText: 'Grid Carduri - Prezentare servicii/facilități',
   labels: {
-    singular: 'Image Card Grid Block',
-    plural: 'Image Card Grid Blocks',
+    singular: 'Grid Carduri cu Imagini',
+    plural: 'Grid-uri Carduri',
   },
   fields: [
     {
@@ -117,6 +119,39 @@ const ImageCardGrid: Block = {
           ],
           required: false,
         },
+        {
+          name: 'cornerRadius',
+          type: 'select',
+          label: 'Corner Roundness',
+          defaultValue: 'md',
+          options: [
+            {
+              label: 'None (Square)',
+              value: 'none',
+            },
+            {
+              label: 'Small',
+              value: 'sm',
+            },
+            {
+              label: 'Medium',
+              value: 'md',
+            },
+            {
+              label: 'Large',
+              value: 'lg',
+            },
+            {
+              label: 'Extra Large',
+              value: 'xl',
+            },
+            {
+              label: 'Full (Rounded)',
+              value: '2xl',
+            },
+          ],
+          required: false,
+        },
       ],
     },
     {
@@ -128,6 +163,14 @@ const ImageCardGrid: Block = {
         plural: 'Image Cards',
       },
       fields: [
+        {
+          name: 'id',
+          type: 'text',
+          label: 'ID',
+          admin: {
+            hidden: true,
+          },
+        },
         {
           name: 'image',
           type: 'upload',

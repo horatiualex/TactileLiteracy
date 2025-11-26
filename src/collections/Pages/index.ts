@@ -91,9 +91,6 @@ export const Pages: CollectionConfig<'pages'> = {
               type: 'blocks',
               blocks: [CallToAction, Contact, Content, MediaBlock, Archive, FormBlock, FileList, Gallery, List, TextImage, Timeline, FAQ, HeroBanner, ImageCardGrid, StatsSection],
               required: true,
-              admin: {
-                initCollapsed: true,
-              },
             },
           ],
           label: 'Content',

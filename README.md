@@ -1,6 +1,6 @@
-# S58 Studio Website
+# Tactile CMS
 
-Welcome to S58 Studio - a modern content management system for websites, blogs, and portfolios. This repo includes a fully-working backend, admin panel, and a beautifully designed, production-ready website.
+Welcome to Tactile CMS - a modern content management system for websites, blogs, and portfolios. This repo includes a fully-working backend, admin panel, and a beautifully designed, production-ready website.
 
 This template is right for you if you are working on:
 

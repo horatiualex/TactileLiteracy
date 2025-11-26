@@ -7,10 +7,11 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { Media as MediaType } from '@/payload-types'
 
 type Stat = {
+  id?: string | null
   number: string
   label: string
   icon?: string | MediaType | null
-  iconText?: string
+  iconText?: string | null
 }
 
 type Props = {
@@ -147,7 +148,7 @@ export const StatsSectionBlockComponent: React.FC<Props> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <div 
-                  key={index} 
+                  key={stat.id || `stat-${index}`} 
                   className={`backdrop-blur-sm rounded-lg p-8 text-center border transition-all duration-300 ${
                     background.type === 'image' 
                       ? 'bg-white/10 border-white/20 hover:bg-white/20' 

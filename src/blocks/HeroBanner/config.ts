@@ -1,194 +1,332 @@
 import type { Block } from 'payload'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  InlineToolbarFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 
 const HeroBanner: Block = {
   slug: 'heroBanner',
   interfaceName: 'HeroBannerBlock',
+  imageURL: '/block-previews/herobanner.png',
+  imageAltText: 'Banner - Secțiune hero mare cu imagine',
   labels: {
-    singular: 'Hero Banner Block',
-    plural: 'Hero Banner Blocks',
+    singular: 'Banner (Hero)',
+    plural: 'Bannere',
   },
   fields: [
     {
-      name: 'icon',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Icon',
-      required: false,
-      admin: {
-        description: 'Upload an icon for the banner (SVG recommended)',
-      },
-    },
-    {
-      name: 'iconText',
-      type: 'text',
-      label: 'Icon Text (Alternative)',
-      required: false,
-      admin: {
-        description: 'Use text instead of an icon (e.g., emoji or character)',
-      },
-    },
-    {
       name: 'title',
       type: 'text',
-      label: 'Title',
+      label: 'Titlu',
       required: true,
+      admin: {
+        placeholder: 'Găsește mașina ta perfectă',
+      },
     },
     {
       name: 'description',
       type: 'richText',
-      label: 'Description',
+      label: 'Descriere',
       required: false,
-    },
-    {
-      name: 'backgroundMedia',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Background Image',
-      required: false,
-      admin: {
-        description: 'Background image for split screen layout or visual element for other themes',
-        condition: (data, siblingData) => {
-          return siblingData?.style?.backgroundTheme === 'split' || siblingData?.style?.backgroundTheme === 'modern'
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => {
+          return [
+            ...rootFeatures,
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+          ]
         },
+      }),
+      admin: {
+        description: 'Text descriptiv opțional sub titlu',
       },
     },
     {
-      name: 'style',
+      name: 'layout',
       type: 'group',
-      label: 'Style Options',
+      label: 'Layout',
       fields: [
         {
-          name: 'alignment',
+          name: 'type',
           type: 'select',
-          label: 'Content Alignment',
-          defaultValue: 'left',
+          label: 'Tip Layout',
+          defaultValue: 'split',
           options: [
             {
-              label: 'Left',
-              value: 'left',
+              label: 'Split Screen (Text stânga, Imagine dreapta)',
+              value: 'split',
             },
             {
-              label: 'Center',
-              value: 'center',
+              label: 'Centrat (Doar text)',
+              value: 'centered',
+            },
+            {
+              label: 'Full Width (Text peste imagine de fundal)',
+              value: 'fullWidth',
             },
           ],
-          required: false,
+          required: true,
+          admin: {
+            description: 'Alege cum vrei să fie aranjat conținutul',
+          },
         },
         {
           name: 'size',
           type: 'select',
-          label: 'Banner Size',
+          label: 'Înălțime Banner',
           defaultValue: 'medium',
           options: [
             {
-              label: 'Small',
+              label: 'Mic',
               value: 'small',
             },
             {
-              label: 'Medium',
+              label: 'Mediu',
               value: 'medium',
             },
             {
-              label: 'Large',
-              value: 'large',
-            },
-          ],
-          required: false,
-        },
-        {
-          name: 'backgroundTheme',
-          type: 'select',
-          label: 'Style Theme',
-          defaultValue: 'modern',
-          options: [
-            {
-              label: 'Modern (Clean theme-aware background)',
-              value: 'modern',
-            },
-            {
-              label: 'Split Screen (Blue gradient with image)',
-              value: 'split',
-            },
-            {
-              label: 'Card Style (Blue gradient card)',
-              value: 'card',
-            },
-          ],
-          required: false,
-          admin: {
-            description: 'Choose the style and layout for the hero banner',
-          },
-        },
-        {
-          name: 'layout',
-          type: 'select',
-          label: 'Icon & Title Layout',
-          defaultValue: 'default',
-          options: [
-            {
-              label: 'Inline (Icon next to title)',
-              value: 'default',
-            },
-            {
-              label: 'Stacked (Icon above title)',
-              value: 'stacked',
-            },
-          ],
-          required: false,
-          admin: {
-            description: 'Control how the icon and title are positioned',
-            condition: (data, siblingData) => {
-              return siblingData?.backgroundTheme === 'modern'
-            },
-          },
-        },
-        {
-          name: 'titleSize',
-          type: 'select',
-          label: 'Title Size',
-          defaultValue: 'normal',
-          options: [
-            {
-              label: 'Normal',
-              value: 'normal',
-            },
-            {
-              label: 'Large',
+              label: 'Mare',
               value: 'large',
             },
             {
-              label: 'Extra Large',
-              value: 'xl',
+              label: 'Ecran Complet',
+              value: 'fullHeight',
             },
           ],
           required: false,
           admin: {
-            description: 'Control the size of the main title',
+            description: 'Controlează înălțimea banner-ului',
+          },
+        },
+        {
+          name: 'contentAlignment',
+          type: 'select',
+          label: 'Aliniere Text',
+          defaultValue: 'left',
+          options: [
+            {
+              label: 'Stânga',
+              value: 'left',
+            },
+            {
+              label: 'Centru',
+              value: 'center',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Alinierea textului în zona de conținut',
           },
         },
       ],
     },
     {
-      name: 'link',
+      name: 'background',
       type: 'group',
-      label: 'Optional Call-to-Action',
+      label: 'Setări Fundal',
       fields: [
         {
-          name: 'url',
+          name: 'type',
+          type: 'select',
+          label: 'Tip Fundal',
+          defaultValue: 'themeAware',
+          options: [
+            {
+              label: 'Tema Adaptivă (Se schimbă cu dark/light mode)',
+              value: 'themeAware',
+            },
+            {
+              label: 'Culoare Personalizată',
+              value: 'customColor',
+            },
+            {
+              label: 'Gradient',
+              value: 'gradient',
+            },
+            {
+              label: 'Imagine',
+              value: 'image',
+            },
+          ],
+          required: true,
+          admin: {
+            description: 'Alege tipul de fundal pentru banner',
+          },
+        },
+        {
+          name: 'customColor',
           type: 'text',
-          label: 'URL',
+          label: 'Culoare Personalizată',
           required: false,
+          admin: {
+            placeholder: '#1e40af',
+            description: 'Cod culoare hex (ex: #1e40af)',
+            condition: (_, siblingData) => siblingData?.type === 'customColor',
+          },
+        },
+        {
+          name: 'gradientFrom',
+          type: 'text',
+          label: 'Gradient De La',
+          required: false,
+          admin: {
+            placeholder: '#1e40af',
+            description: 'Culoare de start pentru gradient',
+            condition: (_, siblingData) => siblingData?.type === 'gradient',
+          },
+        },
+        {
+          name: 'gradientTo',
+          type: 'text',
+          label: 'Gradient Până La',
+          required: false,
+          admin: {
+            placeholder: '#7c3aed',
+            description: 'Culoare finală pentru gradient',
+            condition: (_, siblingData) => siblingData?.type === 'gradient',
+          },
+        },
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Imagine de Fundal',
+          required: false,
+          admin: {
+            description: 'Imagine pentru fundal (când tipul este "Imagine")',
+            condition: (_, siblingData) => siblingData?.type === 'image',
+          },
+        },
+        {
+          name: 'overlayOpacity',
+          type: 'number',
+          label: 'Opacitate Overlay',
+          defaultValue: 0.5,
+          min: 0,
+          max: 1,
+          required: false,
+          admin: {
+            description: 'Întunecă imaginea de fundal pentru lizibilitate (0-1)',
+            condition: (_, siblingData) => siblingData?.type === 'image',
+          },
+        },
+        {
+          name: 'textColor',
+          type: 'select',
+          label: 'Culoare Text',
+          defaultValue: 'auto',
+          options: [
+            {
+              label: 'Auto (Alb pe fundal întunecat, Negru pe fundal deschis)',
+              value: 'auto',
+            },
+            {
+              label: 'Întotdeauna Alb',
+              value: 'white',
+            },
+            {
+              label: 'Întotdeauna Negru',
+              value: 'dark',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Controlează culoarea textului',
+          },
+        },
+      ],
+    },
+    {
+      name: 'image',
+      type: 'group',
+      label: 'Imagine Banner',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          label: 'Adaugă Imagine',
+          defaultValue: true,
+          required: false,
+          admin: {
+            description: 'Bifează pentru a adăuga o imagine în banner',
+          },
+        },
+        {
+          name: 'media',
+          type: 'upload',
+          relationTo: 'media',
+          label: 'Selectează Imaginea',
+          required: false,
+          admin: {
+            description: 'Imaginea care apare în partea dreaptă (pentru split layout)',
+            condition: (_, siblingData) => siblingData?.enabled === true,
+          },
+        },
+        {
+          name: 'position',
+          type: 'select',
+          label: 'Poziție Imagine',
+          defaultValue: 'right',
+          options: [
+            {
+              label: 'Dreapta',
+              value: 'right',
+            },
+            {
+              label: 'Stânga',
+              value: 'left',
+            },
+          ],
+          required: false,
+          admin: {
+            description: 'Unde apare imaginea în layout split',
+            condition: (_, siblingData) => siblingData?.enabled === true,
+          },
+        },
+      ],
+    },
+    {
+      name: 'button',
+      type: 'group',
+      label: 'Buton Call-to-Action',
+      fields: [
+        {
+          name: 'enabled',
+          type: 'checkbox',
+          label: 'Adaugă Buton',
+          defaultValue: false,
+          required: false,
+          admin: {
+            description: 'Bifează pentru a adăuga un buton',
+          },
         },
         {
           name: 'label',
           type: 'text',
-          label: 'Button Label',
+          label: 'Text Buton',
           required: false,
+          admin: {
+            placeholder: 'Află mai multe',
+            condition: (_, siblingData) => siblingData?.enabled === true,
+          },
+        },
+        {
+          name: 'url',
+          type: 'text',
+          label: 'Link URL',
+          required: false,
+          admin: {
+            placeholder: '/contact',
+            condition: (_, siblingData) => siblingData?.enabled === true,
+          },
         },
         {
           name: 'style',
           type: 'select',
-          label: 'Button Style',
+          label: 'Stil Buton',
           defaultValue: 'solid',
           options: [
             {
@@ -203,22 +341,21 @@ const HeroBanner: Block = {
               label: 'Ghost',
               value: 'ghost',
             },
-            {
-              label: 'Modern Gradient',
-              value: 'modern',
-            },
           ],
           required: false,
           admin: {
-            description: 'Choose the visual style of the call-to-action button',
+            condition: (_, siblingData) => siblingData?.enabled === true,
           },
         },
         {
           name: 'newTab',
           type: 'checkbox',
-          label: 'Open in New Tab',
+          label: 'Deschide în Tab Nou',
           defaultValue: false,
           required: false,
+          admin: {
+            condition: (_, siblingData) => siblingData?.enabled === true,
+          },
         },
       ],
     },

@@ -43,8 +43,8 @@ export default buildConfig({
   },
   admin: {
     meta: {
-      title: 'S58 Studio',
-      titleSuffix: '- S58 Studio',
+      title: 'Tactile CMS',
+      titleSuffix: '- Tactile CMS',
     },
     dateFormat: 'dd/MM/yyyy',
     components: {

@@ -116,3 +116,35 @@ html[data-theme='light'] {
 .animate-fadeIn {
   animation: fadeIn 0.3s ease-in-out forwards;
 }
+
+@keyframes tactileHandGlide {
+  0% {
+    transform: translate(-50%, 0) rotate(-1deg);
+  }
+  50% {
+    transform: translate(-35%, -6px) rotate(2deg);
+  }
+  100% {
+    transform: translate(-50%, 0) rotate(-1deg);
+  }
+}
+
+.hand-glide {
+  animation: tactileHandGlide 6s ease-in-out infinite;
+}
+
+@keyframes tactilePhoneDrift {
+  0% {
+    transform: translateX(-6px) rotate(-1deg);
+  }
+  50% {
+    transform: translateX(6px) rotate(1deg);
+  }
+  100% {
+    transform: translateX(-6px) rotate(-1deg);
+  }
+}
+
+.phone-drift {
+  animation: tactilePhoneDrift 6s ease-in-out infinite;
+}

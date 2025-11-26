@@ -7,6 +7,7 @@ import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { Media as MediaType } from '@/payload-types'
 
 type Card = {
+  id?: string | null
   image: string | MediaType
   icon?: string | MediaType | null
   iconText?: string
@@ -29,6 +30,7 @@ type Props = {
     backgroundColor?: 'none' | 'light' | 'dark' | 'primary'
     cardStyle?: 'shadow' | 'border' | 'minimal'
     columns?: '2' | '3' | '4'
+    cornerRadius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
   }
 }
 
@@ -98,6 +100,25 @@ export const ImageCardGridBlockComponent: React.FC<Props> = ({
     }
   }
 
+  const getCornerRadiusClass = () => {
+    switch (style.cornerRadius) {
+      case 'none':
+        return 'rounded-none'
+      case 'sm':
+        return 'rounded-sm'
+      case 'md':
+        return 'rounded-lg'
+      case 'lg':
+        return 'rounded-xl'
+      case 'xl':
+        return 'rounded-2xl'
+      case '2xl':
+        return 'rounded-3xl'
+      default:
+        return 'rounded-lg'
+    }
+  }
+
   return (
     <section className={`py-16 lg:py-24 ${getBackgroundClass()} ${className || ''}`}>
       <div className="container">
@@ -122,7 +143,7 @@ export const ImageCardGridBlockComponent: React.FC<Props> = ({
           {/* Cards Grid */}
           <div className={`grid ${getGridClass()} gap-8`}>
             {cards.map((card, index) => (
-              <div key={index} className={`rounded-lg overflow-hidden ${getCardStyleClass()}`}>
+              <div key={card.id || `card-${index}`} className={`${getCornerRadiusClass()} overflow-hidden ${getCardStyleClass()}`}>
                 {/* Card Image */}
                 <div className="aspect-[16/9] overflow-hidden">
                   <Media
@@ -171,7 +192,7 @@ export const ImageCardGridBlockComponent: React.FC<Props> = ({
                         href={card.link.url}
                         target={card.link.newTab ? '_blank' : undefined}
                         rel={card.link.newTab ? 'noopener noreferrer' : undefined}
-                        className="inline-flex items-center text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+                        className="inline-flex items-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
                       >
                         {card.link.label}
                         <svg

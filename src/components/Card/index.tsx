@@ -88,7 +88,7 @@ export const Card: React.FC<{
 
   const displayDate = formatDate(publishedAt || createdAt)
 
-  // Minimal card style (Porsche-like)
+  // Minimal card style
   if (cardStyle === 'minimal') {
     return (
       <article

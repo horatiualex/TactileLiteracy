@@ -3,6 +3,8 @@ import type { Block } from 'payload'
 const StatsSection: Block = {
   slug: 'statsSection',
   interfaceName: 'StatsSectionBlock',
+  imageURL: '/block-previews/statssection.png',
+  imageAltText: 'Statistici - Afișează cifre și metrici importante',
   labels: {
     singular: 'Secțiune Statistici',
     plural: 'Secțiuni Statistici',
@@ -158,7 +160,6 @@ const StatsSection: Block = {
           name: 'number',
           type: 'text',
           label: 'Număr/Valoare',
-          required: true,
           admin: {
             description: 'ex: "150+", "50K+", "99%"',
           },
@@ -167,7 +168,6 @@ const StatsSection: Block = {
           name: 'label',
           type: 'text',
           label: 'Eticheta',
-          required: true,
           admin: {
             description: 'ex: "Organizații Partenere", "Utilizatori Deserviți"',
           },
@@ -189,9 +189,8 @@ const StatsSection: Block = {
           },
         },
       ],
-      minRows: 2,
+      minRows: 1,
       maxRows: 6,
-      required: true,
       admin: {
         description: 'Adaugă 2, 4, sau 6 statistici cu numere și etichete',
       },

@@ -4,9 +4,11 @@ const FAQ: Block = {
   slug: 'faq',
   interfaceName: 'FAQBlock',
   labels: {
-    singular: 'FAQ Block',
-    plural: 'FAQ Blocks',
+    singular: 'Întrebări Frecvente (FAQ)',
+    plural: 'Secțiuni FAQ',
   },
+  imageURL: '/block-previews/faq.png',
+  imageAltText: 'FAQ - Întrebări și răspunsuri acordeon',
   fields: [
     {
       name: 'title',

@@ -12,7 +12,7 @@ export const Icon: React.FC = () => {
       justifyContent: 'center',
       color: 'white'
     }}>
-      S58
+      TC
     </div>
   )
 }

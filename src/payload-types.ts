@@ -1221,15 +1221,10 @@ export interface FAQBlock {
  * via the `definition` "HeroBannerBlock".
  */
 export interface HeroBannerBlock {
-  /**
-   * Upload an icon for the banner (SVG recommended)
-   */
-  icon?: (string | null) | Media;
-  /**
-   * Use text instead of an icon (e.g., emoji or character)
-   */
-  iconText?: string | null;
   title: string;
+  /**
+   * Text descriptiv opțional sub titlu
+   */
   description?: {
     root: {
       type: string;
@@ -1245,33 +1240,72 @@ export interface HeroBannerBlock {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Background image for split screen layout or visual element for other themes
-   */
-  backgroundMedia?: (string | null) | Media;
-  style?: {
-    alignment?: ('left' | 'center') | null;
-    size?: ('small' | 'medium' | 'large') | null;
+  layout: {
     /**
-     * Choose the style and layout for the hero banner
+     * Alege cum vrei să fie aranjat conținutul
      */
-    backgroundTheme?: ('modern' | 'split' | 'card') | null;
+    type: 'split' | 'centered' | 'fullWidth';
     /**
-     * Control how the icon and title are positioned
+     * Controlează înălțimea banner-ului
      */
-    layout?: ('default' | 'stacked') | null;
+    size?: ('small' | 'medium' | 'large' | 'fullHeight') | null;
     /**
-     * Control the size of the main title
+     * Alinierea textului în zona de conținut
      */
-    titleSize?: ('normal' | 'large' | 'xl') | null;
+    contentAlignment?: ('left' | 'center') | null;
   };
-  link?: {
-    url?: string | null;
-    label?: string | null;
+  background: {
     /**
-     * Choose the visual style of the call-to-action button
+     * Alege tipul de fundal pentru banner
      */
-    style?: ('solid' | 'outline' | 'ghost' | 'modern') | null;
+    type: 'themeAware' | 'customColor' | 'gradient' | 'image';
+    /**
+     * Cod culoare hex (ex: #1e40af)
+     */
+    customColor?: string | null;
+    /**
+     * Culoare de start pentru gradient
+     */
+    gradientFrom?: string | null;
+    /**
+     * Culoare finală pentru gradient
+     */
+    gradientTo?: string | null;
+    /**
+     * Imagine pentru fundal (când tipul este "Imagine")
+     */
+    image?: (string | null) | Media;
+    /**
+     * Întunecă imaginea de fundal pentru lizibilitate (0-1)
+     */
+    overlayOpacity?: number | null;
+    /**
+     * Controlează culoarea textului
+     */
+    textColor?: ('auto' | 'white' | 'dark') | null;
+  };
+  image?: {
+    /**
+     * Bifează pentru a adăuga o imagine în banner
+     */
+    enabled?: boolean | null;
+    /**
+     * Imaginea care apare în partea dreaptă (pentru split layout)
+     */
+    media?: (string | null) | Media;
+    /**
+     * Unde apare imaginea în layout split
+     */
+    position?: ('right' | 'left') | null;
+  };
+  button?: {
+    /**
+     * Bifează pentru a adăuga un buton
+     */
+    enabled?: boolean | null;
+    label?: string | null;
+    url?: string | null;
+    style?: ('solid' | 'outline' | 'ghost') | null;
     newTab?: boolean | null;
   };
   id?: string | null;
@@ -1290,11 +1324,13 @@ export interface ImageCardGridBlock {
     backgroundColor?: ('none' | 'light' | 'dark' | 'primary') | null;
     cardStyle?: ('shadow' | 'border' | 'minimal') | null;
     columns?: ('2' | '3' | '4') | null;
+    cornerRadius?: ('none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl') | null;
   };
   /**
    * Add image cards with photos, icons, titles, and descriptions
    */
   cards: {
+    id?: string | null;
     /**
      * Main image for the card (recommended: 16:9 aspect ratio)
      */
@@ -1328,7 +1364,6 @@ export interface ImageCardGridBlock {
       label?: string | null;
       newTab?: boolean | null;
     };
-    id?: string | null;
   }[];
   id?: string | null;
   blockName?: string | null;
@@ -1384,22 +1419,24 @@ export interface StatsSectionBlock {
   /**
    * Adaugă 2, 4, sau 6 statistici cu numere și etichete
    */
-  stats: {
-    /**
-     * ex: "150+", "50K+", "99%"
-     */
-    number: string;
-    /**
-     * ex: "Organizații Partenere", "Utilizatori Deserviți"
-     */
-    label: string;
-    icon?: (string | null) | Media;
-    /**
-     * Folosește emoji sau text în loc de iconiță încărcată
-     */
-    iconText?: string | null;
-    id?: string | null;
-  }[];
+  stats?:
+    | {
+        /**
+         * ex: "150+", "50K+", "99%"
+         */
+        number?: string | null;
+        /**
+         * ex: "Organizații Partenere", "Utilizatori Deserviți"
+         */
+        label?: string | null;
+        icon?: (string | null) | Media;
+        /**
+         * Folosește emoji sau text în loc de iconiță încărcată
+         */
+        iconText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'statsSection';
@@ -2075,25 +2112,39 @@ export interface FAQBlockSelect<T extends boolean = true> {
  * via the `definition` "HeroBannerBlock_select".
  */
 export interface HeroBannerBlockSelect<T extends boolean = true> {
-  icon?: T;
-  iconText?: T;
   title?: T;
   description?: T;
-  backgroundMedia?: T;
-  style?:
+  layout?:
     | T
     | {
-        alignment?: T;
+        type?: T;
         size?: T;
-        backgroundTheme?: T;
-        layout?: T;
-        titleSize?: T;
+        contentAlignment?: T;
       };
-  link?:
+  background?:
     | T
     | {
-        url?: T;
+        type?: T;
+        customColor?: T;
+        gradientFrom?: T;
+        gradientTo?: T;
+        image?: T;
+        overlayOpacity?: T;
+        textColor?: T;
+      };
+  image?:
+    | T
+    | {
+        enabled?: T;
+        media?: T;
+        position?: T;
+      };
+  button?:
+    | T
+    | {
+        enabled?: T;
         label?: T;
+        url?: T;
         style?: T;
         newTab?: T;
       };
@@ -2114,10 +2165,12 @@ export interface ImageCardGridBlockSelect<T extends boolean = true> {
         backgroundColor?: T;
         cardStyle?: T;
         columns?: T;
+        cornerRadius?: T;
       };
   cards?:
     | T
     | {
+        id?: T;
         image?: T;
         icon?: T;
         iconText?: T;
@@ -2130,7 +2183,6 @@ export interface ImageCardGridBlockSelect<T extends boolean = true> {
               label?: T;
               newTab?: T;
             };
-        id?: T;
       };
   id?: T;
   blockName?: T;
@@ -2609,27 +2661,6 @@ export interface Header {
     linkToHome?: boolean | null;
   };
   /**
-   * Configurează butonul de căutare din header
-   */
-  search?: {
-    showSearch?: boolean | null;
-    /**
-     * URL-ul către pagina de căutare (ex: /cautare)
-     */
-    searchUrl?: string | null;
-  };
-  /**
-   * Personalizează aspectul header-ului
-   */
-  styling?: {
-    backgroundType?: ('transparent' | 'semi-transparent' | 'solid') | null;
-    layout?: ('container' | 'full-width') | null;
-    buttonStyle?: {
-      activeStyle?: ('button' | 'underline') | null;
-      roundness?: ('none' | 'small' | 'medium' | 'large' | 'full') | null;
-    };
-  };
-  /**
    * Adaugă elementele principale ale meniului (ex: Concursuri, Serbări, Orare). Poți avea fie un link simplu, fie un dropdown cu pagini dedesubt.
    */
   navItems?:
@@ -2832,7 +2863,22 @@ export interface Setting {
      */
     showInFooter?: boolean | null;
   };
-  siteName?: string | null;
+  /**
+   * This name will appear in the browser tab and as the default page title
+   */
+  siteName: string;
+  /**
+   * Template for page titles. Use %s as placeholder for page name
+   */
+  siteTitle?: string | null;
+  /**
+   * Upload a .ico, .png, or .svg file for the browser tab icon (recommended: 32x32px or 48x48px)
+   */
+  favicon?: (string | null) | Media;
+  /**
+   * Optional: Upload an SVG version for modern browsers
+   */
+  faviconSvg?: (string | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -2848,24 +2894,6 @@ export interface HeaderSelect<T extends boolean = true> {
         showText?: T;
         brandText?: T;
         linkToHome?: T;
-      };
-  search?:
-    | T
-    | {
-        showSearch?: T;
-        searchUrl?: T;
-      };
-  styling?:
-    | T
-    | {
-        backgroundType?: T;
-        layout?: T;
-        buttonStyle?:
-          | T
-          | {
-              activeStyle?: T;
-              roundness?: T;
-            };
       };
   navItems?:
     | T
@@ -3017,6 +3045,9 @@ export interface SettingsSelect<T extends boolean = true> {
         showInFooter?: T;
       };
   siteName?: T;
+  siteTitle?: T;
+  favicon?: T;
+  faviconSvg?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

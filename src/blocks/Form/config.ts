@@ -10,6 +10,8 @@ import {
 export const FormBlock: Block = {
   slug: 'formBlock',
   interfaceName: 'FormBlock',
+  imageURL: '/block-previews/form.png',
+  imageAltText: 'Formular - Creează formulare personalizate',
   fields: [
     {
       name: 'form',
@@ -45,7 +47,7 @@ export const FormBlock: Block = {
     singularName: 'FormBlock',
   },
   labels: {
-    plural: 'Form Blocks',
-    singular: 'Form Block',
+    plural: 'Blocuri Formular',
+    singular: 'Formular',
   },
 }

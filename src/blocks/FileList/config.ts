@@ -3,8 +3,10 @@ import type { Block } from 'payload'
 export const FileList: Block = {
   slug: 'fileList',
   interfaceName: 'FileListBlock',
+  imageURL: '/block-previews/filelist.png',
+  imageAltText: 'Listă Fișiere - Documente descărcabile',
   labels: {
-    singular: 'Lista Fișiere',
+    singular: 'Listă Fișiere',
     plural: 'Liste Fișiere',
   },
   fields: [

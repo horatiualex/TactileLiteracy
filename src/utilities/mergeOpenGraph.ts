@@ -3,14 +3,14 @@ import { getServerSideURL } from './getURL'
 
 const defaultOpenGraph: Metadata['openGraph'] = {
   type: 'website',
-  description: 'S58 Studio - Modern Content Management System',
+  description: 'Tactile CMS - Modern Content Management System',
   images: [
     {
       url: `${getServerSideURL()}/website-template-OG.webp`,
     },
   ],
-  siteName: 'S58 Studio',
-  title: 'S58 Studio',
+  siteName: 'Tactile CMS',
+  title: 'Tactile CMS',
 }
 
 export const mergeOpenGraph = (og?: Metadata['openGraph']): Metadata['openGraph'] => {

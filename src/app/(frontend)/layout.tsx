@@ -13,6 +13,8 @@ import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
+import { getPayload } from 'payload'
+import config from '@payload-config'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -24,8 +26,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
-        <link href="/favicon.ico" rel="icon" sizes="32x32" />
-        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
       </head>
       <body>
         <Providers>
@@ -45,16 +45,47 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   )
 }
 
-export const metadata: Metadata = {
-  metadataBase: new URL(getServerSideURL()),
-  title: {
-    default: 'S58 Studio',
-    template: '%s | S58 Studio',
-  },
-  description: 'S58 Studio - Modern Content Management System',
-  openGraph: mergeOpenGraph(),
-  twitter: {
-    card: 'summary_large_image',
-    creator: '@s58studio',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const payload = await getPayload({ config })
+  const settings = await payload.findGlobal({
+    slug: 'settings',
+  })
+
+  const siteName = settings?.siteName || 'Tactile CMS'
+  const siteTitle = settings?.siteTitle || '%s | Tactile CMS'
+  
+  // Get favicon URLs
+  const faviconUrl = settings?.favicon && typeof settings.favicon !== 'string' 
+    ? settings.favicon.url 
+    : '/favicon.ico'
+    
+  const faviconSvgUrl = settings?.faviconSvg && typeof settings.faviconSvg !== 'string'
+    ? settings.faviconSvg.url
+    : null
+
+  return {
+    metadataBase: new URL(getServerSideURL()),
+    title: {
+      default: siteName,
+      template: siteTitle,
+    },
+    description: 'Tactile CMS - Modern Content Management System',
+    icons: {
+      icon: [
+        {
+          url: faviconUrl || '/favicon.ico',
+          sizes: '32x32',
+        },
+        ...(faviconSvgUrl ? [{
+          url: faviconSvgUrl,
+          type: 'image/svg+xml',
+        }] : []),
+      ],
+    },
+    openGraph: mergeOpenGraph(),
+    twitter: {
+      card: 'summary_large_image',
+      creator: '@tactilecms',
+    },
+  }
 }
