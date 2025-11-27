@@ -8,6 +8,7 @@ import StatisticsSection from '@/components/staticpages/acasa/StatisticsSection'
 import NeedImageSection from '@/components/staticpages/acasa/NeedImageSection'
 import PartnersSection from '@/components/staticpages/acasa/PartnersSection'
 import HowToSection from '@/components/staticpages/acasa/HowToSection'
+import TestimonialSection from '@/components/staticpages/acasa/TestimonialSection'
 
 export default async function AcasaPage() {
   return (
@@ -53,6 +54,8 @@ export default async function AcasaPage() {
         <NeedImageSection />
 
         <PartnersSection />
+
+        <TestimonialSection />
       </div>
     </article>
   )

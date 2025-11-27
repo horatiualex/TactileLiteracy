@@ -26,58 +26,58 @@ interface ConnectorState {
 const steps: StepData[] = [
   {
     number: '1',
-    title: 'Caută imaginea dorită',
+    title: 'Descarcă aplicația',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Descarcă aplicația gratuită Tactile Literacy din App Store sau Google Play. Aplicația este disponibilă pentru dispozitive iOS și Android.',
     mediaLabel: 'img  /  video',
     orientation: 'left',
   },
   {
     number: '2',
-    title: 'Deschide Image Editor',
+    title: 'Explorează biblioteca',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Accesează biblioteca cu peste 800 de imagini tactile din diverse domenii: hărți, obiecte, portrete, vehicule și multe altele.',
     mediaLabel: 'img  /  video',
     orientation: 'right',
     hasTopTab: true,
   },
   {
     number: '3',
-    title: 'Selectează zonele',
+    title: 'Printează imagini',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Printează imaginile tactile folosind imprimanta Tactile Printer One sau tehnica manuală cu seringă și lipici pentru lemn.',
     mediaLabel: 'img  /  video',
     orientation: 'left',
   },
   {
     number: '4',
-    title: 'Adaugă text descrieri',
+    title: 'Scanează QR Code-ul',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Folosește aplicația pentru a scana codul QR de pe imaginea tactilă imprimată. Acest cod va lansa descrierile audio și video.',
     mediaLabel: 'img  /  video',
     orientation: 'right',
   },
   {
     number: '5',
-    title: 'Adaugă clip video',
+    title: 'Explorează prin atingere',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Atinge diferitele zone ale imaginii reliefate pentru a auzi explicații audio detaliate sau a urmări interpretări în limbajul semnelor.',
     mediaLabel: 'img  /  video',
     orientation: 'left',
   },
   {
     number: '6',
-    title: 'Descarcă și printează sau...',
+    title: 'Învață independent',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Elevii pot studia în propriul ritm, explorând singuri lumea vizuală prin atingere, sunet și limbaj semnelor, fără să depindă constant de un asistent.',
     mediaLabel: 'img  /  video',
     orientation: 'right',
   },
    {
     number: '7',
-    title: 'Comanda de la noi',
+    title: 'Creează conținut personalizat',
     description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Folosește Image Creator de pe platformă pentru a crea propriile imagini tactile interactive cu descrieri personalizate în mai multe limbi.',
     mediaLabel: 'img  /  video',
     orientation: 'left',
   },
@@ -195,14 +195,13 @@ const HowToSection: React.FC = () => {
         <div
           className="inline-flex px-6 py-2 rounded-full text-sm font-medium border shadow-sm"
           style={{
-            backgroundColor: 'rgba(30, 30, 30, 0.9)',
+            backgroundColor: '#2F2F2F',
             color: '#F5F5F5',
             borderColor: '#515151',
-            boxShadow:
-              '1.76px 2.35px 1.62px rgba(255,255,255,0.35), inset 2.35px 4.11px 1.76px rgba(0,0,0,0.6)',
+            boxShadow: 'inset 4px 4px 6px rgba(0, 0, 0, 0.5), inset -3px -3px 6px rgba(70, 70, 70, 0.8)',
           }}
         >
-          How to use our method
+          Cum funcționează
         </div>
       </div>
 
@@ -230,6 +229,7 @@ const HowToSection: React.FC = () => {
           </svg>
         )}
 
+        
         <div className="flex flex-col gap-16 lg:gap-20">
           {StepItems}
 
@@ -286,23 +286,58 @@ const StepItem: React.FC<StepItemProps> = ({ step, index, setStartAnchor, setEnd
             alt="Fish background"
             className="absolute inset-0 w-full h-full object-contain"
             style={{
-              filter: 'drop-shadow(3px 6px 12px rgba(0, 0, 0, 0.6))',
-              transform: index === 1 ? 'rotate(90deg)' : index === 2 ? 'rotate(-90deg)' : index === 3 ? 'scaleX(-1)' : index === 5 ? 'rotate(90deg)' : index === 6 ? 'rotate(-90deg)' : undefined, 
+              transform: index === 1 ? 'rotate(90deg)' : index === 2 ? 'rotate(-90deg)' : index === 3 ? 'scaleX(-1)' : index === 5 ? 'rotate(90deg)' : index === 6 ? 'rotate(-90deg)' : undefined,
             }}
           />
 
-          <div className="absolute inset-0 flex items-center justify-center">
+          {index >= 0 && index <= 6 && (
             <div
-              className="px-10 py-6 text-white text-lg lg:text-xl font-semibold uppercase tracking-[0.15em]"
+              className="absolute inset-0"
               style={{
-                backgroundColor: 'rgba(0,0,0,0.25)',
-                borderRadius: '999px',
-                backdropFilter: 'blur(6px)',
+                WebkitMaskImage: 'url(/assets/acasa/pestisor.svg)',
+                WebkitMaskSize: 'contain',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskPosition: 'center',
+                maskImage: 'url(/assets/acasa/pestisor.svg)',
+                maskSize: 'contain',
+                maskRepeat: 'no-repeat',
+                maskPosition: 'center',
+                transform: index === 1 ? 'rotate(90deg)' : index === 2 ? 'rotate(-90deg)' : index === 3 ? 'scaleX(-1)' : index === 5 ? 'rotate(90deg)' : index === 6 ? 'rotate(-90deg)' : undefined,
               }}
             >
-              {step.mediaLabel}
+              <img
+                src={`/assets/acasa/${
+                  index === 0 ? 'descarca.png' :
+                  index === 1 ? 'exploreaza.png' :
+                  index === 2 ? 'printeaza.png' :
+                  index === 3 ? 'scaneaza.png' :
+                  index === 4 ? 'atingere.png' :
+                  index === 5 ? 'invata.png' :
+                  'creeaza.png'
+                }`}
+                alt={step.title}
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  transform: index === 1 ? 'rotate(-90deg)' : index === 2 ? 'rotate(90deg)' : index === 3 ? 'scaleX(-1)' : index === 5 ? 'rotate(-90deg)' : index === 6 ? 'rotate(90deg)' : undefined,
+                }}
+              />
             </div>
-          </div>
+          )}
+
+          {index === 7 && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div
+                className="px-10 py-6 text-white text-lg lg:text-xl font-semibold uppercase tracking-[0.15em]"
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.25)',
+                  borderRadius: '999px',
+                  backdropFilter: 'blur(6px)',
+                }}
+              >
+                {step.mediaLabel}
+              </div>
+            </div>
+          )}
 
           <div
             ref={setEndAnchor(index)}
