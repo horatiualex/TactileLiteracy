@@ -66,9 +66,12 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             <CMSLink
               key={i}
               {...singleLink}
-              className={`px-4 py-2 text-base font-medium transition-colors duration-200 ${
-                isActive ? 'text-gray-900' : 'text-gray-700 hover:text-gray-900'
+              className={`px-6 py-2.5 text-base font-medium transition-all duration-200 rounded-full text-gray-700 hover:text-gray-900 ${
+                isActive ? 'bg-[#D9D9D9]' : ''
               }`}
+              style={isActive ? {
+                boxShadow: 'inset 4px 4px 8px rgba(0, 0, 0, 0.25), inset -2px -2px 4px rgba(255, 255, 255, 0.7)'
+              } : undefined}
             >
               {label}
             </CMSLink>
