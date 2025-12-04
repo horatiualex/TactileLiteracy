@@ -69,6 +69,8 @@ export interface Config {
   collections: {
     pages: Page;
     posts: Post;
+    library: Library;
+    'library-categories': LibraryCategory;
     media: Media;
     categories: Category;
     users: User;
@@ -85,6 +87,8 @@ export interface Config {
   collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
+    library: LibrarySelect<false> | LibrarySelect<true>;
+    'library-categories': LibraryCategoriesSelect<false> | LibraryCategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -1443,6 +1447,123 @@ export interface StatsSectionBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library".
+ */
+export interface Library {
+  id: string;
+  title: string;
+  /**
+   * Imaginea stilizată pentru persoane cu deficiențe de vedere
+   */
+  tactileImage: string | Media;
+  /**
+   * Descriere scurtă afișată în card și în sidebar
+   */
+  shortDescription?: string | null;
+  /**
+   * Fișierul care va fi descărcat (PDF, SVG, etc.)
+   */
+  downloadFile?: (string | null) | Media;
+  /**
+   * Descrierea completă a elementelor vizuale din imagine
+   */
+  imageDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Informații științifice, educaționale despre subiectul imaginii
+   */
+  relevantData?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Fotografie reală a subiectului (ex: fotografia pescărușului)
+   */
+  realImage?: (string | null) | Media;
+  /**
+   * Textul pentru citare/referință bibliografică
+   */
+  bibliography?: string | null;
+  categories?: (string | LibraryCategory)[] | null;
+  /**
+   * Selectează grupurile țintă pentru care este adaptată imaginea
+   */
+  adaptedFor?: ('blind' | 'deaf' | 'neurodivergent')[] | null;
+  /**
+   * Nivelul de complexitate al imaginii tactile
+   */
+  difficultyLevel?: ('easy' | 'medium' | 'hard') | null;
+  /**
+   * Bifează dacă imaginea include descriere detaliată
+   */
+  hasDescription?: boolean | null;
+  relatedItems?: (string | Library)[] | null;
+  meta?: {
+    title?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (string | null) | Media;
+    description?: string | null;
+  };
+  publishedAt?: string | null;
+  /**
+   * ID-ul produsului din WooCommerce pentru checkout
+   */
+  woocommerceProductId?: string | null;
+  /**
+   * Prețul pentru printare
+   */
+  price?: number | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-categories".
+ */
+export interface LibraryCategory {
+  id: string;
+  title: string;
+  description?: string | null;
+  /**
+   * Iconiță opțională pentru categorie
+   */
+  icon?: (string | null) | Media;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1621,6 +1742,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'posts';
         value: string | Post;
+      } | null)
+    | ({
+        relationTo: 'library';
+        value: string | Library;
+      } | null)
+    | ({
+        relationTo: 'library-categories';
+        value: string | LibraryCategory;
       } | null)
     | ({
         relationTo: 'media';
@@ -2253,6 +2382,53 @@ export interface PostsSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library_select".
+ */
+export interface LibrarySelect<T extends boolean = true> {
+  title?: T;
+  tactileImage?: T;
+  shortDescription?: T;
+  downloadFile?: T;
+  imageDescription?: T;
+  relevantData?: T;
+  realImage?: T;
+  bibliography?: T;
+  categories?: T;
+  adaptedFor?: T;
+  difficultyLevel?: T;
+  hasDescription?: T;
+  relatedItems?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        image?: T;
+        description?: T;
+      };
+  publishedAt?: T;
+  woocommerceProductId?: T;
+  price?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "library-categories_select".
+ */
+export interface LibraryCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  icon?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -3068,6 +3244,10 @@ export interface TaskSchedulePublish {
       | ({
           relationTo: 'posts';
           value: string | Post;
+        } | null)
+      | ({
+          relationTo: 'library';
+          value: string | Library;
         } | null);
     global?: string | null;
     user?: (string | null) | User;
