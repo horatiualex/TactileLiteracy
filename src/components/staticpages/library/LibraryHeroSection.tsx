@@ -28,12 +28,12 @@ export default function LibraryHeroSection({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchValue.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchValue.trim())}`)
+      router.push(`/library/search?q=${encodeURIComponent(searchValue.trim())}`)
     }
   }
 
   return (
-    <section className="relative w-full min-h-screen flex items-center">
+    <section className="relative w-full h-[90vh] max-h-[900px] flex items-center">
       <div
         className={`w-full ${
           isImageRight ? 'pl-8 lg:pl-16 pr-[60%]' : 'pr-8 lg:pr-16 pl-[60%]'

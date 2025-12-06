@@ -28,7 +28,7 @@ export default function BlogHeroSection({
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchValue.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchValue.trim())}`)
+      router.push(`/blog/search?q=${encodeURIComponent(searchValue.trim())}`)
     }
   }
 

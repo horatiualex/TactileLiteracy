@@ -97,36 +97,57 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
     <section className="w-full">
       {/* Top Filter Bar - Adaptat pentru */}
       <div 
-        className="w-full py-4 px-8 lg:px-16 flex items-center justify-center gap-4 flex-wrap"
-        style={{ backgroundColor: '#D2D2D2' }}
+        className="w-full py-4 px-8 lg:px-16"
+        style={{ 
+          backgroundColor: '#D9D9D9',
+          boxShadow: '0 2px 20px rgba(0, 0, 0, 0.4)'
+        }}
       >
-        {adaptedForOptions.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setSelectedAdaptedFor(option.value)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-medium transition-all duration-200 ${
-              selectedAdaptedFor === option.value
-                ? 'bg-[#3A3A3A] text-white'
-                : 'bg-[#E8E8E8] text-gray-700 hover:bg-[#D9D9D9]'
-            }`}
-            style={{
-              boxShadow: selectedAdaptedFor === option.value
-                ? 'inset 2px 2px 4px rgba(0, 0, 0, 0.3), inset -1px -1px 2px rgba(255, 255, 255, 0.1)'
-                : '2px 2px 4px rgba(0, 0, 0, 0.15), -1px -1px 2px rgba(255, 255, 255, 0.8)'
-            }}
-          >
-            <AdaptedIcon type={option.icon} active={selectedAdaptedFor === option.value} />
-            <span>{option.label}</span>
-          </button>
-        ))}
+        {/* Filter buttons - full width, spaced evenly on large screens */}
+        <div className="flex items-center justify-center gap-2 lg:gap-3 flex-wrap">
+          {adaptedForOptions.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => setSelectedAdaptedFor(option.value)}
+              className={`flex items-center justify-center gap-2 lg:gap-3 px-4 py-2 lg:px-5 lg:py-3 xl:px-6 2xl:px-8 2xl:py-3 rounded-full font-medium transition-all duration-200 ${
+                selectedAdaptedFor === option.value
+                  ? 'bg-[#C8C8C8] text-gray-800'
+                  : 'bg-[#E8E8E8] text-gray-700 hover:bg-[#DFDFDF]'
+              }`}
+              style={{
+                boxShadow: selectedAdaptedFor === option.value
+                  ? 'inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.4)'
+                  : '3px 3px 6px rgba(0, 0, 0, 0.2), -2px -2px 4px rgba(255, 255, 255, 0.9)'
+              }}
+            >
+              <img 
+                src={`/assets/library/${option.icon === 'eye' ? 'seeall' : option.icon === 'blind' ? 'blind' : option.icon === 'deaf' ? 'deaf.tif' : option.icon === 'neurodivergent' ? 'neurodivergent' : 'nodescription'}.svg`}
+                alt=""
+                className="w-5 h-5 lg:w-6 lg:h-6 2xl:w-7 2xl:h-7 flex-shrink-0"
+              />
+              <span className="text-sm lg:text-base 2xl:text-lg whitespace-nowrap">{option.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Main Content */}
       <div 
-        className="w-full py-16 px-8 lg:px-16"
+        className="w-full py-16 px-8 lg:px-16 relative"
         style={{ backgroundColor: '#D2D2D2' }}
       >
-        <div className="w-full">
+        {/* Top light - positioned under filter bar, only over grid area */}
+        <div className="hidden xl:block absolute xl:-top-10 2xl:-top-28 left-0 right-0 h-40 pointer-events-none z-0">
+          <div className="absolute top-0 left-[calc(288px+2rem+4rem)] right-0">
+            <img 
+              src="/assets/library/light.svg" 
+              alt="" 
+              className="w-full h-auto opacity-90"
+            />
+          </div>
+        </div>
+
+        <div className="w-full relative z-10">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Filters Sidebar */}
             <aside className="w-full lg:w-72 flex-shrink-0">
@@ -185,16 +206,43 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
             </aside>
 
             {/* Library Items Grid */}
-            <div className="flex-1">
+            <div className="flex-1 relative">
               {filteredItems.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-600">Nu au fost găsite imagini.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {filteredItems.map((item) => (
-                    <LibraryCard key={item.id} item={item} />
-                  ))}
+                <div className="flex flex-col gap-8">
+                  {/* Group items in rows of 3 for shelf display */}
+                  {Array.from({ length: Math.ceil(filteredItems.length / 3) }).map((_, rowIndex) => {
+                    const rowItems = filteredItems.slice(rowIndex * 3, rowIndex * 3 + 3)
+                    return (
+                      <div key={rowIndex} className="relative">
+                        {/* Cards grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-20 pb-10 2xl:pb-16">
+                          {rowItems.map((item) => (
+                            <LibraryCard key={item.id} item={item} />
+                          ))}
+                        </div>
+                        {/* Shelf - only visible on xl screens (3 columns) */}
+                        <div className="hidden xl:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[105%] z-10">
+                          <img 
+                            src="/assets/library/raft.svg" 
+                            alt="" 
+                            className="w-full h-auto"
+                          />
+                        </div>
+                        {/* Light under shelf */}
+                        <div className="hidden xl:block absolute -bottom-20 xl:-bottom-24 2xl:-bottom-32 left-1/2 -translate-x-1/2 w-full z-0 pointer-events-none">
+                          <img 
+                            src="/assets/library/light.svg" 
+                            alt="" 
+                            className="w-full h-auto opacity-90"
+                          />
+                        </div>
+                      </div>
+                    )
+                  })}
                 </div>
               )}
             </div>
@@ -203,52 +251,6 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
       </div>
     </section>
   )
-}
-
-// Icon component for adapted for filters
-function AdaptedIcon({ type, active }: { type: string; active: boolean }) {
-  const color = active ? '#FFFFFF' : '#3A3A3A'
-  
-  switch (type) {
-    case 'eye':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
-      )
-    case 'blind':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill={active ? '#E53935' : '#E53935'}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v12M6 12h12" stroke="white" strokeWidth="2" />
-        </svg>
-      )
-    case 'deaf':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill={active ? '#FB8C00' : '#FB8C00'}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M8 9c0-2.2 1.8-4 4-4s4 1.8 4 4v2c0 1.1-.9 2-2 2h-1" stroke="white" strokeWidth="2" fill="none" />
-          <circle cx="10" cy="16" r="1.5" fill="white" />
-        </svg>
-      )
-    case 'neurodivergent':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill={active ? '#1E88E5' : '#1E88E5'}>
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v4M12 14v4M6 12h4M14 12h4" stroke="white" strokeWidth="2" />
-        </svg>
-      )
-    case 'no-description':
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2">
-          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
-          <line x1="2" y1="2" x2="22" y2="22" />
-        </svg>
-      )
-    default:
-      return null
-  }
 }
 
 // Library Card Component
@@ -271,135 +273,146 @@ function LibraryCard({ item }: { item: Library }) {
 
   return (
     <a
-      href={`/biblioteca/${item.slug}`}
+      href={`/library/${item.slug}`}
       className="block overflow-hidden group"
     >
-      {/* Image with tags */}
+      {/* Image area - WHITE background with shadows */}
       <div 
-        className="aspect-square bg-[#4A4A4A] rounded-t-2xl relative overflow-hidden"
+        className="relative rounded-t-3xl overflow-hidden bg-white"
         style={{
-          boxShadow: 'inset 2.38px 7.13px 3.17px rgba(0, 0, 0, 0.4), -1.58px -2.38px 2.18px rgba(255, 255, 255, 1)',
+          boxShadow: '-2px -1px 2.75px rgba(255, 255, 255, 0.7), 0px 8px 16px rgba(0, 0, 0, 0.35)'
         }}
       >
-        {imageUrl ? (
-          <img src={imageUrl} alt={item.title} className="w-full h-full object-contain p-4" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-white/60 text-lg">img / video</span>
-          </div>
-        )}
-
-        {/* Top tags - Categories & Difficulty */}
-        <div className="absolute top-3 left-3 right-3 flex items-start justify-between">
-          <div className="flex gap-1.5 flex-wrap">
-            {categoryTags.map((tag, idx) => (
-              <span 
-                key={idx}
-                className="px-2.5 py-1 bg-white/90 text-gray-800 text-xs font-medium rounded"
-                style={{ boxShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
+        {/* Top badges row */}
+        <div className="absolute top-4 left-4 right-4 2xl:top-6 2xl:left-6 2xl:right-6 flex items-start justify-between z-10">
+          {/* Category badge - left */}
+          {categoryTags[0] && (
+            <span 
+              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#E8E8E8] text-gray-700 text-sm 2xl:text-lg font-medium rounded-full"
+              style={{ 
+                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.8)' 
+              }}
+            >
+              {categoryTags[0]}
+            </span>
+          )}
+          
+          {/* Difficulty badge - right */}
           {difficultyLabel && (
             <span 
-              className="px-2.5 py-1 bg-white/90 text-gray-600 text-xs rounded"
-              style={{ boxShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
+              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#E8E8E8] text-gray-600 text-sm 2xl:text-lg rounded-full"
+              style={{ 
+                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.8)' 
+              }}
             >
               {difficultyLabel}
             </span>
           )}
         </div>
 
-        {/* Adapted for icons */}
-        <div className="absolute top-3 right-3 flex gap-1">
-          {item.adaptedFor?.includes('blind') && (
-            <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center">
-              <span className="text-white text-xs">👁</span>
-            </div>
-          )}
-          {item.adaptedFor?.includes('deaf') && (
-            <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center">
-              <span className="text-white text-xs">👂</span>
-            </div>
-          )}
-          {item.adaptedFor?.includes('neurodivergent') && (
-            <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center">
-              <span className="text-white text-xs">🧠</span>
-            </div>
-          )}
-        </div>
+        {/* Corner markers - top right */}
+        <div className="absolute top-12 right-3 w-5 h-5 border-t-2 border-r-2 border-gray-300 z-10" />
+        {/* Corner markers - bottom right */}
+        <div className="absolute bottom-3 right-3 w-5 h-5 border-b-2 border-r-2 border-gray-300 z-10" />
 
-        {/* Bottom label */}
-        <div className="absolute bottom-3 left-3">
-          <span 
-            className="px-3 py-1.5 bg-[#3A3A3A] text-white text-xs font-medium rounded"
-            style={{ boxShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}
-          >
-            Text nevăzători
-          </span>
+        {/* Main image - reduced height */}
+        <div className="aspect-[4/3] flex items-center justify-center p-4 pt-10">
+          {imageUrl ? (
+            <img 
+              src={imageUrl} 
+              alt={item.title} 
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-gray-400 text-lg">img / video</span>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Card Content with SVG background */}
+      {/* Card Content with dark SVG background and shadows */}
       <div 
-        className="relative"
-        style={{
-          filter: 'drop-shadow(1.58px 2.38px 2.18px rgba(255, 255, 255, 1))',
-          marginTop: '-1px'
+        className="relative" 
+        style={{ 
+          marginTop: '-1px',
+          filter: 'drop-shadow(-2px -1px 2.75px rgba(255, 255, 255, 0.7)) drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.35))'
         }}
       >
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          viewBox="0 0 406 203"
+          viewBox="0 0 298 203.5"
           className="w-full h-auto"
           preserveAspectRatio="none"
-          style={{
-            filter: 'drop-shadow(1.58px 2.38px 2.18px rgba(255, 255, 255, 1))'
-          }}
         >
-          <defs>
-            <filter id="innerShadowLibrary" x="-50%" y="-50%" width="200%" height="200%">
-              <feOffset dx="2.38" dy="7.13" />
-              <feGaussianBlur stdDeviation="1.585" result="offset-blur" />
-              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-              <feFlood floodColor="#000000" floodOpacity="0.4" result="color" />
-              <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-              <feComposite operator="over" in="shadow" in2="SourceGraphic" />
-            </filter>
-          </defs>
           <path 
-            d="M405,0v93.38c0,13.05-10.57,23.62-23.61,23.62h-23.62c-29.45.43-53.18,24.43-53.18,53.97,0,17.69-14.34,32.03-32.03,32.03H35c-19.33,0-35-15.67-35-35V0h405Z" 
-            style={{ fill: '#d9d9d8' }}
-            filter="url(#innerShadowLibrary)"
+            d="M298,0v93.88c0,13.05-10.58,23.62-23.62,23.62h-23.62c-29.44.43-53.18,24.43-53.18,53.97v16.02c0,8.84-7.17,16.01-16.01,16.01H35c-19.33,0-35-15.67-35-35V0h298Z" 
+            style={{ fill: '#434343' }}
           />
         </svg>
-        <div className="absolute inset-0 p-5 flex flex-col justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
+        
+        {/* Content overlay */}
+        <div className="absolute inset-0 p-5 pt-4 2xl:p-8 2xl:pt-6 flex flex-col">
+          <div className="flex-1">
+            <h3 className="text-xl 2xl:text-3xl font-bold text-white mb-2 line-clamp-1">
               {item.title}
             </h3>
-            <p className="text-sm text-gray-600 line-clamp-2">
-              {item.shortDescription || item.meta?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'}
+            <p className="text-sm 2xl:text-lg text-gray-300 line-clamp-2">
+              {item.shortDescription || 'Lorem ipsum dolor sit amet, consec adipiscing elit, sed do...'}
             </p>
           </div>
           
-          {/* Footer - Category */}
-          <div className="text-sm text-gray-500">
-            {categoryTags[0] && <span>Nume categorie?</span>}
+          {/* Footer row - Adapted icons left, fish right */}
+          <div className="flex items-end justify-between mt-4">
+            {/* Adapted for icons - colored circles with deep inset effect */}
+            <div className="flex gap-2 2xl:gap-4">
+              {item.adaptedFor?.includes('blind') && (
+                <div 
+                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: '#E53935',
+                    boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.2), inset 0 0 12px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  <img src="/assets/library/blind.svg" alt="Nevăzători" className="w-7 h-7 2xl:w-10 2xl:h-10 brightness-0 invert" />
+                </div>
+              )}
+              {item.adaptedFor?.includes('deaf') && (
+                <div 
+                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: '#FFC107',
+                    boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.4), inset -2px -2px 6px rgba(255,255,255,0.3), inset 0 0 12px rgba(0,0,0,0.2)'
+                  }}
+                >
+                  <img src="/assets/library/deaf.tif.svg" alt="Surzi" className="w-7 h-7 2xl:w-10 2xl:h-10" />
+                </div>
+              )}
+              {item.adaptedFor?.includes('neurodivergent') && (
+                <div 
+                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  style={{ 
+                    backgroundColor: '#03A9F4',
+                    boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.2), inset 0 0 12px rgba(0,0,0,0.3)'
+                  }}
+                >
+                  <img src="/assets/library/neurodivergent.svg" alt="Neurodivergenți" className="w-7 h-7 2xl:w-10 2xl:h-10 brightness-0 invert" />
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Fish icon with arrow */}
+        {/* Fish icon with arrow - responsive to fit cutout */}
         <div
-          className="absolute z-20 cursor-pointer right-0 bottom-0 group/fish"
+          className="absolute z-20 cursor-pointer right-[0%] bottom-[0%] group/fish"
           aria-hidden
+          style={{ width: '28%', height: 'auto', aspectRatio: '1/1' }}
         >
           <div 
-            className="relative w-[100px] h-[100px] -scale-x-100"
+            className="relative w-full h-full -scale-x-100"
             style={{
-              filter: 'drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.25)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.6))'
+              filter: 'drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.25)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.3))'
             }}
           >
             {/* Default fish - dark */}
@@ -418,9 +431,9 @@ function LibraryCard({ item }: { item: Library }) {
                   'brightness(0) saturate(100%) invert(45%) sepia(98%) saturate(1500%) hue-rotate(345deg) brightness(95%) contrast(95%)',
               }}
             />
-            {/* Default arrow - gray */}
+            {/* Default arrow - white */}
             <svg
-              className="absolute inset-0 m-auto w-6 h-6 transition-all duration-300 ease-out group-hover/fish:opacity-0 -scale-x-100"
+              className="absolute inset-0 m-auto w-[30%] h-[30%] transition-all duration-300 ease-out group-hover/fish:opacity-0 -scale-x-100"
               style={{ color: '#D9D9D9' }}
               fill="none"
               stroke="currentColor"
@@ -435,7 +448,7 @@ function LibraryCard({ item }: { item: Library }) {
             </svg>
             {/* Hover state arrow - white & bigger */}
             <svg
-              className="absolute inset-0 m-auto w-8 h-8 text-white opacity-0 group-hover/fish:opacity-100 transition-all duration-300 ease-out -scale-x-100"
+              className="absolute inset-0 m-auto w-[35%] h-[35%] text-white opacity-0 group-hover/fish:opacity-100 transition-all duration-300 ease-out -scale-x-100"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

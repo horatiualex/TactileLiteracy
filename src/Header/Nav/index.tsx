@@ -80,7 +80,16 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
       </nav>
 
       {/* Desktop Search Input with inset/depth effect - RIGHT */}
-      <div className="hidden lg:flex items-center ml-auto">
+      <form 
+        onSubmit={(e) => {
+          e.preventDefault()
+          const input = e.currentTarget.querySelector('input')
+          if (input?.value.trim()) {
+            window.location.href = `/library/search?q=${encodeURIComponent(input.value.trim())}`
+          }
+        }}
+        className="hidden lg:flex items-center ml-auto"
+      >
         <div className="relative">
           <input
             type="text"
@@ -90,9 +99,11 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               boxShadow: '1.37px 2.75px 2.75px rgba(255, 255, 255, 1), inset 4px 3px 4px rgba(0, 0, 0, 0.5)'
             }}
           />
-          <SearchIcon className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-600" />
+          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2">
+            <SearchIcon className="w-5 h-5 text-gray-600" />
+          </button>
         </div>
-      </div>
+      </form>
 
       {/* Mobile Menu Button */}
       <button

@@ -184,18 +184,16 @@ function BlogCard({ post }: { post: Post }) {
           </div>
         </div>
 
-        {/* Fish icon with arrow */}
+        {/* Fish icon with arrow - responsive */}
         <div
-          className="absolute z-20 cursor-pointer right-0 bottom-0 group/fish"
+          className="absolute z-20 cursor-pointer right-[0%] bottom-[0%] group/fish"
           aria-hidden
-          style={{
-            filter: 'drop-shadow(inset 2px 2px 4px rgba(0, 0, 0, 0.3))'
-          }}
+          style={{ width: '20%', height: 'auto', aspectRatio: '1/1' }}
         >
           <div 
-            className="relative w-[110px] h-[110px] -scale-x-100"
+            className="relative w-full h-full -scale-x-100"
             style={{
-              filter: 'drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.25)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.6))'
+              filter: 'drop-shadow(2px 3px 3px rgba(0, 0, 0, 0.25)) drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.3))'
             }}
           >
             {/* Default fish - dark */}
@@ -203,9 +201,6 @@ function BlogCard({ post }: { post: Post }) {
               src="/assets/acasa/pestisor.svg"
               alt=""
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-300 ease-out group-hover/fish:opacity-0"
-              style={{
-                filter: 'drop-shadow(inset 2px 2px 4px rgba(0, 0, 0, 0.2))'
-              }}
             />
             {/* Hover fish - orange */}
             <img
@@ -214,12 +209,12 @@ function BlogCard({ post }: { post: Post }) {
               className="absolute inset-0 w-full h-full object-contain opacity-0 transition-opacity duration-300 ease-out group-hover/fish:opacity-100"
               style={{
                 filter:
-                  'brightness(0) saturate(100%) invert(45%) sepia(98%) saturate(1500%) hue-rotate(345deg) brightness(95%) contrast(95%) drop-shadow(inset 2px 2px 4px rgba(0, 0, 0, 0.2))',
+                  'brightness(0) saturate(100%) invert(45%) sepia(98%) saturate(1500%) hue-rotate(345deg) brightness(95%) contrast(95%)',
               }}
             />
-            {/* Default arrow - gray */}
+            {/* Default arrow - white */}
             <svg
-              className="absolute inset-0 m-auto w-7 h-7 transition-all duration-300 ease-out group-hover/fish:opacity-0 -scale-x-100"
+              className="absolute inset-0 m-auto w-[30%] h-[30%] transition-all duration-300 ease-out group-hover/fish:opacity-0 -scale-x-100"
               style={{ color: '#D9D9D9' }}
               fill="none"
               stroke="currentColor"
@@ -234,7 +229,7 @@ function BlogCard({ post }: { post: Post }) {
             </svg>
             {/* Hover state arrow - white & bigger */}
             <svg
-              className="absolute inset-0 m-auto w-9 h-9 text-white opacity-0 group-hover/fish:opacity-100 transition-all duration-300 ease-out -scale-x-100"
+              className="absolute inset-0 m-auto w-[38%] h-[38%] text-white opacity-0 group-hover/fish:opacity-100 transition-all duration-300 ease-out -scale-x-100"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -69,8 +69,8 @@ export default function NewsletterSection({
               {description}
             </p>
           </div>
-
-          {/* Right side - Form */}
+    
+          {/* Right side - Form */} 
           <div className="lg:w-1/2 w-full max-w-md">
             {isSuccess ? (
               <div 
