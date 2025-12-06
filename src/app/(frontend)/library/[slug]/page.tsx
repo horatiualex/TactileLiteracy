@@ -2,6 +2,10 @@ import type { Metadata } from 'next'
 
 import { PayloadRedirects } from '@/components/PayloadRedirects'
 import LibraryDetailHero from '@/components/staticpages/library/LibraryDetailHero'
+import LibraryImageDescription from '@/components/staticpages/library/LibraryImageDescription'
+import LibraryRelevantData from '@/components/staticpages/library/LibraryRelevantData'
+import LibraryBibliography from '@/components/staticpages/library/LibraryBibliography'
+import LibraryRelatedItems from '@/components/staticpages/library/LibraryRelatedItems'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { generateMeta } from '@/utilities/generateMeta'
 import configPromise from '@payload-config'
@@ -41,12 +45,19 @@ export default async function LibraryItemPage({ params: paramsPromise }: Args) {
 
   if (!item) return <PayloadRedirects url={url} />
 
+  const relatedItems = (item.relatedItems || [])
+    .filter((relatedItem): relatedItem is Library => typeof relatedItem === 'object')
+
   return (
     <article className="bg-[#D2D2D2] min-h-screen">
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
       <LibraryDetailHero item={item} />
+      <LibraryImageDescription item={item} />
+      <LibraryRelevantData item={item} />
+      <LibraryBibliography item={item} />
+      {relatedItems.length > 0 && <LibraryRelatedItems items={relatedItems} />}
     </article>
   )
 }

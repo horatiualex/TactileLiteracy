@@ -16,7 +16,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       className="sticky top-0 z-50"
       style={{ backgroundColor: '#D9D9D9' }}
     >
-      <div className="w-full px-8">
+      <div className="w-full px-8 lg:px-16">
         <div className="py-4 flex items-center">
           {/* Left: Logo */}
           <div className="flex-shrink-0">
