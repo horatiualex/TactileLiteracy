@@ -7,7 +7,7 @@ import BlogGridSection from '@/components/staticpages/blog/BlogGridSection'
 import NewsletterSection from '@/components/staticpages/blog/NewsletterSection'
 
 export default async function BlogPage() {
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config } as any)
 
   // Fetch all published posts
   const postsData = await payload.find({

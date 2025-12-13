@@ -41,6 +41,10 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
           reference.value.slug
         }`
       : url
+      ? !url.startsWith('/') && !url.startsWith('http') && !url.startsWith('#') && !url.startsWith('mailto:') && !url.startsWith('tel:')
+        ? `/${url}`
+        : url
+      : null
 
   if (!href) return null
 

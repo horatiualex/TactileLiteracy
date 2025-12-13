@@ -50,7 +50,7 @@ export const Library: CollectionConfig<'library'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'categories', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) => {
+      url: ({ data, req }: { data?: { slug?: string | null }; req: unknown }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'library',
@@ -60,7 +60,7 @@ export const Library: CollectionConfig<'library'> = {
         return path
       },
     },
-    preview: (data, { req }) =>
+    preview: (data: { slug?: string | null }, { req }: { req: unknown }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'library',
@@ -121,7 +121,7 @@ export const Library: CollectionConfig<'library'> = {
                 description: 'Descrierea completă a elementelor vizuale din imagine',
               },
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
+                features: ({ rootFeatures }: { rootFeatures: unknown[] }) => {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
@@ -144,7 +144,7 @@ export const Library: CollectionConfig<'library'> = {
                 description: 'Informații științifice, educaționale despre subiectul imaginii',
               },
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
+                features: ({ rootFeatures }: { rootFeatures: unknown[] }) => {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
@@ -245,7 +245,7 @@ export const Library: CollectionConfig<'library'> = {
             {
               name: 'relatedItems',
               type: 'relationship',
-              filterOptions: ({ id }) => {
+              filterOptions: ({ id }: { id?: string | number }) => {
                 return {
                   id: {
                     not_in: [id],
@@ -294,8 +294,8 @@ export const Library: CollectionConfig<'library'> = {
       },
       hooks: {
         beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
+          ({ siblingData, value }: { siblingData?: { _status?: string }; value?: unknown }) => {
+            if (siblingData?._status === 'published' && !value) {
               return new Date()
             }
             return value

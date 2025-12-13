@@ -28,10 +28,10 @@ export const FormBlock: Block = {
       name: 'introContent',
       type: 'richText',
       admin: {
-        condition: (_, { enableIntro }) => Boolean(enableIntro),
+        condition: (_: unknown, { enableIntro }: { enableIntro?: boolean }) => Boolean(enableIntro),
       },
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
+        features: ({ rootFeatures }: any) => {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),

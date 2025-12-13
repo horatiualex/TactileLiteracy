@@ -17,7 +17,7 @@ export const Archive: Block = {
       name: 'introContent',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
+        features: ({ rootFeatures }: any) => {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
@@ -47,7 +47,7 @@ export const Archive: Block = {
       name: 'relationTo',
       type: 'select',
       admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
+        condition: (_: any, siblingData: any) => siblingData.populateBy === 'collection',
       },
       defaultValue: 'posts',
       label: 'Colecții de Afișat',
@@ -62,7 +62,7 @@ export const Archive: Block = {
       name: 'categories',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
+        condition: (_: any, siblingData: any) => siblingData.populateBy === 'collection',
       },
       hasMany: true,
       label: 'Categorii de Afișat',
@@ -72,7 +72,7 @@ export const Archive: Block = {
       name: 'limit',
       type: 'number',
       admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'collection',
+        condition: (_: any, siblingData: any) => siblingData.populateBy === 'collection',
         step: 1,
       },
       defaultValue: 10,
@@ -82,7 +82,7 @@ export const Archive: Block = {
       name: 'selectedDocs',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData.populateBy === 'selection',
+        condition: (_: any, siblingData: any) => siblingData.populateBy === 'selection',
       },
       hasMany: true,
       label: 'Selecție',
@@ -119,7 +119,7 @@ export const Archive: Block = {
           label: 'Afișează Data',
           defaultValue: true,
           admin: {
-            condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
+            condition: (_: any, siblingData: any) => siblingData.cardStyle !== 'minimal',
           },
         },
         {
@@ -128,7 +128,7 @@ export const Archive: Block = {
           label: 'Afișează Descrierea',
           defaultValue: true,
           admin: {
-            condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
+            condition: (_: any, siblingData: any) => siblingData.cardStyle !== 'minimal',
           },
         },
         {
@@ -137,7 +137,7 @@ export const Archive: Block = {
           label: 'Afișează Categoriile',
           defaultValue: true,
           admin: {
-            condition: (_, siblingData) => siblingData.cardStyle !== 'minimal',
+            condition: (_: any, siblingData: any) => siblingData.cardStyle !== 'minimal',
           },
         },
         {

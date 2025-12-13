@@ -134,7 +134,7 @@ const columnFields: Field[] = [
     name: 'richText',
     type: 'richText',
     editor: lexicalEditor({
-      features: ({ rootFeatures }) => {
+      features: ({ rootFeatures }: any) => {
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
@@ -152,7 +152,7 @@ const columnFields: Field[] = [
   link({
     overrides: {
       admin: {
-        condition: (_data, siblingData) => {
+        condition: (_data: any, siblingData: any) => {
           return Boolean(siblingData?.enableLink)
         },
       },

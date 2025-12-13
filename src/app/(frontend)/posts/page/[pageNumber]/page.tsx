@@ -19,7 +19,7 @@ type Args = {
 
 export default async function Page({ params: paramsPromise }: Args) {
   const { pageNumber } = await paramsPromise
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const sanitizedPageNumber = Number(pageNumber)
 
@@ -77,7 +77,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 }
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
   const { totalDocs } = await payload.count({
     collection: 'posts',
     overrideAccess: false,

@@ -111,12 +111,12 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
               onClick={() => setSelectedAdaptedFor(option.value)}
               className={`flex items-center justify-center gap-2 lg:gap-3 px-4 py-2 lg:px-5 lg:py-3 xl:px-6 2xl:px-8 2xl:py-3 rounded-full font-medium transition-all duration-200 ${
                 selectedAdaptedFor === option.value
-                  ? 'bg-[#C8C8C8] text-gray-800'
+                  ? 'bg-[#D2D2D2] text-gray-800'
                   : 'bg-[#E8E8E8] text-gray-700 hover:bg-[#DFDFDF]'
               }`}
               style={{
                 boxShadow: selectedAdaptedFor === option.value
-                  ? 'inset 3px 3px 8px rgba(0, 0, 0, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.4)'
+                  ? '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
                   : '3px 3px 6px rgba(0, 0, 0, 0.2), -2px -2px 4px rgba(255, 255, 255, 0.9)'
               }}
             >
@@ -152,9 +152,9 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
             {/* Filters Sidebar */}
             <aside className="w-full lg:w-72 flex-shrink-0">
               <div 
-                className="sticky top-24 p-6 rounded-3xl bg-[#D9D9D9]"
+                className="sticky top-24 p-6 rounded-3xl bg-[#D2D2D2]"
                 style={{
-                  boxShadow: 'inset 6px 6px 12px rgba(0, 0, 0, 0.25), inset -6px -6px 12px rgba(255, 255, 255, 0.9), 3px 3px 6px rgba(0, 0, 0, 0.15)'
+                  boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtrează după:</h3>
@@ -288,9 +288,9 @@ function LibraryCard({ item }: { item: Library }) {
           {/* Category badge - left */}
           {categoryTags[0] && (
             <span 
-              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#E8E8E8] text-gray-700 text-sm 2xl:text-lg font-medium rounded-full"
+              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#D2D2D2] text-gray-700 text-sm 2xl:text-lg font-medium rounded-full"
               style={{ 
-                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.8)' 
+                boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)' 
               }}
             >
               {categoryTags[0]}
@@ -300,9 +300,9 @@ function LibraryCard({ item }: { item: Library }) {
           {/* Difficulty badge - right */}
           {difficultyLabel && (
             <span 
-              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#E8E8E8] text-gray-600 text-sm 2xl:text-lg rounded-full"
+              className="px-4 py-2 2xl:px-6 2xl:py-3 bg-[#D2D2D2] text-gray-600 text-sm 2xl:text-lg rounded-full"
               style={{ 
-                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.15), inset -1px -1px 2px rgba(255,255,255,0.8)' 
+                boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)' 
               }}
             >
               {difficultyLabel}

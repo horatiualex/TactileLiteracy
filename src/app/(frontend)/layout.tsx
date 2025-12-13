@@ -3,7 +3,13 @@ import type { Metadata } from 'next'
 import { cn } from '@/utilities/ui'
 import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
+import { Inter } from 'next/font/google'
 import React from 'react'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+})
 
 import { AdminBar } from '@/components/AdminBar'
 import { Footer } from '@/Footer/Component'
@@ -15,6 +21,7 @@ import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { importMap } from '../(payload)/admin/importMap'
 
 import './globals.css'
 import { getServerSideURL } from '@/utilities/getURL'
@@ -23,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { isEnabled } = await draftMode()
 
   return (
-    <html className={cn(GeistSans.variable, GeistMono.variable)} lang="en" suppressHydrationWarning>
+    <html className={cn(GeistSans.variable, GeistMono.variable, inter.variable)} lang="en" suppressHydrationWarning>
       <head>
         <InitTheme />
       </head>
@@ -46,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config, importMap, cron: undefined, disableOnInit: false })
   const settings = await payload.findGlobal({
     slug: 'settings',
   })
@@ -57,11 +64,11 @@ export async function generateMetadata(): Promise<Metadata> {
   // Get favicon URLs
   const faviconUrl = settings?.favicon && typeof settings.favicon !== 'string' 
     ? settings.favicon.url 
-    : '/favicon.ico'
+    : '/tactile-logo.svg'
     
   const faviconSvgUrl = settings?.faviconSvg && typeof settings.faviconSvg !== 'string'
     ? settings.faviconSvg.url
-    : null
+    : '/tactile-logo.svg'
 
   return {
     metadataBase: new URL(getServerSideURL()),
@@ -73,13 +80,9 @@ export async function generateMetadata(): Promise<Metadata> {
     icons: {
       icon: [
         {
-          url: faviconUrl || '/favicon.ico',
-          sizes: '32x32',
-        },
-        ...(faviconSvgUrl ? [{
-          url: faviconSvgUrl,
+          url: faviconUrl || '/tactile-logo.svg',
           type: 'image/svg+xml',
-        }] : []),
+        },
       ],
     },
     openGraph: mergeOpenGraph(),

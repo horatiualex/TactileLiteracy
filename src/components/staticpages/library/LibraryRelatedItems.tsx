@@ -32,7 +32,7 @@ export default function LibraryRelatedItems({ items }: LibraryRelatedItemsProps)
           <span
             className="inline-block px-8 py-3 bg-[#d9d9d9] text-[#434343] text-lg rounded-full"
             style={{
-              boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.3), inset -2px -2px 6px rgba(255,255,255,0.7)',
+              boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)',
             }}
           >
             See related images
@@ -71,14 +71,7 @@ export default function LibraryRelatedItems({ items }: LibraryRelatedItemsProps)
                 className="w-full h-auto"
               />
             </div>
-            {/* Light under shelf */}
-            <div className="hidden xl:block absolute -bottom-20 xl:-bottom-24 2xl:-bottom-32 left-1/2 -translate-x-1/2 w-full z-0 pointer-events-none">
-              <img 
-                src="/assets/library/light.svg" 
-                alt="" 
-                className="w-full h-auto opacity-90"
-              />
-            </div>
+
           </div>
 
           {/* Right arrow */}

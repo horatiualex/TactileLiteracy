@@ -14,7 +14,7 @@ import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
   const pages = await payload.find({
     collection: 'pages',
     draft: false,
@@ -27,10 +27,10 @@ export async function generateStaticParams() {
   })
 
   const params = pages.docs
-    ?.filter((doc) => {
+    ?.filter((doc: any) => {
       return doc.slug !== 'home'
     })
-    .map(({ slug }) => {
+    .map(({ slug }: any) => {
       return { slug }
     })
 
@@ -91,7 +91,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
 
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const result = await payload.find({
     collection: 'pages',

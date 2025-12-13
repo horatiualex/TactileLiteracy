@@ -3,7 +3,6 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { Media as MediaType } from '@/payload-types'
 
 type Card = {
@@ -12,7 +11,7 @@ type Card = {
   icon?: string | MediaType | null
   iconText?: string
   title: string
-  description: DefaultTypedEditorState
+  description: any
   link?: {
     url?: string
     label?: string

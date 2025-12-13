@@ -29,7 +29,7 @@ export const Timeline: Block = {
       type: 'richText',
       label: 'Subtitlu',
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
+        features: ({ rootFeatures }: any) => {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
@@ -74,7 +74,7 @@ export const Timeline: Block = {
           type: 'richText',
           label: 'Descriere Detaliată',
           editor: lexicalEditor({
-            features: ({ rootFeatures }) => {
+            features: ({ rootFeatures }: any) => {
               return [
                 ...rootFeatures,
                 HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
@@ -146,7 +146,7 @@ export const Timeline: Block = {
           label: 'Imagine de Fundal',
           relationTo: 'media',
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
             description: 'Imaginea care va fi folosită ca fundal',
           },
         },
@@ -158,7 +158,7 @@ export const Timeline: Block = {
           min: 0,
           max: 1,
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
             description: 'Intensitatea overlay-ului întunecat (0 = transparent, 1 = complet întunecat)',
           },
         },

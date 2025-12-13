@@ -20,10 +20,10 @@ export default function HeroSection({
   const isImageRight = imagePosition === 'right'
 
   return (
-    <section className="relative w-full min-h-screen flex items-center">
+    <section className="relative w-full min-h-screen flex items-center pt-32 lg:pt-0 overflow-hidden">
       <div
-        className={`w-full ${
-          isImageRight ? 'pl-8 lg:pl-16 pr-[60%]' : 'pr-8 lg:pr-16 pl-[60%]'
+        className={`w-full flex flex-col lg:block px-8 lg:px-0 ${
+          isImageRight ? 'lg:pl-16 lg:pr-[60%]' : 'lg:pr-16 lg:pl-[60%]'
         }`}
       >
         <div
@@ -43,7 +43,11 @@ export default function HeroSection({
           </button>
         </div>
         <div
-          className={`absolute ${isImageRight ? 'right-0' : 'left-0'} top-0 w-[60vw] max-w-[1100px] h-[90vh] max-h-[900px]`}
+          className={`
+            relative w-full h-[50vh] mt-8
+            lg:absolute lg:top-0 lg:mt-0 lg:h-[90vh] lg:max-h-[900px] lg:w-[60vw] lg:max-w-[1100px]
+            ${isImageRight ? 'lg:right-0' : 'lg:left-0'}
+          `}
         >
           <div
             className="w-full h-full"
@@ -55,10 +59,8 @@ export default function HeroSection({
             <img
               src={imageSrc}
               alt={imageAlt}
+              className="w-full h-full object-cover"
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
                 WebkitMaskImage: 'url(/mask-shape.svg)',
                 WebkitMaskSize: 'contain',
                 WebkitMaskRepeat: 'no-repeat',

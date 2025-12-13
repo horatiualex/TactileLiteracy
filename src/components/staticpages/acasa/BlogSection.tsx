@@ -185,13 +185,11 @@ export default function BlogSection() {
       {/* Badge */}
       <div className="w-full px-8 lg:px-16 mb-10">
         <div
-          className="inline-flex px-6 py-2 rounded-full text-sm font-medium border shadow-sm"
+          className="inline-flex px-6 py-2 rounded-full text-sm font-medium"
           style={{
-            backgroundColor: '#F4F4F4',
+            backgroundColor: '#E1E1E1',
             color: '#3C3C3C',
-            borderColor: '#BEBEBE',
-            boxShadow:
-              '1.76px 2.35px 1.62px rgba(255,255,255,1), inset 2.35px 4.11px 1.76px rgba(0,0,0,0.4)',
+            boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
           }}
         >
           Latest News

@@ -16,7 +16,7 @@ import React, { cache } from 'react'
 import type { Library } from '@/payload-types'
 
 export async function generateStaticParams() {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
   const items = await payload.find({
     collection: 'library',
     draft: false,
@@ -28,7 +28,7 @@ export async function generateStaticParams() {
     },
   })
 
-  return items.docs.map(({ slug }) => ({ slug }))
+  return items.docs.map(({ slug }: any) => ({ slug }))
 }
 
 type Args = {
@@ -46,7 +46,7 @@ export default async function LibraryItemPage({ params: paramsPromise }: Args) {
   if (!item) return <PayloadRedirects url={url} />
 
   const relatedItems = (item.relatedItems || [])
-    .filter((relatedItem): relatedItem is Library => typeof relatedItem === 'object')
+    .filter((relatedItem: any): relatedItem is Library => typeof relatedItem === 'object')
 
   return (
     <article className="bg-[#D2D2D2] min-h-screen">
@@ -71,7 +71,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
 
 const queryLibraryItem = cache(async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const result = await payload.find({
     collection: 'library',

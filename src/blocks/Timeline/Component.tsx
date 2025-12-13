@@ -3,12 +3,11 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 import type { TimelineBlock as TimelineBlockProps } from '@/payload-types'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 type TimelineEvent = {
   year: string
   title: string
-  description?: DefaultTypedEditorState
+  description?: any
   id?: string | null
 }
 

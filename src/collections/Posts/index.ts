@@ -12,6 +12,7 @@ import {
 import { authenticated } from '../../access/authenticated'
 import { authenticatedOrPublished } from '../../access/authenticatedOrPublished'
 import { Banner } from '../../blocks/Banner/config'
+import { Badge } from '../../blocks/Badge/config'
 import { Code } from '../../blocks/Code/config'
 import FAQ from '../../blocks/FAQ/config'
 import { FileList } from '../../blocks/FileList/config'
@@ -62,7 +63,7 @@ export const Posts: CollectionConfig<'posts'> = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data, req }) => {
+      url: ({ data, req }: { data?: { slug?: string | null }; req: unknown }) => {
         const path = generatePreviewPath({
           slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'posts',
@@ -72,7 +73,7 @@ export const Posts: CollectionConfig<'posts'> = {
         return path
       },
     },
-    preview: (data, { req }) =>
+    preview: (data: { slug?: string | null }, { req }: { req: unknown }) =>
       generatePreviewPath({
         slug: typeof data?.slug === 'string' ? data.slug : '',
         collection: 'posts',
@@ -100,11 +101,11 @@ export const Posts: CollectionConfig<'posts'> = {
               name: 'content',
               type: 'richText',
               editor: lexicalEditor({
-                features: ({ rootFeatures }) => {
+                features: ({ rootFeatures }: { rootFeatures: unknown[] }) => {
                   return [
                     ...rootFeatures,
                     HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    BlocksFeature({ blocks: [Banner, Code, MediaBlock, FileList, Gallery, List, TextImage, FAQ, HeroBanner, ImageCardGrid, StatsSection] }),
+                    BlocksFeature({ blocks: [Banner, Badge, Code, MediaBlock, FileList, Gallery, List, TextImage, FAQ, HeroBanner, ImageCardGrid, StatsSection] }),
                     FixedToolbarFeature(),
                     InlineToolbarFeature(),
                     HorizontalRuleFeature(),
@@ -125,7 +126,7 @@ export const Posts: CollectionConfig<'posts'> = {
               admin: {
                 position: 'sidebar',
               },
-              filterOptions: ({ id }) => {
+              filterOptions: ({ id }: { id?: string | number }) => {
                 return {
                   id: {
                     not_in: [id],
@@ -187,8 +188,8 @@ export const Posts: CollectionConfig<'posts'> = {
       },
       hooks: {
         beforeChange: [
-          ({ siblingData, value }) => {
-            if (siblingData._status === 'published' && !value) {
+          ({ siblingData, value }: { siblingData?: { _status?: string }; value?: unknown }) => {
+            if (siblingData?._status === 'published' && !value) {
               return new Date()
             }
             return value

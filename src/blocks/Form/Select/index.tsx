@@ -1,5 +1,6 @@
 import type { SelectField } from '@payloadcms/plugin-form-builder/types'
-import type { Control, FieldErrorsImpl } from 'react-hook-form'
+// @ts-ignore
+import type { Control } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import {
@@ -10,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import React from 'react'
+// @ts-ignore
 import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
@@ -18,7 +20,7 @@ import { Width } from '../Width'
 export const Select: React.FC<
   SelectField & {
     control: Control
-    errors: Partial<FieldErrorsImpl>
+    errors: Partial<any>
   }
 > = ({ name, control, errors, label, options, required, width, defaultValue }) => {
   return (
@@ -35,8 +37,8 @@ export const Select: React.FC<
         control={control}
         defaultValue={defaultValue}
         name={name}
-        render={({ field: { onChange, value } }) => {
-          const controlledValue = options.find((t) => t.value === value)
+        render={({ field: { onChange, value } }: { field: { onChange: (value: string) => void; value: string } }) => {
+          const controlledValue = options.find((t: { value: string }) => t.value === value)
 
           return (
             <SelectComponent onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
@@ -44,7 +46,7 @@ export const Select: React.FC<
                 <SelectValue placeholder={label} />
               </SelectTrigger>
               <SelectContent>
-                {options.map(({ label, value }) => {
+                {options.map(({ label, value }: { label: string; value: string }) => {
                   return (
                     <SelectItem key={value} value={value}>
                       {label}

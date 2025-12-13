@@ -1,10 +1,5 @@
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
-import {
-  DefaultNodeTypes,
-  SerializedBlockNode,
-  SerializedLinkNode,
-  type DefaultTypedEditorState,
-} from '@payloadcms/richtext-lexical'
+
 import {
   JSXConvertersFunction,
   LinkJSXConverter,
@@ -21,14 +16,13 @@ import type {
   MediaBlock as MediaBlockProps,
 } from '@/payload-types'
 import { BannerBlock } from '@/blocks/Banner/Component'
+import { BadgeBlock } from '@/blocks/Badge/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { cn } from '@/utilities/ui'
 
-type NodeTypes =
-  | DefaultNodeTypes
-  | SerializedBlockNode<CTABlockProps | MediaBlockProps | BannerBlockProps | CodeBlockProps | GalleryBlockProps>
+type NodeTypes = any
 
-const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
+const internalDocToHref = ({ linkNode }: { linkNode: any }) => {
   const { value, relationTo } = linkNode.fields.doc!
   if (typeof value !== 'object') {
     throw new Error('Expected value to be an object')
@@ -37,12 +31,13 @@ const internalDocToHref = ({ linkNode }: { linkNode: SerializedLinkNode }) => {
   return relationTo === 'posts' ? `/posts/${slug}` : `/${slug}`
 }
 
-const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) => ({
+const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }: { defaultConverters: any }) => ({
   ...defaultConverters,
   ...LinkJSXConverter({ internalDocToHref }),
   blocks: {
-    banner: ({ node }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
-    mediaBlock: ({ node }) => (
+    banner: ({ node }: { node: any }) => <BannerBlock className="col-start-2 mb-4" {...node.fields} />,
+    badge: ({ node }: { node: any }) => <BadgeBlock {...node.fields} />,
+    mediaBlock: ({ node }: { node: any }) => (
       <MediaBlock
         className="col-start-1 col-span-3"
         imgClassName="m-0"
@@ -52,11 +47,11 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
         disableInnerContainer={true}
       />
     ),
-    code: ({ node }) => <CodeBlock className="col-start-2" {...node.fields} />,
-    cta: ({ node }) => <CallToActionBlock {...node.fields} />,
-    gallery: ({ node }) => {
+    code: ({ node }: { node: any }) => <CodeBlock className="col-start-2" {...node.fields} />,
+    cta: ({ node }: { node: any }) => <CallToActionBlock {...node.fields} />,
+    gallery: ({ node }: { node: any }) => {
       // Convert payload gallery data to component props
-      const convertedImages = node.fields.images?.map((item) => {
+      const convertedImages = node.fields.images?.map((item: any) => {
         let mediaObject
         if (typeof item.image === 'string') {
           mediaObject = { id: item.image }
@@ -95,7 +90,7 @@ const jsxConverters: JSXConvertersFunction<NodeTypes> = ({ defaultConverters }) 
 })
 
 type Props = {
-  data: DefaultTypedEditorState
+  data: any
   enableGutter?: boolean
   enableProse?: boolean
 } & React.HTMLAttributes<HTMLDivElement>

@@ -8,6 +8,10 @@ export const revalidateLibraryItem: CollectionAfterChangeHook<Library> = ({
   doc,
   previousDoc,
   req: { payload, context },
+}: {
+  doc: Library
+  previousDoc?: Library
+  req: { payload: { logger: { info: (message: string) => void } }; context: { disableRevalidate?: boolean } }
 }) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
@@ -22,7 +26,7 @@ export const revalidateLibraryItem: CollectionAfterChangeHook<Library> = ({
     }
 
     // If the item was previously published, we need to revalidate the old path
-    if (previousDoc._status === 'published' && doc._status !== 'published') {
+    if (previousDoc?._status === 'published' && doc._status !== 'published') {
       const oldPaths = [`/biblioteca/${previousDoc.slug}`, `/library/${previousDoc.slug}`]
 
       oldPaths.forEach((path) => {
@@ -36,7 +40,13 @@ export const revalidateLibraryItem: CollectionAfterChangeHook<Library> = ({
   return doc
 }
 
-export const revalidateLibraryDelete: CollectionAfterDeleteHook<Library> = ({ doc, req: { context } }) => {
+export const revalidateLibraryDelete: CollectionAfterDeleteHook<Library> = ({
+  doc,
+  req: { context },
+}: {
+  doc?: Library
+  req: { context: { disableRevalidate?: boolean } }
+}) => {
   if (!context.disableRevalidate) {
     const paths = [`/biblioteca/${doc?.slug}`, `/library/${doc?.slug}`]
 

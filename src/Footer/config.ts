@@ -79,6 +79,35 @@ export const Footer: GlobalConfig = {
                 rows: 4,
               },
             },
+            {
+              name: 'socialLinks',
+              type: 'array',
+              label: 'Social Media Links',
+              fields: [
+                {
+                  name: 'platform',
+                  type: 'select',
+                  label: 'Platforma',
+                  options: [
+                    { label: 'Facebook', value: 'facebook' },
+                    { label: 'Instagram', value: 'instagram' },
+                    { label: 'YouTube', value: 'youtube' },
+                    { label: 'LinkedIn', value: 'linkedin' },
+                    { label: 'Twitter', value: 'twitter' },
+                    { label: 'Email', value: 'email' },
+                    { label: 'WhatsApp', value: 'whatsapp' },
+                    { label: 'TikTok', value: 'tiktok' },
+                  ],
+                  required: true,
+                },
+                {
+                  name: 'url',
+                  type: 'text',
+                  label: 'Link URL',
+                  required: true,
+                },
+              ],
+            },
           ],
         },
         // Link List Column
@@ -106,6 +135,15 @@ export const Footer: GlobalConfig = {
                   appearances: false,
                 }),
               ],
+            },
+            {
+              name: 'customHtml',
+              type: 'code',
+              label: 'Custom HTML (ex: ANPC badges)',
+              admin: {
+                language: 'html',
+                description: 'Introduceți cod HTML personalizat care va apărea sub lista de linkuri.',
+              },
             },
           ],
         },

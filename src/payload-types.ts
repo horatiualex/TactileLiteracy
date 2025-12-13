@@ -2902,6 +2902,21 @@ export interface Footer {
           showLogo?: boolean | null;
           title?: string | null;
           description?: string | null;
+          socialLinks?:
+            | {
+                platform:
+                  | 'facebook'
+                  | 'instagram'
+                  | 'youtube'
+                  | 'linkedin'
+                  | 'twitter'
+                  | 'email'
+                  | 'whatsapp'
+                  | 'tiktok';
+                url: string;
+                id?: string | null;
+              }[]
+            | null;
         };
         linkList?: {
           title: string;
@@ -2925,6 +2940,10 @@ export interface Footer {
                 id?: string | null;
               }[]
             | null;
+          /**
+           * Introduceți cod HTML personalizat care va apărea sub lista de linkuri.
+           */
+          customHtml?: string | null;
         };
         socialMedia?: {
           title?: string | null;
@@ -3122,6 +3141,13 @@ export interface FooterSelect<T extends boolean = true> {
               showLogo?: T;
               title?: T;
               description?: T;
+              socialLinks?:
+                | T
+                | {
+                    platform?: T;
+                    url?: T;
+                    id?: T;
+                  };
             };
         linkList?:
           | T
@@ -3141,6 +3167,7 @@ export interface FooterSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
+              customHtml?: T;
             };
         socialMedia?:
           | T

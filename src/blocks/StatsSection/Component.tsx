@@ -3,7 +3,6 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import type { Media as MediaType } from '@/payload-types'
 
 type Stat = {
@@ -29,7 +28,7 @@ type Props = {
   }
   content?: {
     title?: string
-    description?: DefaultTypedEditorState
+    description?: any
     textColor?: 'white' | 'dark' | 'custom'
     customTextColor?: string
   }

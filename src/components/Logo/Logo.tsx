@@ -16,12 +16,12 @@ export const Logo = (props: Props) => {
   return (
     /* eslint-disable @next/next/no-img-element */
     <img
-      alt="Școala Nr.6 M.Eminescu Vaslui Logo"
+      alt="Tactile Literacy Logo"
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[70px] w-auto h-auto', className)}
-      src="/logo.png"
+      className={clsx('max-w-[150px] w-auto h-auto', className)}
+      src="/tactile-logo.svg"
     />
   )
 }

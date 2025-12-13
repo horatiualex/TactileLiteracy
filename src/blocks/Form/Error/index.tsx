@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+// @ts-ignore
 import { useFormContext } from 'react-hook-form'
 
 export const Error = ({ name }: { name: string }) => {

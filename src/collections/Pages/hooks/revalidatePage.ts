@@ -4,11 +4,25 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 
 import type { Page } from '../../../payload-types'
 
+type RevalidateArgs = {
+  doc: Page
+  previousDoc?: Page | null
+  req: {
+    payload: { logger: { info: (message: string) => void } }
+    context: { disableRevalidate?: boolean }
+  }
+}
+
+type RevalidateDeleteArgs = {
+  doc: Page
+  req: { context: { disableRevalidate?: boolean } }
+}
+
 export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   doc,
   previousDoc,
   req: { payload, context },
-}) => {
+}: RevalidateArgs) => {
   if (!context.disableRevalidate) {
     if (doc._status === 'published') {
       const path = doc.slug === 'home' ? '/' : `/${doc.slug}`
@@ -32,7 +46,10 @@ export const revalidatePage: CollectionAfterChangeHook<Page> = ({
   return doc
 }
 
-export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({ doc, req: { context } }) => {
+export const revalidateDelete: CollectionAfterDeleteHook<Page> = ({
+  doc,
+  req: { context },
+}: RevalidateDeleteArgs) => {
   if (!context.disableRevalidate) {
     const path = doc?.slug === 'home' ? '/' : `/${doc?.slug}`
     revalidatePath(path)

@@ -54,7 +54,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
   }
 
   return (
-    <div className="flex items-center flex-1">
+    <div className="flex items-center flex-1 justify-end lg:justify-between">
       {/* Desktop Navigation - CENTER */}
       <nav className="hidden lg:flex items-center gap-1 flex-1 justify-center" aria-label="Meniu principal">
         {navItems.map((navItem, i) => {

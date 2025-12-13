@@ -7,7 +7,7 @@ import LibraryGridSection from '@/components/staticpages/library/LibraryGridSect
 import NeedImageSection from '@/components/staticpages/acasa/NeedImageSection'
 
 export default async function LibraryPage() {
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config } as any)
 
   // Fetch library items
   const libraryData = await payload.find({

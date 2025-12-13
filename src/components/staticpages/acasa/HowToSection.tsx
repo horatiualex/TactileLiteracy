@@ -193,12 +193,11 @@ const HowToSection: React.FC = () => {
     <section className="relative w-full py-24" style={{ backgroundColor: '#2F2F2F' }}>
       <div className="absolute top-8 left-8 lg:top-12 lg:left-16 z-20 mb-12">
         <div
-          className="inline-flex px-6 py-2 rounded-full text-sm font-medium border shadow-sm"
+          className="inline-flex px-6 py-2 rounded-full text-sm font-medium"
           style={{
             backgroundColor: '#2F2F2F',
             color: '#F5F5F5',
-            borderColor: '#515151',
-            boxShadow: 'inset 4px 4px 6px rgba(0, 0, 0, 0.5), inset -3px -3px 6px rgba(70, 70, 70, 0.8)',
+            boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.6), inset -2px -2px 6px rgba(255,255,255,0.1)'
           }}
         >
           Cum funcționează

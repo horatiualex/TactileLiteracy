@@ -21,7 +21,7 @@ const listItemFields: Field[] = [
     type: 'richText',
     label: 'Descriere',
     editor: lexicalEditor({
-      features: ({ rootFeatures }) => {
+      features: ({ rootFeatures }: any) => {
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h2', 'h3', 'h4'] }),
@@ -39,7 +39,7 @@ const listItemFields: Field[] = [
   link({
     overrides: {
       admin: {
-        condition: (_data, siblingData) => {
+        condition: (_data: unknown, siblingData: { enableLink?: boolean }) => {
           return Boolean(siblingData?.enableLink)
         },
       },

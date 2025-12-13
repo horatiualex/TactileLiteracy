@@ -11,15 +11,12 @@ export default function ElearningSection() {
           {/* Left column */}
           <div className="space-y-10">
             <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 pl-4 sm:pl-0">
-              <img src="/assets/acasa/separator.svg" alt="Icons" className="w-16 sm:w-20" />
               <div
-                className="px-5 py-2 rounded-full text-sm font-medium border whitespace-nowrap sm:-ml-10 sm:mt-8"
+                className="px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap"
                 style={{
-                  backgroundColor: '#F4F4F4',
+                  backgroundColor: '#E1E1E1',
                   color: '#3C3C3C',
-                  borderColor: '#BEBEBE',
-                  boxShadow:
-                    '1.76px 2.35px 1.62px rgba(255,255,255,1), inset 2.35px 4.11px 1.76px rgba(0,0,0,0.4)',
+                  boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
                 }}
               >
                 E-learning platform
@@ -46,7 +43,7 @@ export default function ElearningSection() {
           </div>
 
           {/* Middle column - phone */}
-          <div className="flex justify-center order-first lg:order-none">
+          <div className="flex justify-center">
             <div
               className="relative"
               style={{

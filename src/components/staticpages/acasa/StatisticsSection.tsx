@@ -42,13 +42,11 @@ export default function StatisticsSection() {
           {/* Badge positioned relative to grid */}
           <div className="absolute top-8 left-8 lg:top-12 lg:left-16 z-20">
             <div
-              className="inline-flex px-6 py-2 rounded-full text-sm font-medium border shadow-sm"
+              className="inline-flex px-6 py-2 rounded-full text-sm font-medium"
               style={{
-                backgroundColor: '#F4F4F4',
+                backgroundColor: '#E1E1E1',
                 color: '#3C3C3C',
-                borderColor: '#BEBEBE',
-                boxShadow:
-                  '1.76px 2.35px 1.62px rgba(255,255,255,1), inset 2.35px 4.11px 1.76px rgba(0,0,0,0.4)',
+                boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
               }}
             >
               Statistici
@@ -65,8 +63,8 @@ export default function StatisticsSection() {
             <div
               className="relative"
               style={{
-                width: 'clamp(340px, 40vw, 560px)',
-                height: 'clamp(340px, 40vw, 560px)',
+                width: 'clamp(280px, 40vw, 560px)',
+                height: 'clamp(280px, 40vw, 560px)',
                 marginRight: 'clamp(-2rem, -5vw, -5rem)',
               }}
             >

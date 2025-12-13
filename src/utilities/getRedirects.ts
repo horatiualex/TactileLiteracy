@@ -1,9 +1,10 @@
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
+import { Redirect } from '@/payload-types'
 
 export async function getRedirects(depth = 1) {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const { docs: redirects } = await payload.find({
     collection: 'redirects',
@@ -12,7 +13,7 @@ export async function getRedirects(depth = 1) {
     pagination: false,
   })
 
-  return redirects
+  return redirects as Redirect[]
 }
 
 /**

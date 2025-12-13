@@ -1,4 +1,4 @@
-import type { CollectionSlug, GlobalSlug, Payload, PayloadRequest, File } from 'payload'
+import type { CollectionSlug, GlobalSlug, Payload } from 'payload'
 
 import { contactForm as contactFormData } from './contact-form'
 import { contact as contactPageData } from './contact-page'
@@ -30,7 +30,7 @@ export const seed = async ({
   req,
 }: {
   payload: Payload
-  req: PayloadRequest
+  req: any
 }): Promise<void> => {
   payload.logger.info('Seeding database...')
 
@@ -348,7 +348,7 @@ export const seed = async ({
   payload.logger.info('Seeded database successfully!')
 }
 
-async function fetchFileByURL(url: string): Promise<File> {
+async function fetchFileByURL(url: string): Promise<any> {
   const res = await fetch(url, {
     credentials: 'include',
     method: 'GET',

@@ -12,7 +12,7 @@ type Args = {
 
 export default async function LibrarySearchPage({ searchParams: searchParamsPromise }: Args) {
   const { q: query } = await searchParamsPromise
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const libraryItems = await payload.find({
     collection: 'library',

@@ -89,7 +89,7 @@ const StatsSection: Block = {
           label: 'Imagine Fundal',
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
             description: 'Imaginea de fundal pentru secțiune',
           },
         },
@@ -114,7 +114,7 @@ const StatsSection: Block = {
           ],
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
             description: 'Overlay pentru îmbunătățirea lizibilității textului peste imagine',
           },
         },

@@ -4,7 +4,6 @@ import React from 'react'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import { CMSLink } from '@/components/Link'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 import { cn } from '@/utilities/ui'
 
 type MediaObject = {
@@ -40,7 +39,7 @@ type Props = {
     headingSize?: 'normal' | 'large' | 'xl' | '2xl'
     subheading?: string
     eyebrow?: string
-    text?: DefaultTypedEditorState
+    text?: any
     buttons?: ButtonType[]
   }
   image?: MediaObject

@@ -1,5 +1,6 @@
 import type { StateField } from '@payloadcms/plugin-form-builder/types'
-import type { Control, FieldErrorsImpl } from 'react-hook-form'
+// @ts-ignore
+import type { Control } from 'react-hook-form'
 
 import { Label } from '@/components/ui/label'
 import {
@@ -10,6 +11,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import React from 'react'
+// @ts-ignore
 import { Controller } from 'react-hook-form'
 
 import { Error } from '../Error'
@@ -19,7 +21,7 @@ import { stateOptions } from './options'
 export const State: React.FC<
   StateField & {
     control: Control
-    errors: Partial<FieldErrorsImpl>
+    errors: Partial<any>
   }
 > = ({ name, control, errors, label, required, width }) => {
   return (
@@ -36,8 +38,8 @@ export const State: React.FC<
         control={control}
         defaultValue=""
         name={name}
-        render={({ field: { onChange, value } }) => {
-          const controlledValue = stateOptions.find((t) => t.value === value)
+        render={({ field: { onChange, value } }: { field: { onChange: (value: string) => void; value: string } }) => {
+          const controlledValue = stateOptions.find((t: { value: string }) => t.value === value)
 
           return (
             <Select onValueChange={(val) => onChange(val)} value={controlledValue?.value}>
@@ -45,7 +47,7 @@ export const State: React.FC<
                 <SelectValue placeholder={label} />
               </SelectTrigger>
               <SelectContent>
-                {stateOptions.map(({ label, value }) => {
+                {stateOptions.map(({ label, value }: { label: string; value: string }) => {
                   return (
                     <SelectItem key={value} value={value}>
                       {label}

@@ -1,4 +1,4 @@
-import type { CollectionSlug, PayloadRequest } from 'payload'
+import type { CollectionSlug } from 'payload'
 import { getPayload } from 'payload'
 
 import { draftMode } from 'next/headers'
@@ -8,7 +8,7 @@ import { NextRequest } from "next/server"
 import configPromise from '@payload-config'
 
 export async function GET(req: NextRequest): Promise<Response> {
-  const payload = await getPayload({ config: configPromise })
+  const payload = await getPayload({ config: configPromise } as any)
 
   const { searchParams } = new URL(req.url)
 
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest): Promise<Response> {
 
   try {
     user = await payload.auth({
-      req: req as unknown as PayloadRequest,
+      req: req as any,
       headers: req.headers,
     })
   } catch (error) {

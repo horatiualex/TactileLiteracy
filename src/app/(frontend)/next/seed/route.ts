@@ -6,7 +6,7 @@ import { headers } from 'next/headers'
 export const maxDuration = 60 // This function can run for a maximum of 60 seconds
 
 export async function POST(): Promise<Response> {
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config } as any)
   const requestHeaders = await headers()
 
   // Authenticate by passing request headers

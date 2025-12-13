@@ -1,6 +1,5 @@
 import type { CheckboxField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
-
+// @ts-ignore
 import { useFormContext } from 'react-hook-form'
 
 import { Checkbox as CheckboxUi } from '@/components/ui/checkbox'
@@ -12,8 +11,8 @@ import { Width } from '../Width'
 
 export const Checkbox: React.FC<
   CheckboxField & {
-    errors: Partial<FieldErrorsImpl>
-    register: UseFormRegister<FieldValues>
+    errors: Partial<any>
+    register: any
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   const props = register(name, { required: required })

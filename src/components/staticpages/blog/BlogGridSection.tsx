@@ -50,9 +50,9 @@ export default function BlogGridSection({ posts, categories }: BlogGridSectionPr
           {/* Filters Sidebar */}
           <aside className="w-full lg:w-64 flex-shrink-0">
             <div 
-              className="sticky top-24 p-6 rounded-3xl bg-[#D9D9D9]"
+              className="sticky top-24 p-6 rounded-3xl bg-[#D2D2D2]"
               style={{
-                boxShadow: 'inset 6px 6px 12px rgba(0, 0, 0, 0.25), inset -6px -6px 12px rgba(255, 255, 255, 0.9), 3px 3px 6px rgba(0, 0, 0, 0.15)'
+                boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
               }}
             >
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Filtrează după:</h3>

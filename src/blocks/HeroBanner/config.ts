@@ -31,7 +31,7 @@ const HeroBanner: Block = {
       label: 'Descriere',
       required: false,
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
+        features: ({ rootFeatures }: any) => {
           return [
             ...rootFeatures,
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
@@ -164,7 +164,7 @@ const HeroBanner: Block = {
           admin: {
             placeholder: '#1e40af',
             description: 'Cod culoare hex (ex: #1e40af)',
-            condition: (_, siblingData) => siblingData?.type === 'customColor',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'customColor',
           },
         },
         {
@@ -175,7 +175,7 @@ const HeroBanner: Block = {
           admin: {
             placeholder: '#1e40af',
             description: 'Culoare de start pentru gradient',
-            condition: (_, siblingData) => siblingData?.type === 'gradient',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'gradient',
           },
         },
         {
@@ -186,7 +186,7 @@ const HeroBanner: Block = {
           admin: {
             placeholder: '#7c3aed',
             description: 'Culoare finală pentru gradient',
-            condition: (_, siblingData) => siblingData?.type === 'gradient',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'gradient',
           },
         },
         {
@@ -197,7 +197,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             description: 'Imagine pentru fundal (când tipul este "Imagine")',
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
           },
         },
         {
@@ -210,7 +210,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             description: 'Întunecă imaginea de fundal pentru lizibilitate (0-1)',
-            condition: (_, siblingData) => siblingData?.type === 'image',
+            condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'image',
           },
         },
         {
@@ -262,7 +262,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             description: 'Imaginea care apare în partea dreaptă (pentru split layout)',
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
         {
@@ -283,7 +283,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             description: 'Unde apare imaginea în layout split',
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
       ],
@@ -310,7 +310,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             placeholder: 'Află mai multe',
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
         {
@@ -320,7 +320,7 @@ const HeroBanner: Block = {
           required: false,
           admin: {
             placeholder: '/contact',
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
         {
@@ -344,7 +344,7 @@ const HeroBanner: Block = {
           ],
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
         {
@@ -354,7 +354,7 @@ const HeroBanner: Block = {
           defaultValue: false,
           required: false,
           admin: {
-            condition: (_, siblingData) => siblingData?.enabled === true,
+            condition: (_: unknown, siblingData: { enabled?: boolean }) => siblingData?.enabled === true,
           },
         },
       ],

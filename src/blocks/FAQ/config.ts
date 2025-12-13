@@ -64,7 +64,7 @@ const FAQ: Block = {
       label: 'Search Placeholder Text',
       defaultValue: 'Search for a question',
       admin: {
-        condition: (data, siblingData) => siblingData.showSearch,
+        condition: (data: any, siblingData: any) => siblingData.showSearch,
       },
       required: false,
     },

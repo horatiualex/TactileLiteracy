@@ -77,7 +77,7 @@ export const TextImage: Block = {
             },
           ],
           admin: {
-            condition: (_, siblingData) => siblingData?.heading,
+            condition: (_: unknown, siblingData: { heading?: string }) => siblingData?.heading,
           },
         },
         {
@@ -140,7 +140,7 @@ export const TextImage: Block = {
                   label: 'Pagină',
                   relationTo: 'pages',
                   admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'internal',
+                    condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'internal',
                   },
                 },
                 {
@@ -148,7 +148,7 @@ export const TextImage: Block = {
                   type: 'text',
                   label: 'URL',
                   admin: {
-                    condition: (_, siblingData) => siblingData?.type === 'external',
+                    condition: (_: unknown, siblingData: { type?: string }) => siblingData?.type === 'external',
                   },
                 },
               ],

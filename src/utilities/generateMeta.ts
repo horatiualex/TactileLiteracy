@@ -27,7 +27,7 @@ export const generateMeta = async (args: {
   const { doc } = args
 
   // Fetch site settings for dynamic site name
-  const payload = await getPayload({ config })
+  const payload = await getPayload({ config } as any)
   const settings = await payload.findGlobal({
     slug: 'settings',
   })

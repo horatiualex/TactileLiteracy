@@ -11,7 +11,7 @@ export async function ThemeToggleWrapper({ variant }: ThemeToggleWrapperProps) {
   let settings
   
   try {
-    const payload = await getPayload({ config: configPromise })
+    const payload = await getPayload({ config: configPromise } as any)
     settings = await payload.findGlobal({
       slug: 'settings',
     })

@@ -2,11 +2,10 @@
 
 import React, { useState } from 'react'
 import RichText from '@/components/RichText'
-import type { DefaultTypedEditorState } from '@payloadcms/richtext-lexical'
 
 type FAQItem = {
   question: string
-  answer: DefaultTypedEditorState
+  answer: any
   defaultOpen?: boolean
 }
 

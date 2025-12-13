@@ -4,7 +4,7 @@ import { ro } from '@payloadcms/translations/languages/ro'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
-import { buildConfig, PayloadRequest } from 'payload'
+import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
@@ -107,7 +107,7 @@ export default buildConfig({
   },
   jobs: {
     access: {
-      run: ({ req }: { req: PayloadRequest }): boolean => {
+      run: ({ req }: { req: any }): boolean => {
         // Allow logged in users to execute this endpoint (default)
         if (req.user) return true
 

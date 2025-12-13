@@ -1,4 +1,4 @@
-import type { TextFieldSingleValidation } from 'payload'
+import type { Field, TextFieldSingleValidation } from 'payload'
 import {
   BoldFeature,
   ItalicFeature,
@@ -17,7 +17,7 @@ export const defaultLexical = lexicalEditor({
     ItalicFeature(),
     LinkFeature({
       enabledCollections: ['pages', 'posts'],
-      fields: ({ defaultFields }) => {
+      fields: ({ defaultFields }: { defaultFields: Field[] }) => {
         const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
           if ('name' in field && field.name === 'url') return false
           return true
@@ -29,11 +29,11 @@ export const defaultLexical = lexicalEditor({
             name: 'url',
             type: 'text',
             admin: {
-              condition: (_data, siblingData) => siblingData?.linkType !== 'internal',
+              condition: (_data: unknown, siblingData: LinkFields) => siblingData?.linkType !== 'internal',
             },
-            label: ({ t }) => t('fields:enterURL'),
+            label: ({ t }: { t: (key: string) => string }) => t('fields:enterURL'),
             required: true,
-            validate: ((value, options) => {
+            validate: ((value: string | null | undefined, options: any) => {
               if ((options?.siblingData as LinkFields)?.linkType === 'internal') {
                 return true // no validation needed, as no url should exist for internal links
               }

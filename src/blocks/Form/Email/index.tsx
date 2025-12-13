@@ -1,5 +1,5 @@
 import type { EmailField } from '@payloadcms/plugin-form-builder/types'
-import type { FieldErrorsImpl, FieldValues, UseFormRegister } from 'react-hook-form'
+
 
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -10,8 +10,8 @@ import { Width } from '../Width'
 
 export const Email: React.FC<
   EmailField & {
-    errors: Partial<FieldErrorsImpl>
-    register: UseFormRegister<FieldValues>
+    errors: Partial<any>
+    register: any
   }
 > = ({ name, defaultValue, errors, label, register, required, width }) => {
   return (

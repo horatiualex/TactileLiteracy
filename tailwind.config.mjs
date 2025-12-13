@@ -99,6 +99,7 @@ const config = {
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
         sans: ['var(--font-geist-sans)'],
+        inter: ['var(--font-inter)'],
       },
       keyframes: {
         'accordion-down': {

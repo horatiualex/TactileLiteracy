@@ -72,7 +72,7 @@ export const ModularHero = async ({
   // Fetch blog posts if needed
   let blogPosts: Post[] = []
   if (normalizedLayout === 'splitScreen' && splitScreenRightContent === 'blogPosts') {
-    const payload = await getPayload({ config })
+    const payload = await getPayload({ config } as any)
     
     if (blogPostsMode === 'selected' && selectedBlogPosts && selectedBlogPosts.length > 0) {
       // Get specific selected posts

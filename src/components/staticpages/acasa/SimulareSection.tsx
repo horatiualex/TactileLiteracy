@@ -2,30 +2,26 @@ import React from 'react'
 
 export default function SimulareSection() {
   return (
-    <section className="relative w-full min-h-screen bg-white py-24 overflow-hidden">
+    <section className="relative w-full min-h-[50vh] lg:min-h-screen bg-white py-12 lg:py-24 overflow-hidden">
+      <div className="absolute top-8 left-8 lg:top-12 lg:left-16 z-20">
+        <div
+          className="inline-flex px-6 py-2 rounded-full text-sm font-medium"
+          style={{
+            backgroundColor: '#FFFFFF',
+            color: '#3C3C3C',
+            boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
+          }}
+        >
+          Simulare
+        </div>
+      </div>
+
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
         <img
-          src="/assets/acasa/țânțar.svg"
+          src="/assets/acasa/tantar.svg"
           alt="Simulare țânțar"
           className="w-[95vw] max-w-[1100px] opacity-90"
         />
-      </div>
-
-      <div className="relative z-10 w-full px-6 lg:px-16">
-        <div className="max-w-4xl mx-auto">
-          <div
-            className="inline-flex px-6 py-2 rounded-full text-sm font-medium border shadow-sm"
-            style={{
-              backgroundColor: '#F4F4F4',
-              color: '#3C3C3C',
-              borderColor: '#BEBEBE',
-              boxShadow:
-                '1.76px 2.35px 1.62px rgba(255,255,255,1), inset 2.35px 4.11px 1.76px rgba(0,0,0,0.4)',
-            }}
-          >
-            Simulare
-          </div>
-        </div>
       </div>
     </section>
   )

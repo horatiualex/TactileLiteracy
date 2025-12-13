@@ -72,7 +72,7 @@ export const link: LinkType = ({ appearances, disableLabel = false, overrides = 
       name: 'reference',
       type: 'relationship',
       admin: {
-        condition: (_, siblingData) => siblingData?.type === 'reference',
+        condition: (_: any, siblingData: any) => siblingData?.type === 'reference',
       },
       label: 'Document către care se leagă',
       relationTo: ['pages', 'posts'],

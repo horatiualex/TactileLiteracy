@@ -74,7 +74,7 @@ export default function LibraryDetailHero({ item }: LibraryDetailHeroProps) {
       <div className="w-full grid gap-0 lg:grid-cols-[2fr,1fr]">
         {/* Left side - Image Card */}
         <div
-          className="relative rounded-l-[40px] bg-white border border-[#CFCFCF]"
+          className="relative rounded-t-[40px] lg:rounded-tr-none lg:rounded-l-[40px] bg-white border border-[#CFCFCF]"
           style={{
             boxShadow: 'inset 4.82px 6.47px 2.77px rgba(0, 0, 0, 0.5), inset 0px 0px 0px rgba(0, 0, 0, 0.5)',
             filter: 'drop-shadow(3.7px 3.7px 2.77px #FFFFFF)',
@@ -86,14 +86,14 @@ export default function LibraryDetailHero({ item }: LibraryDetailHeroProps) {
             {tactileImageUrl ? (
               <img src={tactileImageUrl} alt={item.title} className="max-h-full w-full object-contain" />
             ) : (
-              <div className="text-gray-400 text-lg">Imaginea tactilă lipsește</div>
+              <div className="text-gray-500 text-lg">Imaginea tactilă lipsește</div>
             )}
           </div>
         </div>
 
         {/* Right side - Dark sidebar */}
         <div
-          className="relative rounded-r-[40px] bg-[#434343] text-white p-8 lg:p-10 flex flex-col"
+          className="relative rounded-b-[40px] lg:rounded-bl-none lg:rounded-r-[40px] bg-[#434343] text-white p-8 lg:p-10 flex flex-col"
           style={{
             boxShadow: 'inset 4.82px 6.47px 2.77px rgba(0, 0, 0, 0.5), inset 0px 0px 0px rgba(0, 0, 0, 0.5)',
             filter: 'drop-shadow(3.7px 3.7px 2.77px #FFFFFF)',
