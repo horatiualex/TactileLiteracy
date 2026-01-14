@@ -409,7 +409,7 @@ export interface Post {
 export interface Media {
   id: string;
   /**
-   * Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG
+   * Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG. Dimensiunea maximă a fișierului este de 5MB.
    */
   alt: string;
   caption?: {

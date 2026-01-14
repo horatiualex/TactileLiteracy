@@ -33,7 +33,7 @@ export default function LibraryImageDescription({ item }: LibraryImageDescriptio
       <div className="w-full">
         <div className="grid gap-0 lg:grid-cols-[40%,60%]">
           {/* Left side - Fish shape with tactile image inside */}
-          <div className="relative min-h-[500px] lg:min-h-0 flex items-center justify-start bg-[#434343]">
+          <div className="relative min-h-[500px] lg:min-h-[600px] flex items-center justify-start bg-[#434343]">
             <div className="w-full lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-start">
               {/* Wrapper to maintain aspect ratio and prevent stretching */}
               <div className="relative w-full aspect-[1.1] lg:w-auto lg:h-full lg:max-w-full">

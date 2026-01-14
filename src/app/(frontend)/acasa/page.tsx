@@ -13,7 +13,7 @@ import BlogSection from '@/components/staticpages/acasa/BlogSection'
 
 export default async function AcasaPage() {
   return (
-    <article className="mt-0">
+    <article className="mt-0 overflow-x-hidden">
       <div className="w-full bg-[#3A3A3A] min-h-screen">
         <HeroSection
           title="Mesaj - ce facem pentru nevăzători, cum îi ajutăm"

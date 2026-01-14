@@ -190,7 +190,7 @@ const HowToSection: React.FC = () => {
   )
 
   return (
-    <section className="relative w-full py-24" style={{ backgroundColor: '#2F2F2F' }}>
+    <section className="relative w-full py-24 overflow-hidden" style={{ backgroundColor: '#2F2F2F' }}>
       <div className="absolute top-8 left-8 lg:top-12 lg:left-16 z-20 mb-12">
         <div
           className="inline-flex px-6 py-2 rounded-full text-sm font-medium"

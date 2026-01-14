@@ -33,7 +33,7 @@ export default function LibraryHeroSection({
   }
 
   return (
-    <section className="relative w-full min-h-screen flex items-center pt-32 lg:pt-0 overflow-hidden">
+    <section className="relative w-full h-[85vh] lg:h-[90vh] flex items-center overflow-hidden">
       <div
         className={`w-full flex flex-col lg:block px-8 lg:px-0 ${
           isImageRight ? 'lg:pl-16 lg:pr-[60%]' : 'lg:pr-16 lg:pl-[60%]'

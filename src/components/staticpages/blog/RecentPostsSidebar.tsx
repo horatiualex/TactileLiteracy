@@ -12,7 +12,7 @@ export default function RecentPostsSidebar({ posts }: RecentPostsSidebarProps) {
 
   return (
     <div
-      className="w-full rounded-3xl bg-[#D2D2D2] p-6"
+      className="w-full rounded-3xl bg-[#D2D2D2] p-6 sticky top-28"
       style={{
         boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)',
       }}

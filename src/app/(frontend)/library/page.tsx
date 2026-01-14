@@ -13,7 +13,7 @@ export default async function LibraryPage() {
   const libraryData = await payload.find({
     collection: 'library',
     depth: 2,
-    limit: 100,
+    limit: 5000,
     where: {
       _status: {
         equals: 'published',
@@ -24,7 +24,7 @@ export default async function LibraryPage() {
   // Fetch library categories
   const categoriesData = await payload.find({
     collection: 'library-categories',
-    limit: 100,
+    limit: 1000,
   })
 
   return (

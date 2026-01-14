@@ -8,7 +8,19 @@ import type { Post } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 
-export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'publishedAt' | 'createdAt'>
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'publishedAt' | 'createdAt' | 'content'>
+
+// Helper to extract text from Lexical content
+const extractTextFromLexical = (node: any): string => {
+  if (!node) return ''
+  if (node.type === 'text') {
+    return node.text || ''
+  }
+  if (node.children && Array.isArray(node.children)) {
+    return node.children.map((child: any) => extractTextFromLexical(child)).join(' ')
+  }
+  return ''
+}
 
 export type CardDisplaySettings = {
   cardStyle?: 'default' | 'minimal' | 'imageFocus'
@@ -38,8 +50,20 @@ export const Card: React.FC<{
     displaySettings = {}
   } = props
 
-  const { slug, categories, meta, title, publishedAt, createdAt } = doc || {}
+  const { slug, categories, meta, title, publishedAt, createdAt, content } = doc || {}
   const { description, image: metaImage } = meta || {}
+
+  let descriptionToUse = description
+
+  // If description is missing or is placeholder, try to extract from content
+  if ((!descriptionToUse || /lorem\s*ipsum/i.test(descriptionToUse) || descriptionToUse === '') && content && content.root) {
+    const extracted = extractTextFromLexical(content.root)
+    if (extracted) {
+      // Trim to ~150 chars
+      descriptionToUse = extracted.substring(0, 150)
+      if (extracted.length > 150) descriptionToUse += '...'
+    }
+  }
 
   // Extract display settings with defaults
   const {
@@ -56,7 +80,7 @@ export const Card: React.FC<{
   
   const hasCategories = categories && Array.isArray(categories) && categories.length > 0
   const titleToUse = titleFromProps || title
-  const sanitizedDescription = description?.replace(/\s/g, ' ') // replace non-breaking space with white space
+  const sanitizedDescription = descriptionToUse?.replace(/\s/g, ' ') // replace non-breaking space with white space
   const href = `/${relationTo}/${slug}`
 
   // Get aspect ratio class

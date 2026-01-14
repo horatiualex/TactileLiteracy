@@ -16,15 +16,27 @@ export const Pagination: React.FC<{
   className?: string
   page: number
   totalPages: number
+  onClick?: (page: number) => void
 }> = (props) => {
   const router = useRouter()
 
-  const { className, page, totalPages } = props
+  const { className, page, totalPages, onClick } = props
   const hasNextPage = page < totalPages
   const hasPrevPage = page > 1
 
-  const hasExtraPrevPages = page - 1 > 1
-  const hasExtraNextPages = page + 1 < totalPages
+  const handlePageChange = (newPage: number) => {
+    if (onClick) {
+      onClick(newPage)
+    } else {
+      router.push(`/posts/page/${newPage}`)
+    }
+  }
+
+  // Logic to show: First ... Prev Current Next ... Last
+  const showFirst = page > 2
+  const showLast = page < totalPages - 1
+  const showPrev = page > 1
+  const showNext = page < totalPages
 
   return (
     <div className={cn('my-12', className)}>
@@ -33,65 +45,78 @@ export const Pagination: React.FC<{
           <PaginationItem>
             <PaginationPrevious
               disabled={!hasPrevPage}
-              onClick={() => {
-                router.push(`/posts/page/${page - 1}`)
-              }}
+              onClick={() => handlePageChange(page - 1)}
             />
           </PaginationItem>
 
-          {hasExtraPrevPages && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+          {/* Always show first page if we are far from it */}
+          {showFirst && (
+            <>
+              <PaginationItem>
+                <PaginationLink onClick={() => handlePageChange(1)}>
+                  1
+                </PaginationLink>
+              </PaginationItem>
+              {page > 3 && (
+                 <PaginationItem>
+                   <PaginationEllipsis />
+                 </PaginationItem>
+              )}
+            </>
           )}
 
-          {hasPrevPage && (
+          {/* Previous neighbor */}
+          {showPrev && (page !== 1) && ( // Ensure we don't duplicate 1 if page is 2
             <PaginationItem>
               <PaginationLink
-                onClick={() => {
-                  router.push(`/posts/page/${page - 1}`)
-                }}
+                onClick={() => handlePageChange(page - 1)}
               >
                 {page - 1}
               </PaginationLink>
             </PaginationItem>
           )}
 
+          {/* Current Page */}
           <PaginationItem>
             <PaginationLink
               isActive
-              onClick={() => {
-                router.push(`/posts/page/${page}`)
-              }}
+              onClick={() => handlePageChange(page)}
             >
               {page}
             </PaginationLink>
           </PaginationItem>
 
-          {hasNextPage && (
+          {/* Next neighbor */}
+          {showNext && (page !== totalPages) && ( // Ensure we don't duplicate last if page is last-1
             <PaginationItem>
               <PaginationLink
-                onClick={() => {
-                  router.push(`/posts/page/${page + 1}`)
-                }}
+                onClick={() => handlePageChange(page + 1)}
               >
                 {page + 1}
               </PaginationLink>
             </PaginationItem>
           )}
 
-          {hasExtraNextPages && (
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
+          {/* Always show last page if we are far from it */}
+          {showLast && (
+             <>
+               {page < totalPages - 2 && (
+                   <PaginationItem>
+                     <PaginationEllipsis />
+                   </PaginationItem>
+               )}
+               <PaginationItem>
+                <PaginationLink onClick={() => handlePageChange(totalPages)}>
+                  {totalPages}
+                </PaginationLink>
+               </PaginationItem>
+             </>
           )}
 
           <PaginationItem>
             <PaginationNext
               disabled={!hasNextPage}
-              onClick={() => {
-                router.push(`/posts/page/${page + 1}`)
-              }}
+              onClick={() => handlePageChange(page + 1)}
             />
           </PaginationItem>
         </PaginationContent>

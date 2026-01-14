@@ -20,7 +20,7 @@ export default function HeroSection({
   const isImageRight = imagePosition === 'right'
 
   return (
-    <section className="relative w-full min-h-screen flex items-center pt-32 lg:pt-0 overflow-hidden">
+    <section className="relative w-full lg:h-[90vh] lg:max-h-[900px] flex items-center pt-32 lg:pt-0 overflow-hidden">
       <div
         className={`w-full flex flex-col lg:block px-8 lg:px-0 ${
           isImageRight ? 'lg:pl-16 lg:pr-[60%]' : 'lg:pr-16 lg:pl-[60%]'

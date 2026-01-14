@@ -17,7 +17,7 @@ export default async function LibrarySearchPage({ searchParams: searchParamsProm
   const libraryItems = await payload.find({
     collection: 'library',
     depth: 2,
-    limit: 50,
+    limit: 5000,
     ...(query
       ? {
           where: {
@@ -45,7 +45,7 @@ export default async function LibrarySearchPage({ searchParams: searchParamsProm
 
   const categoriesData = await payload.find({
     collection: 'library-categories',
-    limit: 100,
+    limit: 1000,
   })
 
   return (

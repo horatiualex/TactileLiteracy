@@ -3,10 +3,10 @@ import React from 'react'
 export default function ElearningSection() {
   return (
     <section
-      className="relative w-full min-h-screen py-20 overflow-hidden"
+      className="relative w-full lg:min-h-screen py-12 lg:py-20 overflow-hidden"
       style={{ backgroundColor: '#E1E1E1' }}
     >
-      <div className="w-full px-8 lg:px-16">
+      <div className="w-full px-4 lg:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-10 lg:gap-14 items-start">
           {/* Left column */}
           <div className="space-y-10">
@@ -25,12 +25,22 @@ export default function ElearningSection() {
 
             <div className="space-y-6 pl-4 sm:pl-10 lg:pl-12">
               <h2
-                className="font-extrabold text-[#3C3C3C] leading-tight"
+                className="hidden lg:block font-extrabold text-[#3C3C3C] leading-tight"
                 style={{ fontSize: 'clamp(2.5rem, 5vw, 72px)' }}
               >
                 <span className="block">Alege</span>
                 <span className="block lg:translate-x-28">studiul</span>
               </h2>
+              
+              <h2 className="lg:hidden text-[#3C3C3C] leading-tight flex flex-col items-start gap-1 mb-4">
+                <span className="font-bold" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
+                  Alege studiul
+                </span>
+                <span className="font-extrabold" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}>
+                  pe cont propriu!
+                </span>
+              </h2>
+
               <p
                 className="leading-relaxed max-w-sm pl-0 sm:pl-2"
                 style={{ color: '#4E4E4E', fontSize: 'clamp(0.95rem, 1.2vw, 1.125rem)' }}
@@ -78,7 +88,7 @@ export default function ElearningSection() {
           </div>
 
           {/* Right column */}
-          <div className="relative flex flex-col justify-end h-full min-h-[480px] pb-32">
+          <div className="relative flex flex-col justify-end h-full min-h-[200px] lg:min-h-[480px] pb-12 lg:pb-32">
             <div
               className="hidden lg:block absolute lg:-left-[10rem] xl:-left-40"
               style={{ top: 'clamp(6rem, 10vw, 8rem)' }}
@@ -95,17 +105,8 @@ export default function ElearningSection() {
                 </span>
               </h2>
             </div>
-            <div className="lg:hidden mb-8">
-              <h2 className="text-[#3C3C3C] leading-tight flex flex-col items-end text-right gap-1">
-                <span className="font-bold" style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}>
-                  pe cont
-                </span>
-                <span className="font-extrabold" style={{ fontSize: 'clamp(2.5rem, 6vw, 4rem)' }}>
-                  propriu!
-                </span>
-              </h2>
-            </div>
-            <div className="flex flex-col gap-4 items-end self-end w-full max-w-sm">
+            
+            <div className="flex flex-col gap-4 items-center self-center lg:items-end lg:self-end w-full max-w-sm">
               <button
                 className="flex items-center gap-3 px-6 py-3 rounded-full text-left w-full max-w-[260px]"
                 style={{

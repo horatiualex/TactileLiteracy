@@ -25,6 +25,7 @@ export default async function Page() {
       categories: true,
       meta: true,
       createdAt: true,
+      content: true,
     },
   })
 

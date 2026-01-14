@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function NeedImageSection() {
   return (
-    <section className="w-full" style={{ backgroundColor: '#3A3A3A' }}>
+    <section className="w-full overflow-hidden" style={{ backgroundColor: '#3A3A3A' }}>
       <div className="max-w-[1200px] mx-auto px-6 lg:px-16 py-16 lg:py-24 text-center">
         <h2
           className="font-bold text-3xl lg:text-5xl"

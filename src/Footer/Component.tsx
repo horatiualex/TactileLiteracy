@@ -92,7 +92,7 @@ export async function Footer() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center w-10 h-10 rounded-full bg-[#434343] text-white hover:bg-black transition-colors"
+                    className="flex items-center justify-center w-10 h-10 rounded-full bg-[#434343] text-white hover:bg-black hover:scale-110 transition-all duration-200"
                     aria-label={social.platform}
                   >
                     <div className="w-5 h-5">
@@ -118,7 +118,7 @@ export async function Footer() {
                   <li key={linkIndex}>
                     <CMSLink 
                       {...linkItem.link} 
-                      className="text-[#4E4E4E] hover:text-black transition-colors text-base"
+                      className="text-[#4E4E4E] hover:text-black hover:underline transition-colors text-base"
                     />
                   </li>
                 ))}
@@ -127,7 +127,7 @@ export async function Footer() {
             {/* Custom HTML (e.g. ANPC badges) */}
             {linkList?.customHtml && (
               <div 
-                className="mt-6"
+                className="mt-6 flex flex-col items-start gap-4 [&_img]:!m-0 [&_img]:!mx-0 [&_a]:!mx-0 [&_div]:!text-left [&_p]:!text-left"
                 dangerouslySetInnerHTML={{ __html: linkList.customHtml }}
               />
             )}
@@ -149,7 +149,7 @@ export async function Footer() {
                     href={platform.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
+                    className="flex items-center gap-2 text-gray-300 hover:text-white hover:underline transition-colors"
                     title={platform.label || platform.platform}
                   >
                     {getSocialIcon(platform.platform)}
@@ -173,12 +173,12 @@ export async function Footer() {
                 <p className="leading-relaxed">{contactInfo.address}</p>
               )}
               {contactInfo?.phone && (
-                <a href={`tel:${contactInfo.phone}`} className="block hover:text-black transition-colors">
+                <a href={`tel:${contactInfo.phone}`} className="block hover:text-black hover:underline transition-colors">
                   {contactInfo.phone}
                 </a>
               )}
               {contactInfo?.email && (
-                <a href={`mailto:${contactInfo.email}`} className="block hover:text-black transition-colors">
+                <a href={`mailto:${contactInfo.email}`} className="block hover:text-black hover:underline transition-colors">
                   {contactInfo.email}
                 </a>
               )}
@@ -240,7 +240,7 @@ export async function Footer() {
                       <CMSLink
                         key={index}
                         {...linkItem.link}
-                        className="text-sm text-[#4E4E4E] hover:text-black transition-colors"
+                        className="text-sm text-[#4E4E4E] hover:text-black hover:underline transition-colors"
                       />
                     ))}
                   </div>

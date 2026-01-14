@@ -27,9 +27,9 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 width={200} 
                 height={50}
                 priority
-                className="h-12 w-auto"
+                className="h-12 w-auto p-2 rounded-xl"
                 style={{
-                  filter: 'drop-shadow(1.37px 2.75px 2.75px rgba(255, 255, 255, 1)) drop-shadow(4px 3px 4px rgba(0, 0, 0, 0.5))'
+                  boxShadow: '1px 2px 1px 0px #FFFFFF, inset 3px 5px 1px 0px rgba(0, 0, 0, 0.4)'
                 }}
               />
             </Link>

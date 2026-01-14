@@ -66,7 +66,7 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
             <CMSLink
               key={i}
               {...singleLink}
-              className={`px-6 py-2.5 text-base font-medium transition-all duration-200 rounded-full text-gray-700 hover:text-gray-900 ${
+              className={`px-6 py-2.5 text-base font-medium transition-all duration-200 rounded-full text-gray-700 hover:text-gray-900 hover:underline ${
                 isActive ? 'bg-[#D9D9D9]' : ''
               }`}
               style={isActive ? {
@@ -99,8 +99,8 @@ export const HeaderNav: React.FC<{ data: HeaderType }> = ({ data }) => {
               boxShadow: '1.37px 2.75px 2.75px rgba(255, 255, 255, 1), inset 4px 3px 4px rgba(0, 0, 0, 0.5)'
             }}
           />
-          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2">
-            <SearchIcon className="w-5 h-5 text-gray-600" />
+          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 hover:scale-110 transition-transform">
+            <SearchIcon className="w-5 h-5 text-gray-600 hover:text-gray-900" />
           </button>
         </div>
       </form>

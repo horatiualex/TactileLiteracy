@@ -87,12 +87,12 @@ export default async function Post({ params: paramsPromise }: Args) {
   })
 
   return (
-    <article className="bg-[#D2D2D2] min-h-screen">
+    <article className="min-h-screen">
       <PageClient />
       <PayloadRedirects disableNotFound url={url} />
       {draft && <LivePreviewListener />}
 
-      <div className="w-full px-8 lg:px-16 py-16">
+      <div className="w-full px-8 lg:px-16 py-16 bg-[#D2D2D2]">
         {/* Title */}
         <h1 className="text-4xl lg:text-5xl font-bold text-[#434343] mb-8">{post.title}</h1>
 

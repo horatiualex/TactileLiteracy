@@ -1,6 +1,11 @@
 'use client'
 import React, { useState } from 'react'
 import type { Library, LibraryCategory } from '@/payload-types'
+import { Pagination } from '@/components/Pagination'
+import { cn } from '@/utilities/ui'
+
+// Number of items per page for Library
+const ITEMS_PER_PAGE = 24
 
 // Filter options for "Adaptat pentru"
 const adaptedForOptions = [
@@ -27,8 +32,10 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedDifficulties, setSelectedDifficulties] = useState<string[]>([])
   const [selectedAdaptedFor, setSelectedAdaptedFor] = useState<string>('all')
+  const [currentPage, setCurrentPage] = useState(1)
 
   const toggleCategory = (categoryId: string) => {
+    setCurrentPage(1) // Reset to first page
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
         ? prev.filter((id) => id !== categoryId)
@@ -37,6 +44,7 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
   }
 
   const toggleDifficulty = (difficulty: string) => {
+    setCurrentPage(1) // Reset to first page
     setSelectedDifficulties((prev) =>
       prev.includes(difficulty)
         ? prev.filter((d) => d !== difficulty)
@@ -76,6 +84,10 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
 
     return true
   })
+
+  // Pagination logic
+  const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE)
+  const displayedItems = filteredItems.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE)
 
   // Count items per category
   const getCategoryItemCount = (categoryId: string) => {
@@ -206,20 +218,20 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
             </aside>
 
             {/* Library Items Grid */}
-            <div className="flex-1 relative">
-              {filteredItems.length === 0 ? (
+            <div className="flex-1 relative" id="library-grid-top">
+              {displayedItems.length === 0 ? (
                 <div className="text-center py-12">
                   <p className="text-gray-600">Nu au fost găsite imagini.</p>
                 </div>
               ) : (
                 <div className="flex flex-col gap-8">
                   {/* Group items in rows of 3 for shelf display */}
-                  {Array.from({ length: Math.ceil(filteredItems.length / 3) }).map((_, rowIndex) => {
-                    const rowItems = filteredItems.slice(rowIndex * 3, rowIndex * 3 + 3)
+                  {Array.from({ length: Math.ceil(displayedItems.length / 3) }).map((_, rowIndex) => {
+                    const rowItems = displayedItems.slice(rowIndex * 3, rowIndex * 3 + 3)
                     return (
                       <div key={rowIndex} className="relative">
                         {/* Cards grid */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-20 pb-10 2xl:pb-16">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 relative z-20 pb-9 2xl:pb-12">
                           {rowItems.map((item) => (
                             <LibraryCard key={item.id} item={item} />
                           ))}
@@ -243,6 +255,19 @@ export default function LibraryGridSection({ items, categories }: LibraryGridSec
                       </div>
                     )
                   })}
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <Pagination 
+                      page={currentPage} 
+                      totalPages={totalPages} 
+                      onClick={(page) => {
+                        setCurrentPage(page);
+                        const gridTop = document.getElementById('library-grid-top');
+                        if (gridTop) gridTop.scrollIntoView({ behavior: 'smooth' });
+                      }} 
+                    />
+                  )}
                 </div>
               )}
             </div>
@@ -280,7 +305,7 @@ function LibraryCard({ item }: { item: Library }) {
       <div 
         className="relative rounded-t-3xl overflow-hidden bg-white"
         style={{
-          boxShadow: '-2px -1px 2.75px rgba(255, 255, 255, 0.7), 0px 8px 16px rgba(0, 0, 0, 0.35)'
+          boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.35)'
         }}
       >
         {/* Top badges row */}
@@ -336,7 +361,7 @@ function LibraryCard({ item }: { item: Library }) {
         className="relative" 
         style={{ 
           marginTop: '-1px',
-          filter: 'drop-shadow(-2px -1px 2.75px rgba(255, 255, 255, 0.7)) drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.35))'
+          filter: 'drop-shadow(6px 8px 10px rgba(0, 0, 0, 0.25))'
         }}
       >
         <svg 
@@ -365,38 +390,38 @@ function LibraryCard({ item }: { item: Library }) {
           {/* Footer row - Adapted icons left, fish right */}
           <div className="flex items-end justify-between mt-4">
             {/* Adapted for icons - colored circles with deep inset effect */}
-            <div className="flex gap-2 2xl:gap-4">
+            <div className="flex gap-2 2xl:gap-3">
               {item.adaptedFor?.includes('blind') && (
                 <div 
-                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  className="w-9 h-9 2xl:w-12 2xl:h-12 rounded-full flex items-center justify-center"
                   style={{ 
                     backgroundColor: '#E53935',
                     boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.2), inset 0 0 12px rgba(0,0,0,0.3)'
                   }}
                 >
-                  <img src="/assets/library/blind.svg" alt="Nevăzători" className="w-7 h-7 2xl:w-10 2xl:h-10 brightness-0 invert" />
+                  <img src="/assets/library/blind.svg" alt="Nevăzători" className="w-5 h-5 2xl:w-7 2xl:h-7 brightness-0 invert" />
                 </div>
               )}
               {item.adaptedFor?.includes('deaf') && (
                 <div 
-                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  className="w-9 h-9 2xl:w-12 2xl:h-12 rounded-full flex items-center justify-center"
                   style={{ 
                     backgroundColor: '#FFC107',
                     boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.4), inset -2px -2px 6px rgba(255,255,255,0.3), inset 0 0 12px rgba(0,0,0,0.2)'
                   }}
                 >
-                  <img src="/assets/library/deaf.tif.svg" alt="Surzi" className="w-7 h-7 2xl:w-10 2xl:h-10" />
+                  <img src="/assets/library/deaf.tif.svg" alt="Surzi" className="w-5 h-5 2xl:w-7 2xl:h-7" />
                 </div>
               )}
               {item.adaptedFor?.includes('neurodivergent') && (
                 <div 
-                  className="w-12 h-12 2xl:w-16 2xl:h-16 rounded-full flex items-center justify-center"
+                  className="w-9 h-9 2xl:w-12 2xl:h-12 rounded-full flex items-center justify-center"
                   style={{ 
                     backgroundColor: '#03A9F4',
                     boxShadow: 'inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.2), inset 0 0 12px rgba(0,0,0,0.3)'
                   }}
                 >
-                  <img src="/assets/library/neurodivergent.svg" alt="Neurodivergenți" className="w-7 h-7 2xl:w-10 2xl:h-10 brightness-0 invert" />
+                  <img src="/assets/library/neurodivergent.svg" alt="Neurodivergenți" className="w-5 h-5 2xl:w-7 2xl:h-7 brightness-0 invert" />
                 </div>
               )}
             </div>

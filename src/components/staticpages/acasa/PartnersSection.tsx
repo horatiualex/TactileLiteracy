@@ -7,9 +7,9 @@ export default function PartnersSection() {
         <div
           className="inline-flex px-6 py-2 rounded-full text-sm font-medium"
           style={{
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '#F0F0F0',
             color: '#3C3C3C',
-            boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
+            boxShadow: 'inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)'
           }}
         >
           Parteneri

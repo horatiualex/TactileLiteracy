@@ -1,16 +1,38 @@
 'use client'
 import React, { useState } from 'react'
 import type { Post, Category } from '@/payload-types'
+import { Pagination } from '@/components/Pagination'
 
 interface BlogGridSectionProps {
   posts: Post[]
   categories: Category[]
 }
 
+const POSTS_PER_PAGE = 9
+
+// Helper to extract text from Lexical content
+function extractTextFromContent(content: any): string {
+  if (!content?.root?.children) return ''
+  
+  const extractText = (node: any): string => {
+    if (!node) return ''
+    if (typeof node === 'string') return node
+    if (node.text) return node.text
+    if (node.children && Array.isArray(node.children)) {
+      return node.children.map(extractText).join(' ')
+    }
+    return ''
+  }
+
+  return extractText(content.root)
+}
+
 export default function BlogGridSection({ posts, categories }: BlogGridSectionProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [currentPage, setCurrentPage] = useState(1)
 
   const toggleCategory = (categoryId: string) => {
+    setCurrentPage(1) // Reset to first page on filter change
     setSelectedCategories((prev) =>
       prev.includes(categoryId)
         ? prev.filter((id) => id !== categoryId)
@@ -29,8 +51,9 @@ export default function BlogGridSection({ posts, categories }: BlogGridSectionPr
         })
       })
 
-  // Limit to 9 posts (3 rows x 3 columns)
-  const displayedPosts = filteredPosts.slice(0, 9)
+  // Pagination logic
+  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE)
+  const displayedPosts = filteredPosts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE)
 
   // Count posts per category
   const getCategoryPostCount = (categoryId: string) => {
@@ -82,16 +105,30 @@ export default function BlogGridSection({ posts, categories }: BlogGridSectionPr
           </aside>
 
           {/* Blog Posts Grid */}
-          <div className="flex-1">
+          <div className="flex-1" id="blog-grid-top">
             {displayedPosts.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-gray-600">Nu au fost găsite articole.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {displayedPosts.map((post) => (
-                  <BlogCard key={post.id} post={post} />
-                ))}
+              <div className="flex flex-col gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayedPosts.map((post) => (
+                    <BlogCard key={post.id} post={post} />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <Pagination 
+                    page={currentPage} 
+                    totalPages={totalPages} 
+                    onClick={(page) => {
+                      setCurrentPage(page);
+                      const gridTop = document.getElementById('blog-grid-top');
+                      if (gridTop) gridTop.scrollIntoView({ behavior: 'smooth' });
+                    }} 
+                  />
+                )}
               </div>
             )}
           </div>
@@ -116,7 +153,7 @@ function BlogCard({ post }: { post: Post }) {
       <div 
         className="aspect-video bg-[#4A4A4A] rounded-t-2xl flex items-center justify-center"
         style={{
-          boxShadow: 'inset 2.38px 7.13px 3.17px rgba(0, 0, 0, 0.4), -1.58px -2.38px 2.18px rgba(255, 255, 255, 1)',
+          boxShadow: '1.66px 2.22px 1.53px 0px #FFFFFF, inset 2.5px 3.88px 1.66px 0px rgba(0, 0, 0, 0.4)',
           clipPath: 'inset(0 0 -10px 0)'
         }}
       >
@@ -129,49 +166,36 @@ function BlogCard({ post }: { post: Post }) {
 
       {/* Card Content with SVG background */}
       <div 
-        className="relative"
+        className="relative aspect-[406/203]"
         style={{
-          filter: 'drop-shadow(1.58px 2.38px 2.18px rgba(255, 255, 255, 1))',
+          filter: 'drop-shadow(1.66px 2.22px 1.53px #FFFFFF)',
           marginTop: '-1px'
         }}
       >
         <svg 
+          id="b" 
+          data-name="Layer 2" 
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 406 203"
-          className="w-full h-auto"
+          className="absolute inset-0 w-full h-full"
           preserveAspectRatio="none"
-          style={{
-            filter: 'drop-shadow(1.58px 2.38px 2.18px rgba(255, 255, 255, 1))'
-          }}
         >
-          <defs>
-            <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feOffset dx="2.38" dy="7.13" />
-              <feGaussianBlur stdDeviation="1.585" result="offset-blur" />
-              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-              <feFlood floodColor="#000000" floodOpacity="0.4" result="color" />
-              <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-              <feComposite operator="over" in="shadow" in2="SourceGraphic" />
-            </filter>
-          </defs>
-          <path 
-            d="M405,0v93.38c0,13.05-10.57,23.62-23.61,23.62h-23.62c-29.45.43-53.18,24.43-53.18,53.97,0,17.69-14.34,32.03-32.03,32.03H35c-19.33,0-35-15.67-35-35V0h405Z" 
-            style={{ fill: '#d9d9d8' }}
-            filter="url(#innerShadow)"
-          />
+          <g id="c" data-name="Layer">
+            <path d="M405,0v93.38c0,13.05-10.57,23.62-23.61,23.62h-23.62c-29.45.43-53.18,24.43-53.18,53.97,0,17.69-14.34,32.03-32.03,32.03H35c-19.33,0-35-15.67-35-35V0h405Z" style={{ fill: '#d9d9d8' }}/>
+          </g>
         </svg>
-        <div className="absolute inset-0 p-6 flex flex-col justify-between">
+        <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-between h-full">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2">
               {post.title}
             </h3>
-            <p className="text-base text-gray-600 line-clamp-2">
-              {post.meta?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'}
+            <p className="text-sm sm:text-base text-gray-600 line-clamp-2 pr-[20%]">
+              {post.meta?.description || extractTextFromContent(post.content)}
             </p>
           </div>
           
           {/* Footer */}
-          <div className="flex items-center justify-between text-sm text-gray-500">
+          <div className="flex items-center justify-between text-sm text-gray-500 mt-4">
             <span>
               {post.publishedAt 
                 ? new Date(post.publishedAt).toLocaleDateString('ro-RO', {

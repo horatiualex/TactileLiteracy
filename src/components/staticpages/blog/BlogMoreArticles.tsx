@@ -8,6 +8,23 @@ interface BlogMoreArticlesProps {
   posts: Post[]
 }
 
+// Helper to extract text from Lexical content
+function extractTextFromContent(content: any): string {
+  if (!content?.root?.children) return ''
+  
+  const extractText = (node: any): string => {
+    if (!node) return ''
+    if (typeof node === 'string') return node
+    if (node.text) return node.text
+    if (node.children && Array.isArray(node.children)) {
+      return node.children.map(extractText).join(' ')
+    }
+    return ''
+  }
+
+  return extractText(content.root)
+}
+
 export default function BlogMoreArticles({ posts }: BlogMoreArticlesProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
 
@@ -161,44 +178,31 @@ function BlogCard({ post }: { post: Post }) {
 
       {/* Card Content with SVG background */}
       <div 
-        className="relative"
+        className="relative aspect-[406/203]"
         style={{
           filter: 'drop-shadow(1.66px 2.22px 1.53px #FFFFFF)',
           marginTop: '-1px'
         }}
       >
         <svg 
+          id="b" 
+          data-name="Layer 2" 
           xmlns="http://www.w3.org/2000/svg" 
           viewBox="0 0 406 203"
-          className="w-full h-auto"
+          className="absolute inset-0 w-full h-full"
           preserveAspectRatio="none"
-          style={{
-            filter: 'drop-shadow(1.66px 2.22px 1.53px #FFFFFF)'
-          }}
         >
-          <defs>
-            <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-              <feOffset dx="2.5" dy="3.88" />
-              <feGaussianBlur stdDeviation="1.66" result="offset-blur" />
-              <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
-              <feFlood floodColor="#000000" floodOpacity="0.4" result="color" />
-              <feComposite operator="in" in="color" in2="inverse" result="shadow" />
-              <feComposite operator="over" in="shadow" in2="SourceGraphic" />
-            </filter>
-          </defs>
-          <path 
-            d="M405,0v93.38c0,13.05-10.57,23.62-23.61,23.62h-23.62c-29.45.43-53.18,24.43-53.18,53.97,0,17.69-14.34,32.03-32.03,32.03H35c-19.33,0-35-15.67-35-35V0h405Z" 
-            style={{ fill: '#d9d9d8' }}
-            filter="url(#innerShadow)"
-          />
+          <g id="c" data-name="Layer">
+            <path d="M405,0v93.38c0,13.05-10.57,23.62-23.61,23.62h-23.62c-29.45.43-53.18,24.43-53.18,53.97,0,17.69-14.34,32.03-32.03,32.03H35c-19.33,0-35-15.67-35-35V0h405Z" style={{ fill: '#d9d9d8' }}/>
+          </g>
         </svg>
-        <div className="absolute inset-0 p-6 flex flex-col justify-between">
+        <div className="absolute inset-0 p-4 sm:p-6 flex flex-col justify-between h-full">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 line-clamp-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-3 line-clamp-2">
               {post.title}
             </h3>
-            <p className="text-base text-gray-600 line-clamp-2">
-              {post.meta?.description || 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do...'}
+            <p className="text-sm sm:text-base text-gray-600 line-clamp-2 pr-[20%]">
+              {post.meta?.description || extractTextFromContent(post.content)}
             </p>
           </div>
           

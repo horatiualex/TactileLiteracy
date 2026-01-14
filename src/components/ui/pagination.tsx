@@ -17,7 +17,7 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
 const PaginationContent: React.FC<
   { ref?: React.Ref<HTMLUListElement> } & React.HTMLAttributes<HTMLUListElement>
 > = ({ className, ref, ...props }) => (
-  <ul className={cn('flex flex-row items-center gap-1', className)} ref={ref} {...props} />
+  <ul className={cn('flex flex-row items-center gap-2', className)} ref={ref} {...props} />
 )
 
 const PaginationItem: React.FC<
@@ -35,8 +35,12 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }: Pagina
     className={cn(
       buttonVariants({
         size,
-        variant: isActive ? 'outline' : 'ghost',
+        variant: 'ghost',
       }),
+      "rounded-full transition-all duration-200 w-10 h-10 flex items-center justify-center text-lg",
+      isActive 
+        ? "bg-[#828282] text-white font-bold shadow-[2px_3px_3px_0px_#FFFFFF,inset_4px_5px_4px_0px_rgba(0,0,0,0.5)] hover:bg-[#828282]" 
+        : "bg-[#D2D2D2] text-[#434343] shadow-[2px_3px_2px_0px_rgba(0,0,0,0.5),inset_2px_3px_2px_0px_rgba(255,255,255,0.9)] hover:scale-[0.98] hover:bg-[#D2D2D2]",
       className,
     )}
     {...props}
@@ -49,23 +53,23 @@ const PaginationPrevious = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to previous page"
-    className={cn('gap-1 pl-2.5', className)}
-    size="default"
+    className={cn('', className)}
+    size="icon"
     {...props}
   >
     <ChevronLeft className="h-4 w-4" />
-    <span>Previous</span>
+    <span className="sr-only">Previous</span>
   </PaginationLink>
 )
 
 const PaginationNext = ({ className, ...props }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
     aria-label="Go to next page"
-    className={cn('gap-1 pr-2.5', className)}
-    size="default"
+    className={cn('', className)}
+    size="icon"
     {...props}
   >
-    <span>Next</span>
+    <span className="sr-only">Next</span>
     <ChevronRight className="h-4 w-4" />
   </PaginationLink>
 )

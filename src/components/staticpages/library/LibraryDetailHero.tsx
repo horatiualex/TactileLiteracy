@@ -84,7 +84,11 @@ export default function LibraryDetailHero({ item }: LibraryDetailHeroProps) {
           {/* Main tactile image */}
           <div className="flex h-full items-center justify-center p-12 lg:p-16">
             {tactileImageUrl ? (
-              <img src={tactileImageUrl} alt={item.title} className="max-h-full w-full object-contain" />
+              <img 
+                src={tactileImageUrl} 
+                alt={item.title} 
+                className="w-auto h-auto max-w-full max-h-[60vh] lg:max-h-[75vh] object-contain" 
+              />
             ) : (
               <div className="text-gray-500 text-lg">Imaginea tactilă lipsește</div>
             )}

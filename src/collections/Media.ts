@@ -32,7 +32,7 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG',
+        description: 'Text alternativ pentru accesibilitate - obligatoriu pentru conformitatea WCAG. Dimensiunea maximă a fișierului este de 5MB.',
       },
     },
     {
@@ -50,6 +50,7 @@ export const Media: CollectionConfig = {
     staticDir: path.resolve(dirname, '../../public/media'),
     adminThumbnail: 'thumbnail',
     focalPoint: true,
+    filesize: 5 * 1024 * 1024, // 5MB
     imageSizes: [
       {
         name: 'thumbnail',
